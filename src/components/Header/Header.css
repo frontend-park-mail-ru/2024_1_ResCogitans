@@ -1,0 +1,22 @@
+@import './Link/Link.css';
+@import './LoginForm/LoginForm.css';
+@import './Logo/Logo.css';
+@import './RegistrationForm/RegistrationForm.css';
+
+#links { 
+    font-weight: 600;
+    font-size: 24px;
+    padding: 10px;
+    display: flex;
+    justify-items: center;
+    gap: 30px;
+}
+
+#header {
+    display: flex;
+    flex-wrap: wrap;
+    grid-auto-flow: row;
+    padding: 10px;
+    justify-content: space-evenly;
+    align-items: center;
+}

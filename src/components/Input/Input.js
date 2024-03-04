@@ -1,28 +1,30 @@
-import template from './Input.hbs'
+import template from './Input.hbs';
 
 class Input {
-    constructor(parent, {id = '', placeholder = '', type='text', img='', _class=''}) {
-        this.parent = parent;
-        this.id = id;
-        this.placeholder = placeholder;
-        this.type = type;
-        this.img = img;
-        this._class = _class;
-    }
+  constructor(parent, {
+    id = '', placeholder = '', type = 'text', img = '', className = '',
+  }) {
+    this.parent = parent;
+    this.id = id;
+    this.placeholder = placeholder;
+    this.type = type;
+    this.img = img;
+    this.className = className;
+  }
 
-    getHTML() {
-        return template({
-            id: this.id,
-            placeholder: this.placeholder,
-            type: this.type,
-            img: this.img,
-            _class: this._class
-        });
-    }
+  getHTML() {
+    return template({
+      id: this.id,
+      placeholder: this.placeholder,
+      type: this.type,
+      img: this.img,
+      className: this.className,
+    });
+  }
 
-    render() {
-        this.parent.insertAdjacentHTML('beforeend', this.getHTML());        
-    }
+  render() {
+    this.parent.insertAdjacentHTML('beforeend', this.getHTML());
+  }
 }
 
 export default Input;

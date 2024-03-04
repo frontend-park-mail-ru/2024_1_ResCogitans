@@ -1,0 +1,20 @@
+a:hover {
+    background-color: var(--secondary-color);
+    border-radius: 20px;
+    transition: background-color 0.1s;
+}
+
+.search-link {
+    border-bottom: 3px solid white;
+}
+.search-link a:link, a:visited {
+    color: var(--main-text-color);
+    text-decoration: none;
+}
+
+.search-link:hover {
+    border-bottom: 3px solid var(--main-text-color);
+    opacity: 80%;
+    padding-bottom: 0px;
+    transition: all 0.2s;
+}

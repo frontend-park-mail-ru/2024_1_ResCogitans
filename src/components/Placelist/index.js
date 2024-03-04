@@ -1,1 +1,1 @@
-export { default } from './Placelist'
+export { default } from './Placelist';

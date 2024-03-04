@@ -1,31 +1,30 @@
-import template from './Link.hbs'
+import template from './Link.hbs';
 
 class Link {
+  constructor(parent, {
+    id, className, label, url, src,
+  }) {
+    this.parent = parent;
+    this.label = label;
+    this.url = url;
+    this.className = className;
+    this.id = id;
+    this.src = src;
+  }
 
-    constructor(parent, {id, _class, label, url, src}) {
-        this.parent = parent;
-        this.label = label;
-        this.url = url;
-        this._class = _class;
-        this.id = id;
-        this.src = src;
-    }
+  getHTML() {
+    return template({
+      id: this.id,
+      url: this.url,
+      className: this.className,
+      label: this.label,
+      src: this.src,
+    });
+  }
 
-
-
-    getHTML() {
-        return template({
-            id: this.id,
-            url: this.url,
-            _class: this._class,
-            label: this.label,
-            src: this.src
-        })
-    }
-
-    render() {
-        this.parent.insertAdjacentHTML('beforeend', this.getHTML());
-    }
+  render() {
+    this.parent.insertAdjacentHTML('beforeend', this.getHTML());
+  }
 }
 
 export default Link;
