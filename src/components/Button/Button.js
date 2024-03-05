@@ -7,7 +7,7 @@ class Button {
     this.parent = parent;
     this.id = id;
     this.label = label;
-    this.className = className; // css class
+    this.className = className;
     this.url = url;
     this.img = img;
     this.type = type;

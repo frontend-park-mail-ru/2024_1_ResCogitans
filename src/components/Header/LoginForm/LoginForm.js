@@ -1,8 +1,9 @@
+import { log } from 'handlebars';
 import template from './LoginForm.hbs';
 
-import Button from '../../Button';
-import Input from '../../Input';
-import RegistrationForm from '../RegistrationForm';
+import Button from '../../Button/Button';
+import Input from '../../Input/Input';
+import RegistrationForm from '../RegistrationForm/RegistrationForm';
 
 class LoginForm {
   constructor(parent, display) {
@@ -28,10 +29,11 @@ class LoginForm {
     registerButton.addEventListener('click', (e) => {
       let state = 0;
       let form;
+      const content = document.getElementById('root');
+      const loginForm = document.getElementById('login-form-div');
       switch (state) {
         case 0:
-          const content = document.getElementById('root');
-          content.removeChild(document.getElementById('login-form-div'));
+          content.removeChild(loginForm);
           new RegistrationForm(content, { display: 'flex' }).render();
           state = 2;
           form = document.getElementById('registration-form-div');
@@ -44,6 +46,8 @@ class LoginForm {
           form.style.display = 'flex';
           state = 1;
           break;
+        default:
+          state = 1;
       }
     });
   }

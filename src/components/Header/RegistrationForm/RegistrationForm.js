@@ -1,7 +1,7 @@
 import template from './RegistrationForm.hbs';
 
-import Button from '../../Button';
-import Input from '../../Input';
+import Button from '../../Button/Button';
+import Input from '../../Input/Input';
 
 class RegistrationForm {
   constructor(parent, display) {

@@ -1,4 +1,4 @@
-import Place from './Place';
+import Place from './Place/Place';
 import template from './Placelist.hbs';
 
 const DATA = [

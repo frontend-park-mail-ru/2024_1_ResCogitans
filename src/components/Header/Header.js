@@ -1,11 +1,10 @@
-import Button from '../Button';
-import Logo from './Logo';
-import Link from './Link';
+import Button from '../Button/Button';
+import Logo from './Logo/Logo';
+import Link from './Link/Link';
+import LoginForm from './LoginForm/LoginForm';
 // import Profile from '../Profile/'
 
 import template from './Header.hbs';
-
-import LoginForm from './LoginForm';
 
 const user = false;
 
@@ -45,17 +44,18 @@ class Header {
       let state = 0;
       document.getElementById('button-login').addEventListener('click', (e) => {
         const body = document.getElementById('root');
+        const form = new LoginForm(body, { display: 'flex' });
         switch (state) {
           case 0:
-            const form = new LoginForm(body, { display: 'flex' });
             form.render();
             state = 1;
             break;
           case 1:
             body.removeChild(body.children[4]);
-            console.log(body.childNodes);
             state = 0;
             break;
+          default:
+            state = 0;
         }
       }, false);
     }

@@ -1,6 +1,6 @@
-import Link from '../Header/Link';
-import Button from '../Button';
-import Input from '../Input';
+import Link from '../Header/Link/Link';
+import Button from '../Button/Button';
+import Input from '../Input/Input';
 
 import template from './MainSearch.hbs';
 
