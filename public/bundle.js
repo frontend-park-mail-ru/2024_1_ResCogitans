@@ -5669,17 +5669,26 @@ class Placelist {
   constructor(parent) {
     this.parent = parent;
     this.city = 'Paris';
+    this.places = []
   }
 
   getHTML() {
     return Placelist_default()(this.city);
   }
 
-  render(data) {
-    this.parent.insertAdjacentHTML('afterend', this.getHTML());
+  getPlaces(data) {
+    this.places = data
+    this.renderPlaces()
+  }
+
+  renderPlaces() {
     const placelist = document.getElementById('list-places');
-    const places = get('http://localhost:8080/sights');
-    places.forEach((data) => new Placelist_Place_Place(placelist, data).render());
+    this.places.sights.forEach((data) => new Placelist_Place_Place(placelist, data).render());
+  }
+
+  render() {
+    this.parent.insertAdjacentHTML('afterend', this.getHTML());
+    const places = get('http://localhost:8080/sights', this.getPlaces.bind(this));
   }
 }
 
