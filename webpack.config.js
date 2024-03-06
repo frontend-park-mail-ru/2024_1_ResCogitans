@@ -1,5 +1,6 @@
 const path = require('path');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const webpack = require('webpack');
 const lightningcss = require('lightningcss');
 const browserslist = require('browserslist');
 
@@ -19,6 +20,8 @@ module.exports = {
     ],
   },
 
+  
+
   optimization: {
     minimize: true,
     minimizer: [
@@ -30,4 +33,10 @@ module.exports = {
       }),
     ],
   },
+
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env.HOST_NAME': JSON.stringify('https://localhost:8080'),
+    }),
+ ],
 };

@@ -2,7 +2,7 @@ import Button from '../Button/Button';
 import Logo from './Logo/Logo';
 import Link from './Link/Link';
 import LoginForm from './LoginForm/LoginForm';
-// import Profile from '../Profile/'
+import Main from '../../pages/Main/Main'
 
 import template from './Header.hbs';
 
@@ -34,10 +34,19 @@ class Header {
     currencyButton.render();
 
     const profileBlock = document.getElementById('button-group');
+    const username = localStorage.getItem('username')
 
-    if (user) {
-      // const profile = new Profile(profileBlock)
-      // profile.render();
+    if (username != "") {
+      const profile = new Link(profileBlock, {className: 'user-link', label : username}).render()
+      const logout = new Button(profileBlock, {id: 'logout', className: 'login-group-button', label: 'Выйти'}).render();
+
+      logout.addEventListener('click', (e) => {
+          localStorage.setItem('username', "")
+          const root = document.getElementById('root');
+          root.innerHTML = ''
+          sessionStorage.setItem['SessionID', ""]
+          new Main(document.getElementById('root')).render();
+      })
     } else {
       const loginButton = new Button(profileBlock, { id: 'button-login', label: 'Войти' });
       loginButton.render();
