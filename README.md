@@ -21,3 +21,16 @@ TODO - _UX_
 
 ## Ссылки
 [Бэкенд проекта](https://github.com/go-park-mail-ru/2024_1_ResCogitans)
+
+# Страница собирается при помощи webpack.
+
+## 1. Локальная разработка
+* npm i
+* npm run start
+
+## 2. Сборка
+* npm i
+* npm run build
+
+## 3. Форматирование 
+* npm run lint:fix - прогнать eslint с правкой и форматированием кода под кодстайл AirBnB

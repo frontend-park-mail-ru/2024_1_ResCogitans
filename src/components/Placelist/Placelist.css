@@ -1,0 +1,22 @@
+@import './Place/Place.css';
+
+#list-places {
+    display: grid;
+    align-self: center;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+@media (max-width: 984px) {
+    #list-places {
+       grid-template-columns: repeat(3, 1fr); 
+    }
+}
+
+@media (max-width: 768px) {
+    #list-places {
+       grid-template-columns: repeat(2, 1fr); 
+    }
+}
+
+

@@ -1,0 +1,17 @@
+#logo-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 800;
+    letter-spacing: 3px;
+    vertical-align: center;
+    font-size: 32px;
+    color: var(--main-text-color);
+    grid-column: 1 / 2;
+}
+
+#logo-group img {
+    max-width: 4rem;
+    border-radius: 50%;
+    margin-right: 10px;
+}

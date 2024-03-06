@@ -1,0 +1,7 @@
+# dependencies
+/node_modules
+
+.vscode
+
+#build js
+/public/bundle.js

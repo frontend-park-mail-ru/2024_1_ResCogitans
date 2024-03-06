@@ -1,0 +1,10 @@
+<button class="{{this.className}}" id="{{this.id}}" type="{{this.type}}">
+    {{#if this.img}}
+    <img src="{{this.img}}">
+    {{/if}}
+    {{#if this.url}}
+    <a href="{{this.url}}">{{this.label}}</a>
+    {{else}}
+    <a>{{this.label}}</a>
+    {{/if}}
+</button>

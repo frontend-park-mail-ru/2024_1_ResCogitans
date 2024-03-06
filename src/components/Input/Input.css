@@ -1,0 +1,12 @@
+input {
+    text-align: center;
+    border-radius: 20px;
+    border: 1px solid var(--secondary-color);
+    font-size: 14px;
+    height: 36px;
+    width: 280px;
+}
+
+.form-input {
+    margin-bottom: 20px;
+}

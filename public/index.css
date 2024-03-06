@@ -1,0 +1,21 @@
+@import '../src/pages/Main/Main.css';
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('../src/assets/Roboto-Medium.ttf');
+}
+
+:root {
+    --main-text-color: #161616;
+    --primary-color: #8fc4b2;
+    --primary-color-lighter: #9cd7c3;
+    --secondary-color: #d9d9d9;
+}
+
+html, body {
+    font-family: 'Roboto';
+    margin: auto;
+    max-width: 1260px;
+    padding: 0 10px;
+    min-height: 100%;
+}
