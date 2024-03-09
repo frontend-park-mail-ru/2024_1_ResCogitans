@@ -2,14 +2,15 @@ import template from './Input.hbs';
 
 class Input {
   constructor(parent, {
-    id = '', placeholder = '', type = 'text', img = '', className = '',
+    field = '', id = '', placeholder = '', type = 'text', img = '', className = '',
   }) {
     this.parent = parent;
-    this.id = id;
+    this.field = field;
     this.placeholder = placeholder;
     this.type = type;
     this.img = img;
     this.className = className;
+    this.id = id;
   }
 
   getHTML() {
@@ -19,6 +20,7 @@ class Input {
       type: this.type,
       img: this.img,
       className: this.className,
+      field: this.field
     });
   }
 

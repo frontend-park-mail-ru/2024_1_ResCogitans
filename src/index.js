@@ -2,11 +2,16 @@ import Main from './pages/Main/Main';
 
 // routing
 
-const root = document.getElementById('root');
+let sessionCookie
 
-if (root === null) {
-  const newRoot = document.createElement('div', { id: 'root' });
-  new Main(newRoot).render();
-} else {
-  new Main(root).render();
-}
+document.addEventListener('DOMContentLoaded', function() {
+    sessionCookie = document.cookie.split('; ').find(row => row.startsWith('session='));
+    let root = document.getElementById('root');
+  
+    if (root === null) {
+      root = document.createElement('div', { id: 'root' });
+    }
+    new Main(root, sessionCookie).render();
+});
+
+
