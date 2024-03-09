@@ -32,7 +32,7 @@ class LoginForm {
       e.preventDefault()
       const username = document.getElementById('username-login').value;
       const password = document.getElementById('username-password').value;
-      fetch('http://localhost:8080/login', {
+      fetch('http://jantugan.ru/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -55,7 +55,7 @@ class LoginForm {
       .catch((error) => {
           console.error('Error:', error);
       });
-}); 
+});
     const registerButton = document.getElementById('register-button');
     registerButton.addEventListener('click', (e) => {
       let state = 0;

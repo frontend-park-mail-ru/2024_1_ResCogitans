@@ -28,7 +28,7 @@ class RegistrationForm {
       const username = document.getElementById('username-register').value;
       const password = document.getElementById('username-password').value;
   
-      fetch('http://localhost:8080/signup', {
+      fetch('http://jantugan.ru/signup', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -37,15 +37,15 @@ class RegistrationForm {
       })
       .then(response => response.json())
       .then(data => {
-          if (data.Error == null) {
+           if (data.Code != null) {
+            new Link(registrationForm, {className : 'err-lin1k', label: data.error}).render()
+          } else {
             const root = document.getElementById('root');
             root.innerHTML = ''
             console.log(data)
             localStorage.setItem('username', data.User.username)
             sessionStorage.setItem('sessionID', data.SessionID)
             new Main(document.getElementById('root')).render();
-          } else {
-            new Link(registrationForm, {className : 'err-link', label: data.error}).render()
           }
       })
       .catch((error) => {
