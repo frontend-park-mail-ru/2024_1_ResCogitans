@@ -1,22 +1,26 @@
-import template from './RegistrationForm.hbs';
+import template from './SignupForm.hbs';
 
-import Button from '../../Button/Button';
-import Input from '../../Input/Input';
-import Link from '../../Header/Link/Link'
-import Main from '../../../pages/Main/Main'
+import Button from '../../../components/Button/Button';
+import Input from '../../../components/Input/Input';
+import Link from '../../../components/Header/Link/Link'
+import PlacesPage from '../../PlacesPage/PlacesPage'
+import Logo from '../../../components/Header/Logo/Logo'
 
-class RegistrationForm {
-  constructor(parent, display) {
+class SignupForm {
+  constructor(parent) {
     this.parent = parent;
-    this.display = display;
   }
 
-  getHTML() {
+  asHTML() {
     return template(this.display);
   }
 
   render() {
-    this.parent.insertAdjacentHTML('beforeend', this.getHTML());
+
+    this.parent.insertAdjacentHTML('beforeend', this.asHTML());
+    const logoGroup = document.getElementById('logo-group');
+    new Logo(logoGroup).render();
+
     const registrationForm = document.getElementById('registration-form');
     new Input(registrationForm, { field: 'username-register', type: 'text', placeholder: 'Логин', className: 'form-input' }).render();
     new Input(registrationForm, { field: 'username-password', type: 'password', placeholder: 'Пароль', className: 'form-input' }).render();
@@ -45,7 +49,7 @@ class RegistrationForm {
             console.log(data)
             localStorage.setItem('username', data.User.username)
             sessionStorage.setItem('sessionID', data.SessionID)
-            new Main(document.getElementById('root')).render();
+            new PlacesPage(document.getElementById('root')).render();
           }
       })
       .catch((error) => {
@@ -55,4 +59,4 @@ class RegistrationForm {
   }
 }
 
-export default RegistrationForm;
+export default SignupForm;

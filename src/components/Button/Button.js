@@ -13,7 +13,7 @@ class Button {
     this.type = type;
   }
 
-  getHTML() {
+  asHTML() {
     return template({
       id: this.id,
       label: this.label,
@@ -25,7 +25,7 @@ class Button {
   }
 
   render() {
-    this.parent.insertAdjacentHTML('beforeend', this.getHTML());
+    this.parent.insertAdjacentHTML('beforeend', this.asHTML());
     return (document.getElementById(this.id))
   }
 }

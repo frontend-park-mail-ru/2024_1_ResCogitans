@@ -1,6 +1,6 @@
 import Place from './Place/Place';
 import template from './Placelist.hbs';
-import { get } from '../../../api/api.js';
+import { get } from '../../../api/api';
 
 class Placelist {
   constructor(parent) {
@@ -9,7 +9,7 @@ class Placelist {
     this.places = []
   }
 
-  getHTML() {
+  asHTML() {
     return template(this.city);
   }
 
@@ -24,7 +24,7 @@ class Placelist {
   }
 
   render() {
-    this.parent.insertAdjacentHTML('afterend', this.getHTML());
+    this.parent.insertAdjacentHTML('beforeend', this.asHTML());
     const places = get('http://jantugan.ru/sights', this.getPlaces.bind(this));
   }
 }

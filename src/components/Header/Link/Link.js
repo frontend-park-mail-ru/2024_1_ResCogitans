@@ -12,7 +12,7 @@ class Link {
     this.src = src;
   }
 
-  getHTML() {
+  asHTML() {
     return template({
       id: this.id,
       url: this.url,
@@ -23,7 +23,7 @@ class Link {
   }
 
   render() {
-    this.parent.insertAdjacentHTML('beforeend', this.getHTML());
+    this.parent.insertAdjacentHTML('beforeend', this.asHTML());
   }
 }
 

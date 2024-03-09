@@ -2,4 +2,4 @@
 @import '../../components/Header/Header.css';
 @import '../../components/Input/Input.css';
 @import '../../components/MainSearch/MainSearch.css';
-@import '../../components/Placelist/Placelist.css';
+@import '../../pages/PlacesPage/Placelist/Placelist.css';

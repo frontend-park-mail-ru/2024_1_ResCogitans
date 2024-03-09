@@ -2,15 +2,16 @@ import template from './Logo.hbs';
 
 class Logo {
   constructor(parent) {
+    console.log(parent)
     this.parent = parent;
   }
 
-  getHTML() {
+  asHTML() {
     return template();
   }
 
   render() {
-    this.parent.insertAdjacentHTML('beforeend', this.getHTML());
+    this.parent.insertAdjacentHTML('beforeend', this.asHTML());
   }
 }
 

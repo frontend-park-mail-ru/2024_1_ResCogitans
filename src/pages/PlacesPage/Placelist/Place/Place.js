@@ -6,12 +6,12 @@ class Place {
     this.data = data;
   }
 
-  getHTML() {
+  asHTML() {
     return template(this.data);
   }
 
   render() {
-    this.parent.insertAdjacentHTML('beforeend', this.getHTML());
+    this.parent.insertAdjacentHTML('beforeend', this.asHTML());
   }
 }
 

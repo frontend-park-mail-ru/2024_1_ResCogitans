@@ -1,8 +1,9 @@
 import Button from '../Button/Button';
 import Logo from './Logo/Logo';
 import Link from './Link/Link';
-import LoginForm from './LoginForm/LoginForm';
-import Main from '../../pages/Main/Main'
+import PlacesPage from '../../pages/PlacesPage/PlacesPage'
+import urls from '../../router/urls'
+import { router } from '../../router/Router'
 
 import template from './Header.hbs';
 
@@ -13,7 +14,7 @@ class Header {
     this.parent = parent;
   }
 
-  getHTML() {
+  asHTML() {
     return template();
   }
 
@@ -22,6 +23,8 @@ class Header {
   }
 
   render() {
+    this.parent.insertAdjacentHTML('beforeend', this.asHTML());
+    
     const logoGroup = document.getElementById('logo-group');
     const logo = new Logo(logoGroup);
     logo.render();
@@ -45,28 +48,15 @@ class Header {
           const root = document.getElementById('root');
           root.innerHTML = ''
           sessionStorage.setItem['SessionID', ""]
-          new Main(document.getElementById('root')).render();
+          new PlacesPage(document.getElementById('root')).render();
       })
     } else {
       const loginButton = new Button(profileBlock, { id: 'button-login', label: 'Войти' });
       loginButton.render();
       let state = 0;
-      document.getElementById('button-login').addEventListener('click', (e) => {
-        const body = document.getElementById('root');
-        const form = new LoginForm(body, { display: 'flex' });
-        switch (state) {
-          case 0:
-            form.render();
-            state = 1;
-            break;
-          case 1:
-            body.removeChild(body.children[4]);
-            state = 0;
-            break;
-          default:
-            state = 0;
-        }
-      }, false);
+      document.getElementById('button-login').addEventListener('click', () => {
+        router.go(urls.login);
+      })
     }
   }
 }

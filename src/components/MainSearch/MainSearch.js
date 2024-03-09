@@ -9,13 +9,13 @@ class MainSearch {
     this.parent = parent;
   }
 
-  getHTML() {
+  asHTML() {
     return template();
   }
 
   render() {
     const searchBlock = document.getElementById('main-search');
-    searchBlock.insertAdjacentHTML('beforeend', this.getHTML());
+    searchBlock.insertAdjacentHTML('beforeend', this.asHTML());
 
     const linkArea = document.getElementById('search-links');
     new Link(linkArea, { class: 'search-link', src: '../static/restaurant.svg', label: 'Рестораны' }).render();

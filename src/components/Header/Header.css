@@ -1,11 +1,11 @@
 @import './Link/Link.css';
-@import './LoginForm/LoginForm.css';
+@import '../../pages/LoginPage/LoginForm/LoginForm.css';
 @import './Logo/Logo.css';
-@import './RegistrationForm/RegistrationForm.css';
+@import '../../pages/SignupPage/SignupPage.css';
 
 #links { 
     font-weight: 600;
-    font-size: 24px;
+    font-size: 1.5rem;
     padding: 10px;
     display: flex;
     justify-items: center;

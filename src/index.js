@@ -1,17 +1,25 @@
-import Main from './pages/Main/Main';
+import { router } from './router/Router'
+import { routes } from './router/routes'
+import urls from './router/urls'
 
-// routing
 
-let sessionCookie
-
-document.addEventListener('DOMContentLoaded', function() {
-    sessionCookie = document.cookie.split('; ').find(row => row.startsWith('session='));
-    let root = document.getElementById('root');
+let root = document.getElementById('root');
   
-    if (root === null) {
-      root = document.createElement('div', { id: 'root' });
-    }
-    new Main(root, sessionCookie).render();
+if (root === null) {
+    root = document.createElement('div', { id: 'root' });
+}
+
+Object.entries(routes).forEach(([path, page]) => {
+  router.route(path, page);
 });
 
 
+let startingPath;
+
+if (window.location.pathname === urls.base) {
+  startingPath = urls.sights;
+} else {
+  startingPath = window.location.pathname;
+}
+
+router.go(startingPath);

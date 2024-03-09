@@ -13,7 +13,7 @@ class Input {
     this.id = id;
   }
 
-  getHTML() {
+  asHTML() {
     return template({
       id: this.id,
       placeholder: this.placeholder,
@@ -25,7 +25,7 @@ class Input {
   }
 
   render() {
-    this.parent.insertAdjacentHTML('beforeend', this.getHTML());
+    this.parent.insertAdjacentHTML('beforeend', this.asHTML());
   }
 }
 
