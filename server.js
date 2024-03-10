@@ -9,6 +9,8 @@ app.use('/src', express.static(path.join(__dirname, 'src')));
 
 app.use('/static', express.static(path.join(__dirname, 'static')));
 
+app.use('/docs', express.static(path.join(__dirname, 'docs')));
+
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });

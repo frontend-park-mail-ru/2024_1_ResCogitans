@@ -6,19 +6,41 @@ import { router } from '../../router/Router';
 
 import template from './Header.hbs';
 
+const user = false;
+
+/**
+* Класс Header. Это шапка сайта.
+* @class
+*/
 class Header {
+  /**
+  * Создает новый экземпляр шапки сайта.
+  * @param {HTMLElement} parent - Родительский элемент, в который будет вставлена шапка сайта.
+  */
   constructor(parent) {
     this.parent = parent;
   }
 
+  /**
+  * Возвращает HTML-представление шапки сайта.
+  * @returns {string} HTML-представление шапки сайта.
+  */
   asHTML() {
     return template(this);
   }
 
+  /**
+  * Рендерит блок ссылок в DOM.
+  * @param {HTMLElement} parent - Родительский элемент, в который будут вставлены ссылки.
+  * @param {Array<string>} labels - Массив меток для ссылок.
+  */
   renderLinkBlock(parent, labels) {
     labels.forEach((label) => new Link(parent, { label, className: 'search-link' }).render());
   }
 
+  /**
+  * Рендерит шапку, включая логотип, ссылки и кнопки в зависимости от состояния пользователя.
+  */
   render() {
     this.parent.insertAdjacentHTML('beforeend', this.asHTML());
 

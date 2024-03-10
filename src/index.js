@@ -4,6 +4,7 @@ import routes from './router/routes';
 
 let root = document.getElementById('root');
 
+
 if (root === null) {
   root = document.createElement('div', { id: 'root' });
 }

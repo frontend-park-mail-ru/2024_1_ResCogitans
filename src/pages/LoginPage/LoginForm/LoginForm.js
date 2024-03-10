@@ -8,15 +8,31 @@ import Link from '../../../components/Header/Link/Link';
 import { router } from '../../../router/Router';
 import { login } from '../../../api/user';
 
+/**
+* Класс LoginForm представляет форму входа, которая может быть отрендерена в HTML.
+* @class
+*/
 class LoginForm {
+  /**
+  * Создает новый экземпляр формы входа.
+  * @param {HTMLElement} parent - Родительский элемент, в который будет вставлена форма входа.
+  */
   constructor(parent) {
     this.parent = parent;
   }
 
+  /**
+  * Возвращает HTML-представление формы входа.
+  * @returns {string} HTML-представление формы входа.
+  */
   asHTML() {
     return template(this.display);
   }
 
+  /**
+  * Отображает ошибку или перенаправляет пользователя в зависимости от ответа сервера.
+  * @param {Object} response - Ответ сервера.
+  */
   displayErrorOrRedirect(response, error) {
     if (response.Code == null) {
       localStorage.setItem('username', response.User.username);
@@ -32,6 +48,9 @@ class LoginForm {
     }
   }
 
+  /**
+  * Рендерит форму входа в DOM, включая логотип, поля ввода и кнопки.
+  */
   render() {
     this.parent.insertAdjacentHTML('beforeend', this.asHTML());
 
