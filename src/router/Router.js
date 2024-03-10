@@ -1,4 +1,3 @@
-import routes from './routes';
 import NotFoundPage from '../pages/NotFoundPage/NotFoundPage';
 
 /**
@@ -38,7 +37,7 @@ class Router {
   * @param {string} path - Путь для перенаправления.
   */
   go(path) {
-    history.pushState({}, '', path);
+    window.history.pushState({}, '', path);
     this.changeLocation();
   }
 
@@ -51,7 +50,6 @@ class Router {
   changeLocation() {
     const path = window.location.pathname;
     const route = this.routes.find((route) => route.path === path);
-
     const content = this.clearContent();
 
     if (route) {

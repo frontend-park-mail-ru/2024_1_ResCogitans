@@ -1,6 +1,6 @@
 import Place from './Place/Place';
 import template from './Placelist.hbs';
-import { getSights } from '../../../api/sights';
+import getSights from '../../../api/sights';
 
 /**
 * Класс Placelist представляет список мест, который может быть отрендерен в HTML.

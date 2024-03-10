@@ -43,6 +43,7 @@ class Button {
       type: this.type,
     });
   }
+
   /**
   * Рендерит кнопку в DOM.
   * @returns {HTMLElement} Элемент кнопки в DOM.

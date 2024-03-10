@@ -6,8 +6,6 @@ import { router } from '../../router/Router';
 
 import template from './Header.hbs';
 
-const user = false;
-
 /**
 * Класс Header. Это шапка сайта.
 * @class

@@ -4,7 +4,7 @@
 * @function login
 * @param {string} url - URL сервера.
 * @param {Object} body - Объект с данными для входа (например, логин и пароль).
-* @param {Function} callback - Функция обратного вызова, которая будет вызвана после выполнения запроса.
+* @param {Function} callback - Функция обратного вызова. Она будет вызвана после выполнения запроса.
 * @returns {Promise<void>}
 */
 export async function login(url, body, callback) {
@@ -27,7 +27,7 @@ export async function login(url, body, callback) {
 * @function signup
 * @param {string} url - URL сервера.
 * @param {Object} body - Объект с данными для регистрации (например, логин и пароль).
-* @param {Function} callback - Функция обратного вызова, которая будет вызвана после выполнения запроса.
+* @param {Function} callback - Функция обратного вызова. Она будет вызвана после выполнения запроса.
 * @returns {Promise<void>}
 */
 export async function signup(url, body, callback) {

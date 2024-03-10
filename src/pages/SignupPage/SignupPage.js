@@ -32,4 +32,3 @@ class SignupPage {
 }
 
 export default SignupPage;
-
