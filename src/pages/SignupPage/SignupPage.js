@@ -1,5 +1,5 @@
-import template from './SignupPage.hbs'
-import SignupForm from './SignupForm/SignupForm'
+import template from './SignupPage.hbs';
+import SignupForm from './SignupForm/SignupForm';
 
 /**
 * Класс SignupPage представляет страницу регистрации, которая может быть отрендерена в HTML.
@@ -8,10 +8,10 @@ import SignupForm from './SignupForm/SignupForm'
 class SignupPage {
   /**
   * Создает новый экземпляр страницы регистрации.
-  * @param {HTMLElement} parent - Родительский элемент, в который будет вставлена страница регистрации.
+  * @param {HTMLElement} parent - Родительский элемент, в который будет вставлена страница.
   */
   constructor(parent) {
-    this.parent = parent
+    this.parent = parent;
   }
 
   /**
@@ -26,7 +26,7 @@ class SignupPage {
   * Рендерит страницу регистрации в DOM, включая форму регистрации.
   */
   render() {
-    document.body.style.backgroundImage = `url('../../static/bglogin.webp')`;
+    document.body.style.backgroundImage = 'url(\'../../static/bglogin.webp\')';
     new SignupForm(this.parent).render();
   }
 }

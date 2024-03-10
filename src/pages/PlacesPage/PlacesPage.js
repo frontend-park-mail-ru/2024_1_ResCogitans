@@ -29,7 +29,7 @@ class PlacesPage {
   * Рендерит страницу мест в DOM, включая шапку сайта, основное поле поиска и список мест.
   */
   render() {
-    document.body.style.backgroundImage = "";
+    document.body.style.backgroundImage = '';
     this.parent.insertAdjacentHTML('beforeend', this.asHTML());
 
     const header = document.getElementById('header');

@@ -1,9 +1,9 @@
 import Button from '../Button/Button';
 import Logo from './Logo/Logo';
 import Link from './Link/Link';
-import PlacesPage from '../../pages/PlacesPage/PlacesPage'
-import urls from '../../router/urls'
-import { router } from '../../router/Router'
+import PlacesPage from '../../pages/PlacesPage/PlacesPage';
+import urls from '../../router/urls';
+import { router } from '../../router/Router';
 
 import template from './Header.hbs';
 
@@ -39,13 +39,12 @@ class Header {
     labels.forEach((label) => new Link(parent, { label }).render());
   }
 
-
   /**
-  * Рендерит шапку сайта в DOM, включая логотип, ссылки и кнопки в зависимости от состояния пользователя.
+  * Рендерит шапку, включая логотип, ссылки и кнопки в зависимости от состояния пользователя.
   */
   render() {
     this.parent.insertAdjacentHTML('beforeend', this.asHTML());
-    
+
     const logoGroup = document.getElementById('logo-group');
     const logo = new Logo(logoGroup);
     logo.render();
@@ -62,20 +61,20 @@ class Header {
     const username = localStorage.getItem('username');
 
     if (username != null) {
-      const profile = new Link(profileBlock, {className: 'user-link', label : username}).render()
-      const logout = new Button(profileBlock, {id: 'logout', label: 'Выйти'}).render();
+      const profile = new Link(profileBlock, { className: 'user-link', label: username }).render();
+      const logout = new Button(profileBlock, { id: 'logout', label: 'Выйти' }).render();
 
       logout.addEventListener('click', (e) => {
-          localStorage.removeItem('username')
-          router.go(urls.sights);
-      })
+        localStorage.removeItem('username');
+        router.go(urls.sights);
+      });
     } else {
       const loginButton = new Button(profileBlock, { className: 'login-button', id: 'button-login', label: 'Войти' });
       loginButton.render();
-      let state = 0;
+      const state = 0;
       document.getElementById('button-login').addEventListener('click', () => {
         router.go(urls.login);
-      })
+      });
     }
   }
 }

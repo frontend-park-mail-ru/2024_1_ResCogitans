@@ -14,7 +14,7 @@ class Placelist {
   constructor(parent) {
     this.parent = parent;
     this.city = 'Paris';
-    this.places = []
+    this.places = [];
   }
 
   /**
@@ -30,8 +30,8 @@ class Placelist {
   * @param {Object} data - Данные мест.
   */
   getPlaces(data) {
-    this.places = data
-    this.renderPlaces()
+    this.places = data;
+    this.renderPlaces();
   }
 
   /**

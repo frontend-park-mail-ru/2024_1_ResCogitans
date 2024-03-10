@@ -20,8 +20,6 @@ module.exports = {
     ],
   },
 
-  
-
   optimization: {
     minimize: true,
     minimizer: [
@@ -38,5 +36,5 @@ module.exports = {
     new webpack.DefinePlugin({
       'process.env.HOST_NAME': JSON.stringify('https://localhost:8080'),
     }),
- ],
+  ],
 };

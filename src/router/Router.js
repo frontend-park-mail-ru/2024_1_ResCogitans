@@ -1,4 +1,4 @@
-import urls from './urls'
+import urls from './urls';
 
 /**
 * Класс Router управляет навигацией между страницами приложения.
@@ -22,13 +22,13 @@ class Router {
   * @returns {Router} Ссылку на текущий экземпляр маршрутизатора.
   */
   route(path, page) {
-    this.routes.push({path, page});
+    this.routes.push({ path, page });
     return this;
   }
 
   /**
   * Перенаправляет пользователя на указанный путь.
-  * @param {string} [path] - Путь для перенаправления. Если путь не указан, используется текущий путь.
+  * @param {string} [path] - Путь для редиректа. Если путь не указан, используется текущий путь.
   */
   navigate(path) {
     const currentPath = window.history.state?.path;
@@ -37,7 +37,7 @@ class Router {
       this.changeLocation();
       return;
     }
-    
+
     this.changeLocation();
   }
 
@@ -58,12 +58,11 @@ class Router {
     const route = this.routes.find((route) => route.path === path);
 
     const content = document.getElementById('content');
-    content.innerHTML = "";
+    content.innerHTML = '';
 
     if (route) {
       const page = new route.page.page(content);
       page.render();
-      return;
     } else {
       // const notFoundPage = new notFoundPage(component);
       // notFoundPage.render();

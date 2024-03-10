@@ -1,9 +1,8 @@
-import urls from './urls'
-import LoginPage from '../pages/LoginPage/LoginPage'
-import PlacesPage from '../pages/PlacesPage/PlacesPage'
-import SignupPage from '../pages/SignupPage/SignupPage'
-import DocsPage from '../pages/DocsPage/DocsPage'
-
+import urls from './urls';
+import LoginPage from '../pages/LoginPage/LoginPage';
+import PlacesPage from '../pages/PlacesPage/PlacesPage';
+import SignupPage from '../pages/SignupPage/SignupPage';
+import DocsPage from '../pages/DocsPage/DocsPage';
 
 /**
 * Объект routes содержит конфигурацию маршрутов приложения.
@@ -12,19 +11,18 @@ import DocsPage from '../pages/DocsPage/DocsPage'
 * @type {Object}
 */
 const routes = {
-    [urls.sights]: {
-        page: PlacesPage,
-    },
-    [urls.signup]: {
-        page: SignupPage,
-    },
-    [urls.login]: {
-        page: LoginPage,
-    },
-    [urls.docs]: {
-        page: DocsPage,
-    },
+  [urls.sights]: {
+    page: PlacesPage,
+  },
+  [urls.signup]: {
+    page: SignupPage,
+  },
+  [urls.login]: {
+    page: LoginPage,
+  },
+  [urls.docs]: {
+    page: DocsPage,
+  },
 };
-
 
 export { routes };

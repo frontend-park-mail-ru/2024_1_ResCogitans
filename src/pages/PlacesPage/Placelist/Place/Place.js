@@ -15,13 +15,12 @@ class Place {
     this.data = data;
   }
 
-
   /**
   * Возвращает HTML-представление места.
   * @returns {string} HTML-представление места.
   */
   asHTML() {
-    this.data.url = this.data.url.replace("public","");
+    this.data.url = this.data.url.replace('public', '');
     return template(this.data);
   }
 

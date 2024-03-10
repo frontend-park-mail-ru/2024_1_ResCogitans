@@ -12,7 +12,7 @@ class Link {
   * @param {string} options.id - Идентификатор ссылки.
   * @param {string} options.className - CSS-класс ссылки.
   * @param {string} options.label - Текст ссылки.
-  * @param {string} options.url - URL, на который будет перенаправлен пользователь при нажатии на ссылку.
+  * @param {string} options.url - URL, на который будет осуществлен редирект после нажатия.
   * @param {string} [options.src=''] - URL изображения для ссылки.
   */
   constructor(parent, {
