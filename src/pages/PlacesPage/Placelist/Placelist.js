@@ -24,7 +24,7 @@ class Placelist {
   }
 
   render() {
-    this.parent.insertAdjacentHTML('beforeend', this.asHTML());
+    this.parent.insertAdjacentHTML('afterend', this.asHTML());
     const places = get('http://jantugan.ru/sights', this.getPlaces.bind(this));
   }
 }

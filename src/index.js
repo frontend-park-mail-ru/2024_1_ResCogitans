@@ -15,11 +15,13 @@ Object.entries(routes).forEach(([path, page]) => {
 
 
 let startingPath;
+console.log(window.location.pathname);
 
 if (window.location.pathname === urls.base) {
   startingPath = urls.sights;
 } else {
   startingPath = window.location.pathname;
+  console.log(startingPath);
 }
 
 router.go(startingPath);

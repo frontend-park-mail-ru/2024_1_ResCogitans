@@ -12,7 +12,7 @@ class LoginPage {
     }
 
     render() {
-        document.body.style.backgroundImage = `url('../../public/bglogin.webp')`;
+        document.body.style.backgroundImage = `url('../../static/bglogin.webp')`;
         new LoginForm(this.parent).render();
     }
 }

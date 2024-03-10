@@ -7,6 +7,7 @@ class Place {
   }
 
   asHTML() {
+    this.data.url = this.data.url.replace("public","");
     return template(this.data);
   }
 

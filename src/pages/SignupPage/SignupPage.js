@@ -12,7 +12,7 @@ class SignupPage {
     }
 
     render() {
-        document.body.style.backgroundImage = `url('../../public/bglogin.webp')`;
+        document.body.style.backgroundImage = `url('../../static/bglogin.webp')`;
         new SignupForm(this.parent).render();
     }
 }
