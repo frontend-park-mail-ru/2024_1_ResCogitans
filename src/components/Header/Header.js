@@ -29,29 +29,27 @@ class Header {
     const logo = new Logo(logoGroup);
     logo.render();
 
-    // const linkBlock = document.getElementById('links');
-    // this.renderLinkBlock(linkBlock, ['Альбомы', 'Отзывы', 'Поддержка']);
+    const linkBlock = document.getElementById('links');
+    this.renderLinkBlock(linkBlock, ['Альбомы', 'Отзывы', 'Поддержка']);
 
     const buttonGroup = document.getElementById('button-group');
     // const currencyButton = new Button(buttonGroup, { id: 'button-region', img: '../../static/globe.svg' });
     // currencyButton.render();
 
     const profileBlock = document.getElementById('button-group');
-    const username = localStorage.getItem('username')
 
-    if (username != "") {
+    const username = localStorage.getItem('username');
+
+    if (username != null) {
       const profile = new Link(profileBlock, {className: 'user-link', label : username}).render()
-      const logout = new Button(profileBlock, {id: 'logout', className: 'login-group-button', label: 'Выйти'}).render();
+      const logout = new Button(profileBlock, {id: 'logout', label: 'Выйти'}).render();
 
       logout.addEventListener('click', (e) => {
-          localStorage.setItem('username', "")
-          const root = document.getElementById('root');
-          root.innerHTML = ''
-          sessionStorage.setItem['SessionID', ""]
-          new PlacesPage(document.getElementById('root')).render();
+          localStorage.removeItem('username')
+          router.go(urls.sights);
       })
     } else {
-      const loginButton = new Button(profileBlock, { id: 'button-login', label: 'Войти' });
+      const loginButton = new Button(profileBlock, { className: 'login-button', id: 'button-login', label: 'Войти' });
       loginButton.render();
       let state = 0;
       document.getElementById('button-login').addEventListener('click', () => {

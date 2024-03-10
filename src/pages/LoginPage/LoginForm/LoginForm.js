@@ -18,9 +18,9 @@ class LoginForm {
   }
 
   displayErrorOrRedirect(response) {
-    if (response.error === null) {
-      console.log(urls.base);
-      router.go(urls.base);
+    if (response.error == null) {
+      localStorage.setItem('username', response.User.username);
+      router.go(urls.sights);
     } else {
       const loginForm = document.getElementById('login-form');
       document.getElementById('form-error')?.remove();
@@ -42,7 +42,7 @@ class LoginForm {
     new Button(loginForm, { id: 'register-button', label: 'Регистрация' }).render();
 
     loginForm.addEventListener('submit', (e) => {
-      e.preventDefault()
+      e.preventDefault();
       const username = document.getElementById('username-login').value;
       const password = document.getElementById('username-password').value;
       login("http://jantugan.ru", {username: username, password: password}, this.displayErrorOrRedirect);

@@ -21,7 +21,7 @@ class PlacesPage {
     const mainsearch = document.getElementById('main-search');
 
     new Header(header).render();
-    // new MainSearch(mainsearch).render();
+    new MainSearch(mainsearch).render();
     new Placelist(mainsearch).render();
   }
 }

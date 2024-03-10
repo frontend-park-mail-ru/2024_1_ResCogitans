@@ -1,3 +1,5 @@
+import urls from './urls'
+
 class Router {
 
     constructor() {
@@ -24,7 +26,6 @@ class Router {
 
     go(path) {
         history.pushState({}, '', path);
-        console.log(path, "CUR PATH");
         this.navigate(path);
     }
 

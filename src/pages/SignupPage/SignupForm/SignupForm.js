@@ -3,7 +3,7 @@ import template from './SignupForm.hbs';
 import Button from '../../../components/Button/Button';
 import Input from '../../../components/Input/Input';
 import Link from '../../../components/Header/Link/Link'
-import PlacesPage from '../../PlacesPage/PlacesPage'
+import urls from '../../../router/urls'
 import Logo from '../../../components/Header/Logo/Logo'
 import { signup } from '../../../api/api'
 import { router } from '../../../router/Router'
@@ -18,12 +18,13 @@ class SignupForm {
   }
 
   displayErrorOrRedirect(response) {
-    if (response.Code !== null) {
+    if (response.Code == null) {
+      localStorage.setItem('username', response.User.username);
+      router.go(urls.sights);
+    } else {
       const registrationForm = document.getElementById('registration-form');
       document.getElementById('form-error')?.remove();
       new Link(registrationForm, {id: 'form-error', className: "err-link", label: response.error}).render();
-    } else {
-      router.go(urls.base);
     }
   }
 

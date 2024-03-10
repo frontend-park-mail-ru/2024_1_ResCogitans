@@ -2,7 +2,6 @@ import template from './Logo.hbs';
 
 class Logo {
   constructor(parent) {
-    console.log(parent)
     this.parent = parent;
   }
 
