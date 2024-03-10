@@ -9,19 +9,40 @@ import template from './Header.hbs';
 
 const user = false;
 
+/**
+* Класс Header. Это шапка сайта.
+* @class
+*/
 class Header {
+  /**
+  * Создает новый экземпляр шапки сайта.
+  * @param {HTMLElement} parent - Родительский элемент, в который будет вставлена шапка сайта.
+  */
   constructor(parent) {
     this.parent = parent;
   }
 
+  /**
+  * Возвращает HTML-представление шапки сайта.
+  * @returns {string} HTML-представление шапки сайта.
+  */
   asHTML() {
     return template();
   }
 
+  /**
+  * Рендерит блок ссылок в DOM.
+  * @param {HTMLElement} parent - Родительский элемент, в который будут вставлены ссылки.
+  * @param {Array<string>} labels - Массив меток для ссылок.
+  */
   renderLinkBlock(parent, labels) {
     labels.forEach((label) => new Link(parent, { label }).render());
   }
 
+
+  /**
+  * Рендерит шапку сайта в DOM, включая логотип, ссылки и кнопки в зависимости от состояния пользователя.
+  */
   render() {
     this.parent.insertAdjacentHTML('beforeend', this.asHTML());
     

@@ -2,7 +2,8 @@ const urls = {
     base: '/',
     sights: '/sights',
     signup: '/signup',
-    login: '/login'
+    login: '/login',
+    docs: '/docs'
 }
 
 export default urls;

@@ -8,15 +8,31 @@ import Logo from '../../../components/Header/Logo/Logo'
 import { signup } from '../../../api/api'
 import { router } from '../../../router/Router'
 
+/**
+* Класс SignupForm представляет форму регистрации, которая может быть отрендерена в HTML.
+* @class
+*/
 class SignupForm {
+  /**
+  * Создает новый экземпляр формы регистрации.
+  * @param {HTMLElement} parent - Родительский элемент, в который будет вставлена форма регистрации.
+  */
   constructor(parent) {
     this.parent = parent;
   }
 
+  /**
+  * Возвращает HTML-представление формы регистрации.
+  * @returns {string} HTML-представление формы регистрации.
+  */
   asHTML() {
     return template(this.display);
   }
 
+  /**
+  * Отображает ошибку или перенаправляет пользователя в зависимости от ответа сервера.
+  * @param {Object} response - Ответ сервера.
+  */
   displayErrorOrRedirect(response) {
     if (response.Code == null) {
       localStorage.setItem('username', response.User.username);
@@ -28,8 +44,10 @@ class SignupForm {
     }
   }
 
+  /**
+  * Рендерит форму регистрации в DOM, включая логотип, поля ввода и кнопку.
+  */
   render() {
-
     this.parent.insertAdjacentHTML('beforeend', this.asHTML());
     const logoGroup = document.getElementById('logo-group');
     new Logo(logoGroup).render();
