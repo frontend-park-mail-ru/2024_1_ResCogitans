@@ -16,7 +16,7 @@ class Header {
   }
 
   renderLinkBlock(parent, labels) {
-    labels.forEach((label) => new Link(parent, { label: label, className: 'search-link' }).render());
+    labels.forEach((label) => new Link(parent, { label, className: 'search-link' }).render());
   }
 
   render() {
@@ -48,7 +48,7 @@ class Header {
       });
     } else {
       new Button(profileBlock, { className: 'login-button', id: 'button-login', label: 'Войти' }).render();
-      const loginButton = document.getElementById('button-login')
+      const loginButton = document.getElementById('button-login');
       loginButton.addEventListener('click', () => {
         router.go(urls.login);
       });

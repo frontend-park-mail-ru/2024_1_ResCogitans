@@ -1,5 +1,5 @@
-import routes from './routes'
-import NotFoundPage from '../pages/NotFoundPage/NotFoundPage'
+import routes from './routes';
+import NotFoundPage from '../pages/NotFoundPage/NotFoundPage';
 
 class Router {
   constructor() {
@@ -13,7 +13,7 @@ class Router {
       this.route(path, page);
     });
   }
-  
+
   route(path, page) {
     this.routes.push({ path, page });
     return this;
@@ -27,14 +27,14 @@ class Router {
   clearContent() {
     const content = document.getElementById('content');
     content.innerHTML = '';
+    return content;
   }
 
   changeLocation() {
     const path = window.location.pathname;
     const route = this.routes.find((route) => route.path === path);
 
-    this.clearContent();
-   
+    const content = this.clearContent();
 
     if (route) {
       const page = new route.page(content);

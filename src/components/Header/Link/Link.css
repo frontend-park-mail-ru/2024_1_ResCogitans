@@ -19,7 +19,6 @@
 }
 
 .err-link::hover {
-    color: red;
     border: none;
     background-color: none;
 }
