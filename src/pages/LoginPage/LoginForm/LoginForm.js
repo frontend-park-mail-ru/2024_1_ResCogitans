@@ -4,6 +4,7 @@ import Button from '../../../components/Button/Button';
 import Input from '../../../components/Input/Input';
 import Logo from '../../../components/Header/Logo/Logo'
 import urls from '../../../router/urls'
+import Link from '../../../components/Header/Link/Link'
 import { router } from '../../../router/Router'
 import { login } from '../../../api/api'
 
@@ -14,6 +15,17 @@ class LoginForm {
 
   asHTML() {
     return template(this.display);
+  }
+
+  displayErrorOrRedirect(response) {
+    if (response.error === null) {
+      console.log(urls.base);
+      router.go(urls.base);
+    } else {
+      const loginForm = document.getElementById('login-form');
+      document.getElementById('form-error')?.remove();
+      new Link(loginForm, {id: 'form-error', className: "err-link", label: response.error}).render();
+    }
   }
 
   render() {
@@ -33,7 +45,7 @@ class LoginForm {
       e.preventDefault()
       const username = document.getElementById('username-login').value;
       const password = document.getElementById('username-password').value;
-      login("http://jantugan.ru", {username: username, password: password});
+      login("http://jantugan.ru", {username: username, password: password}, this.displayErrorOrRedirect);
     });
 
 

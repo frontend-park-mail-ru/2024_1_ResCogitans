@@ -29,12 +29,12 @@ class Header {
     const logo = new Logo(logoGroup);
     logo.render();
 
-    const linkBlock = document.getElementById('links');
-    this.renderLinkBlock(linkBlock, ['Альбомы', 'Отзывы', 'Поддержка']);
+    // const linkBlock = document.getElementById('links');
+    // this.renderLinkBlock(linkBlock, ['Альбомы', 'Отзывы', 'Поддержка']);
 
     const buttonGroup = document.getElementById('button-group');
-    const currencyButton = new Button(buttonGroup, { id: 'button-region', img: '../../static/globe.svg' });
-    currencyButton.render();
+    // const currencyButton = new Button(buttonGroup, { id: 'button-region', img: '../../static/globe.svg' });
+    // currencyButton.render();
 
     const profileBlock = document.getElementById('button-group');
     const username = localStorage.getItem('username')

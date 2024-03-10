@@ -42,8 +42,9 @@ button > a {
 #login-button {
     margin-right: 30px;
     background-color: var(--primary-color);
+    margin-bottom: 20px;
 }
 
 #register-button {
-    background-color: var(--secondary-color);
+    margin-bottom: 20px;
 }

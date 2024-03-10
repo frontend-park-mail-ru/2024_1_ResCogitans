@@ -5,6 +5,8 @@ import Input from '../../../components/Input/Input';
 import Link from '../../../components/Header/Link/Link'
 import PlacesPage from '../../PlacesPage/PlacesPage'
 import Logo from '../../../components/Header/Logo/Logo'
+import { signup } from '../../../api/api'
+import { router } from '../../../router/Router'
 
 class SignupForm {
   constructor(parent) {
@@ -13,6 +15,16 @@ class SignupForm {
 
   asHTML() {
     return template(this.display);
+  }
+
+  displayErrorOrRedirect(response) {
+    if (response.Code !== null) {
+      const registrationForm = document.getElementById('registration-form');
+      document.getElementById('form-error')?.remove();
+      new Link(registrationForm, {id: 'form-error', className: "err-link", label: response.error}).render();
+    } else {
+      router.go(urls.base);
+    }
   }
 
   render() {
@@ -24,7 +36,7 @@ class SignupForm {
     const registrationForm = document.getElementById('registration-form');
     new Input(registrationForm, { field: 'username-register', type: 'text', placeholder: 'Логин', className: 'form-input' }).render();
     new Input(registrationForm, { field: 'username-password', type: 'password', placeholder: 'Пароль', className: 'form-input' }).render();
-    new Button(registrationForm, { id: 'register-button', label: 'Зарегистрироваться', type: 'submit' }).render();
+    new Button(registrationForm, { id: 'login-button', label: 'Зарегистрироваться', type: 'submit' }).render();
 
    registrationForm.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -32,29 +44,7 @@ class SignupForm {
       const username = document.getElementById('username-register').value;
       const password = document.getElementById('username-password').value;
   
-      fetch('http://jantugan.ru/signup', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-          body: JSON.stringify({ username, password }),
-      })
-      .then(response => response.json())
-      .then(data => {
-           if (data.Code != null) {
-            new Link(registrationForm, {className : 'err-lin1k', label: data.error}).render()
-          } else {
-            const root = document.getElementById('root');
-            root.innerHTML = ''
-            console.log(data)
-            localStorage.setItem('username', data.User.username)
-            sessionStorage.setItem('sessionID', data.SessionID)
-            new PlacesPage(document.getElementById('root')).render();
-          }
-      })
-      .catch((error) => {
-          console.error('Error:', error);
-      });
+      signup('http://jantugan.ru', {username: username, password: password}, this.displayErrorOrRedirect.bind(this));
   });
   }
 }

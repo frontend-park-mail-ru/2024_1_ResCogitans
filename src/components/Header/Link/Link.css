@@ -14,7 +14,8 @@
 }
 
 .err-link {
-    color: red
+    color: red;
+    display: block;
 }
 
 .err-link::hover {

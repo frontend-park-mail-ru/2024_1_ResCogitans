@@ -8,13 +8,11 @@ class Router {
 
     route(path, page) {
         this.routes.push({path, page});
+        return this;
     }
 
     navigate(path) {
-       
         const currentPath = window.history.state?.path;
-
-        console.log(currentPath);
 
         if (path === currentPath) {
             this.changeLocation();
@@ -26,6 +24,7 @@ class Router {
 
     go(path) {
         history.pushState({}, '', path);
+        console.log(path, "CUR PATH");
         this.navigate(path);
     }
 
