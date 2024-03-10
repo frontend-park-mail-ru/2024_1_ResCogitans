@@ -1,4 +1,5 @@
-import urls from './urls';
+import routes from './routes'
+import NotFoundPage from '../pages/NotFoundPage/NotFoundPage'
 
 /**
 * Класс Router управляет навигацией между страницами приложения.
@@ -12,7 +13,13 @@ class Router {
   constructor() {
     this.previousState = null;
     this.routes = [];
-    window.addEventListener('popstate', () => this.navigate());
+    window.addEventListener('popstate', () => this.changeLocation());
+  }
+
+  register(routes) {
+    Object.entries(routes).forEach(([path, page]) => {
+      this.route(path, page);
+    });
   }
 
   /**
@@ -27,45 +34,31 @@ class Router {
   }
 
   /**
-  * Перенаправляет пользователя на указанный путь.
-  * @param {string} [path] - Путь для редиректа. Если путь не указан, используется текущий путь.
-  */
-  navigate(path) {
-    const currentPath = window.history.state?.path;
-
-    if (path === currentPath) {
-      this.changeLocation();
-      return;
-    }
-
-    this.changeLocation();
-  }
-
-  /**
   * Перенаправляет пользователя на указанный путь и обновляет историю браузера.
   * @param {string} path - Путь для перенаправления.
   */
   go(path) {
     history.pushState({}, '', path);
-    this.navigate(path);
+    this.changeLocation();
   }
 
-  /**
-  * Обрабатывает изменение местоположения, отображая соответствующую страницу.
-  */
+  clearContent() {
+    const content = document.getElementById('content');
+    content.innerHTML = '';
+  }
+
   changeLocation() {
     const path = window.location.pathname;
     const route = this.routes.find((route) => route.path === path);
 
-    const content = document.getElementById('content');
-    content.innerHTML = '';
+    this.clearContent();
 
     if (route) {
-      const page = new route.page.page(content);
+      const page = new route.page(content);
       page.render();
     } else {
-      // const notFoundPage = new notFoundPage(component);
-      // notFoundPage.render();
+      const notFoundPage = new NotFoundPage(content);
+      notFoundPage.render();
     }
   }
 }

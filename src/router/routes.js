@@ -11,18 +11,10 @@ import DocsPage from '../pages/DocsPage/DocsPage';
 * @type {Object}
 */
 const routes = {
-  [urls.sights]: {
-    page: PlacesPage,
-  },
-  [urls.signup]: {
-    page: SignupPage,
-  },
-  [urls.login]: {
-    page: LoginPage,
-  },
-  [urls.docs]: {
-    page: DocsPage,
-  },
+  [urls.base]: PlacesPage,
+  [urls.signup]: SignupPage,
+  [urls.login]: LoginPage,
+  [urls.docs]: DocsPage,
 };
 
-export { routes };
+export default routes;

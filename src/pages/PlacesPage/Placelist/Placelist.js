@@ -1,6 +1,6 @@
 import Place from './Place/Place';
 import template from './Placelist.hbs';
-import { get } from '../../../api/api';
+import { getSights } from '../../../api/sights';
 
 /**
 * Класс Placelist представляет список мест, который может быть отрендерен в HTML.
@@ -47,7 +47,7 @@ class Placelist {
   */
   render() {
     this.parent.insertAdjacentHTML('afterend', this.asHTML());
-    const places = get('http://jantugan.ru/sights', this.getPlaces.bind(this));
+    getSights('http://jantugan.ru/sights', this.getPlaces.bind(this));
   }
 }
 

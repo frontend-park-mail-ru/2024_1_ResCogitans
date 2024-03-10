@@ -19,7 +19,7 @@ class SignupPage {
   * @returns {string} HTML-представление страницы регистрации.
   */
   asHTML() {
-    return template();
+    return template(this);
   }
 
   /**
@@ -32,3 +32,4 @@ class SignupPage {
 }
 
 export default SignupPage;
+

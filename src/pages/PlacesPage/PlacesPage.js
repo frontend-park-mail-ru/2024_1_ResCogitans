@@ -22,7 +22,7 @@ class PlacesPage {
   * @returns {string} HTML-представление страницы мест.
   */
   asHTML() {
-    return template();
+    return template(this);
   }
 
   /**

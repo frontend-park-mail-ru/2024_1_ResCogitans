@@ -1,7 +1,6 @@
 import Button from '../Button/Button';
 import Logo from './Logo/Logo';
 import Link from './Link/Link';
-import PlacesPage from '../../pages/PlacesPage/PlacesPage';
 import urls from '../../router/urls';
 import { router } from '../../router/Router';
 
@@ -27,7 +26,7 @@ class Header {
   * @returns {string} HTML-представление шапки сайта.
   */
   asHTML() {
-    return template();
+    return template(this);
   }
 
   /**
@@ -36,7 +35,7 @@ class Header {
   * @param {Array<string>} labels - Массив меток для ссылок.
   */
   renderLinkBlock(parent, labels) {
-    labels.forEach((label) => new Link(parent, { label }).render());
+    labels.forEach((label) => new Link(parent, { label: label, className: 'search-link' }).render());
   }
 
   /**
@@ -52,27 +51,27 @@ class Header {
     const linkBlock = document.getElementById('links');
     this.renderLinkBlock(linkBlock, ['Альбомы', 'Отзывы', 'Поддержка']);
 
-    const buttonGroup = document.getElementById('button-group');
-    // const currencyButton = new Button(buttonGroup, { id: 'button-region', img: '../../static/globe.svg' });
-    // currencyButton.render();
+    // const buttonGroup = document.getElementById('button-group');
+    // new Button(buttonGroup,{id:'button-region',img:'../../static/globe.svg'}).render();
 
     const profileBlock = document.getElementById('button-group');
 
     const username = localStorage.getItem('username');
 
     if (username != null) {
-      const profile = new Link(profileBlock, { className: 'user-link', label: username }).render();
-      const logout = new Button(profileBlock, { id: 'logout', label: 'Выйти' }).render();
+      new Link(profileBlock, { className: 'user-link', label: username }).render();
+      new Button(profileBlock, { id: 'logout', label: 'Выйти' }).render();
 
-      logout.addEventListener('click', (e) => {
+      const logout = document.getElementById('logout');
+
+      logout.addEventListener('click', () => {
         localStorage.removeItem('username');
-        router.go(urls.sights);
+        router.go(urls.base);
       });
     } else {
-      const loginButton = new Button(profileBlock, { className: 'login-button', id: 'button-login', label: 'Войти' });
-      loginButton.render();
-      const state = 0;
-      document.getElementById('button-login').addEventListener('click', () => {
+      new Button(profileBlock, { className: 'login-button', id: 'button-login', label: 'Войти' }).render();
+      const loginButton = document.getElementById('button-login');
+      loginButton.addEventListener('click', () => {
         router.go(urls.login);
       });
     }

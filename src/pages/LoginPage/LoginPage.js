@@ -19,7 +19,7 @@ class LoginPage {
   * @returns {string} HTML-представление страницы входа.
   */
   asHTML() {
-    return template();
+    return template(this);
   }
 
   /**
@@ -32,3 +32,4 @@ class LoginPage {
 }
 
 export default LoginPage;
+

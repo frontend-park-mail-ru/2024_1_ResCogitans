@@ -6,7 +6,7 @@ import Logo from '../../../components/Header/Logo/Logo';
 import urls from '../../../router/urls';
 import Link from '../../../components/Header/Link/Link';
 import { router } from '../../../router/Router';
-import { login } from '../../../api/api';
+import { login } from '../../../api/user';
 
 /**
 * Класс LoginForm представляет форму входа, которая может быть отрендерена в HTML.
@@ -33,14 +33,18 @@ class LoginForm {
   * Отображает ошибку или перенаправляет пользователя в зависимости от ответа сервера.
   * @param {Object} response - Ответ сервера.
   */
-  displayErrorOrRedirect(response) {
-    if (response.error == null) {
+  displayErrorOrRedirect(response, error) {
+    if (response.Code == null) {
       localStorage.setItem('username', response.User.username);
-      router.go(urls.sights);
-    } else {
+      router.go(urls.base);
+    } else if (response.Code != null) {
       const loginForm = document.getElementById('login-form');
       document.getElementById('form-error')?.remove();
       new Link(loginForm, { id: 'form-error', className: 'err-link', label: response.error }).render();
+    } else {
+      const loginForm = document.getElementById('login-form');
+      document.getElementById('form-error')?.remove();
+      new Link(loginForm, { id: 'form-error', className: 'err-link', label: error }).render();
     }
   }
 
@@ -72,7 +76,7 @@ class LoginForm {
     });
 
     const registerButton = document.getElementById('register-button');
-    registerButton.addEventListener('click', (e) => {
+    registerButton.addEventListener('click', () => {
       router.go(urls.signup);
     });
   }

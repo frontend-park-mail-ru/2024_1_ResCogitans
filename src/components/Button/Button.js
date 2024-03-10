@@ -43,14 +43,12 @@ class Button {
       type: this.type,
     });
   }
-
   /**
   * Рендерит кнопку в DOM.
   * @returns {HTMLElement} Элемент кнопки в DOM.
   */
   render() {
     this.parent.insertAdjacentHTML('beforeend', this.asHTML());
-    return (document.getElementById(this.id));
   }
 }
 

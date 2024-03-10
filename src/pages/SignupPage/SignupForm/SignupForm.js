@@ -5,7 +5,7 @@ import Input from '../../../components/Input/Input';
 import Link from '../../../components/Header/Link/Link';
 import urls from '../../../router/urls';
 import Logo from '../../../components/Header/Logo/Logo';
-import { signup } from '../../../api/api';
+import { signup } from '../../../api/user';
 import { router } from '../../../router/Router';
 
 /**
@@ -36,7 +36,7 @@ class SignupForm {
   displayErrorOrRedirect(response) {
     if (response.Code == null) {
       localStorage.setItem('username', response.User.username);
-      router.go(urls.sights);
+      router.go(urls.base);
     } else {
       const registrationForm = document.getElementById('registration-form');
       document.getElementById('form-error')?.remove();

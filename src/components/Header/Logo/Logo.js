@@ -18,7 +18,7 @@ class Logo {
   * @returns {string} HTML-представление логотипа.
   */
   asHTML() {
-    return template();
+    return template(this);
   }
 
   /**
