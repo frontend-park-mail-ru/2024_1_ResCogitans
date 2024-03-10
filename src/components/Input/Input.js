@@ -20,7 +20,7 @@ class Input {
       type: this.type,
       img: this.img,
       className: this.className,
-      field: this.field
+      field: this.field,
     });
   }
 

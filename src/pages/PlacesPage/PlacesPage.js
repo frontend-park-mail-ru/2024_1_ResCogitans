@@ -14,7 +14,7 @@ class PlacesPage {
   }
 
   render() {
-    document.body.style.backgroundImage = "";
+    document.body.style.backgroundImage = '';
     this.parent.insertAdjacentHTML('beforeend', this.asHTML());
 
     const header = document.getElementById('header');

@@ -1,20 +1,19 @@
-import template from './LoginPage.hbs'
-import LoginForm from './LoginForm/LoginForm'
+import template from './LoginPage.hbs';
+import LoginForm from './LoginForm/LoginForm';
 
 class LoginPage {
+  constructor(parent) {
+    this.parent = parent;
+  }
 
-    constructor(parent) {
-        this.parent = parent
-    }
+  asHTML() {
+    return template();
+  }
 
-    asHTML() {
-        return template();
-    }
-
-    render() {
-        document.body.style.backgroundImage = `url('../../static/bglogin.webp')`;
-        new LoginForm(this.parent).render();
-    }
+  render() {
+    document.body.style.backgroundImage = 'url(\'../../static/bglogin.webp\')';
+    new LoginForm(this.parent).render();
+  }
 }
 
 export default LoginPage;
