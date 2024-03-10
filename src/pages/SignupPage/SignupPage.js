@@ -1,20 +1,19 @@
-import template from './SignupPage.hbs'
-import SignupForm from './SignupForm/SignupForm'
+import template from './SignupPage.hbs';
+import SignupForm from './SignupForm/SignupForm';
 
 class SignupPage {
+  constructor(parent) {
+    this.parent = parent;
+  }
 
-    constructor(parent) {
-        this.parent = parent
-    }
+  asHTML() {
+    return template(this);
+  }
 
-    asHTML() {
-        return template();
-    }
-
-    render() {
-        document.body.style.backgroundImage = `url('../../static/bglogin.webp')`;
-        new SignupForm(this.parent).render();
-    }
+  render() {
+    document.body.style.backgroundImage = 'url(\'../../static/bglogin.webp\')';
+    new SignupForm(this.parent).render();
+  }
 }
 
 export default SignupPage;

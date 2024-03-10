@@ -1,27 +1,20 @@
-import { router } from './router/Router'
-import { routes } from './router/routes'
-import urls from './router/urls'
-
+import { router } from './router/Router';
+import urls from './router/urls';
+import routes from './router/routes';
 
 let root = document.getElementById('root');
-  
+
 if (root === null) {
-    root = document.createElement('div', { id: 'root' });
+  root = document.createElement('div', { id: 'root' });
 }
 
-Object.entries(routes).forEach(([path, page]) => {
-  router.route(path, page);
-});
-
-
 let startingPath;
-console.log(window.location.pathname);
+router.register(routes);
 
-if (window.location.pathname === urls.base) {
-  startingPath = urls.sights;
+if (window.location.pathname === '/') {
+  startingPath = urls.base;
 } else {
   startingPath = window.location.pathname;
-  console.log(startingPath);
 }
 
 router.go(startingPath);

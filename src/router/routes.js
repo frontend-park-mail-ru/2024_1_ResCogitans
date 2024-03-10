@@ -1,19 +1,12 @@
-import urls from './urls'
-import LoginPage from '../pages/LoginPage/LoginPage'
-import PlacesPage from '../pages/PlacesPage/PlacesPage'
-import SignupPage from '../pages/SignupPage/SignupPage'
+import urls from './urls';
+import LoginPage from '../pages/LoginPage/LoginPage';
+import PlacesPage from '../pages/PlacesPage/PlacesPage';
+import SignupPage from '../pages/SignupPage/SignupPage';
 
 const routes = {
-    [urls.sights]: {
-        page: PlacesPage,
-    },
-    [urls.signup]: {
-        page: SignupPage,
-    },
-    [urls.login]: {
-        page: LoginPage,
-    },
+  [urls.base]: PlacesPage,
+  [urls.signup]: SignupPage,
+  [urls.login]: LoginPage,
 };
 
-
-export { routes };
+export default routes;

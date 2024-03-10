@@ -1,0 +1,16 @@
+#notfound {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 40px;
+}
+
+#notfound p {
+    font-weight: 800;
+    font-size: 3rem;
+}
+
+#notfound button {
+    background-color: var(--primary-color);
+}

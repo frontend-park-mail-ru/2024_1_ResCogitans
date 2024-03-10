@@ -10,7 +10,7 @@ class MainSearch {
   }
 
   asHTML() {
-    return template();
+    return template(this);
   }
 
   render() {
@@ -18,9 +18,9 @@ class MainSearch {
     searchBlock.insertAdjacentHTML('beforeend', this.asHTML());
 
     const linkArea = document.getElementById('search-links');
-    new Link(linkArea, { class: 'search-link', src: '../static/restaurant.svg', label: 'Рестораны' }).render();
-    new Link(linkArea, { class: 'search-link', src: '../static/hotel.svg', label: 'Отели' }).render();
-    new Link(linkArea, { class: 'search-link', src: '../static/attraction.svg', label: 'Развлечения' }).render();
+    new Link(linkArea, { className: 'search-link', src: '../static/restaurant.svg', label: 'Рестораны' }).render();
+    new Link(linkArea, { className: 'search-link', src: '../static/hotel.svg', label: 'Отели' }).render();
+    new Link(linkArea, { className: 'search-link', src: '../static/attraction.svg', label: 'Развлечения' }).render();
 
     const searchbarArea = document.getElementById('form-search');
     new Input(searchbarArea, {

@@ -1,4 +1,5 @@
 @import '../src/pages/PlacesPage/PlacesPage.css';
+@import '../src/pages/NotFoundPage/NotFoundPage.css';
 
 @font-face {
     font-family: 'Roboto';

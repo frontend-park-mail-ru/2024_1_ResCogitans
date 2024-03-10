@@ -6,7 +6,7 @@ class Logo {
   }
 
   asHTML() {
-    return template();
+    return template(this);
   }
 
   render() {

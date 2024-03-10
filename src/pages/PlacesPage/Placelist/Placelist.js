@@ -1,12 +1,12 @@
 import Place from './Place/Place';
 import template from './Placelist.hbs';
-import { get } from '../../../api/api';
+import { getSights } from '../../../api/sights';
 
 class Placelist {
   constructor(parent) {
     this.parent = parent;
     this.city = 'Paris';
-    this.places = []
+    this.places = [];
   }
 
   asHTML() {
@@ -14,8 +14,8 @@ class Placelist {
   }
 
   getPlaces(data) {
-    this.places = data
-    this.renderPlaces()
+    this.places = data;
+    this.renderPlaces();
   }
 
   renderPlaces() {
@@ -25,7 +25,7 @@ class Placelist {
 
   render() {
     this.parent.insertAdjacentHTML('afterend', this.asHTML());
-    const places = get('http://jantugan.ru/sights', this.getPlaces.bind(this));
+    getSights('http://jantugan.ru/sights', this.getPlaces.bind(this));
   }
 }
 

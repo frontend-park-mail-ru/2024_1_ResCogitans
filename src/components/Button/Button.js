@@ -26,7 +26,6 @@ class Button {
 
   render() {
     this.parent.insertAdjacentHTML('beforeend', this.asHTML());
-    return (document.getElementById(this.id))
   }
 }
 
