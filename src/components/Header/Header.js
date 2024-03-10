@@ -35,7 +35,7 @@ class Header {
   * @param {Array<string>} labels - Массив меток для ссылок.
   */
   renderLinkBlock(parent, labels) {
-    labels.forEach((label) => new Link(parent, { label: label, className: 'search-link' }).render());
+    labels.forEach((label) => new Link(parent, { label, className: 'search-link' }).render());
   }
 
   /**
