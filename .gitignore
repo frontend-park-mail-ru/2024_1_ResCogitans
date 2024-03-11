@@ -1,5 +1,6 @@
 # dependencies
 /node_modules
 .vscode
-/docs
-public/bundle.js
+
+#build js
+/public/bundle.js
