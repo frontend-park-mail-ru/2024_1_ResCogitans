@@ -2,7 +2,6 @@ import urls from './urls';
 import LoginPage from '../pages/LoginPage/LoginPage';
 import PlacesPage from '../pages/PlacesPage/PlacesPage';
 import SignupPage from '../pages/SignupPage/SignupPage';
-import DocsPage from '../pages/DocsPage/DocsPage';
 
 /**
 * Объект routes содержит конфигурацию маршрутов приложения.
@@ -14,7 +13,6 @@ const routes = {
   [urls.base]: PlacesPage,
   [urls.signup]: SignupPage,
   [urls.login]: LoginPage,
-  [urls.docs]: DocsPage,
 };
 
 export default routes;
