@@ -1,4 +1,4 @@
-#registration-form-div {
+#login-form-div {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -7,10 +7,9 @@
     display: none;
     flex-direction: column;
     width: 300px;
-    height: 260px;
+    height: 300px;
     justify-content: center;
     align-items: center;
     background-color: white;
     border-radius: 20px;
-    border: 2px solid var(--secondary-color);
 }

@@ -1,12 +1,11 @@
-import Main from './pages/Main/Main';
+import { router } from './router/Router';
+import routes from './router/routes';
 
-// routing
-
-const root = document.getElementById('root');
+let root = document.getElementById('root');
 
 if (root === null) {
-  const newRoot = document.createElement('div', { id: 'root' });
-  new Main(newRoot).render();
-} else {
-  new Main(root).render();
+  root = document.createElement('div', { id: 'root' });
 }
+
+router.register(routes);
+router.go(window.location.pathname);

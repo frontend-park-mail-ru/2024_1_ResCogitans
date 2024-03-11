@@ -1,27 +1,48 @@
 import Button from '../Button/Button';
 import Logo from './Logo/Logo';
 import Link from './Link/Link';
-import LoginForm from './LoginForm/LoginForm';
-// import Profile from '../Profile/'
+import urls from '../../router/urls';
+import { router } from '../../router/Router';
+import { userHelper } from '../../utils/localstorage';
 
 import template from './Header.hbs';
 
-const user = false;
-
+/**
+* Класс Header. Это шапка сайта.
+* @class
+*/
 class Header {
+  /**
+  * Создает новый экземпляр шапки сайта.
+  * @param {HTMLElement} parent - Родительский элемент, в который будет вставлена шапка сайта.
+  */
   constructor(parent) {
     this.parent = parent;
   }
 
-  getHTML() {
-    return template();
+  /**
+  * Возвращает HTML-представление шапки сайта.
+  * @returns {string} HTML-представление шапки сайта.
+  */
+  asHTML() {
+    return template(this);
   }
 
+  /**
+  * Рендерит блок ссылок в DOM.
+  * @param {HTMLElement} parent - Родительский элемент, в который будут вставлены ссылки.
+  * @param {Array<string>} labels - Массив меток для ссылок.
+  */
   renderLinkBlock(parent, labels) {
-    labels.forEach((label) => new Link(parent, { label }).render());
+    labels.forEach((label) => new Link(parent, { label, className: 'search-link' }).render());
   }
 
+  /**
+  * Рендерит шапку, включая логотип, ссылки и кнопки в зависимости от состояния пользователя.
+  */
   render() {
+    this.parent.insertAdjacentHTML('beforeend', this.asHTML());
+
     const logoGroup = document.getElementById('logo-group');
     const logo = new Logo(logoGroup);
     logo.render();
@@ -29,35 +50,29 @@ class Header {
     const linkBlock = document.getElementById('links');
     this.renderLinkBlock(linkBlock, ['Альбомы', 'Отзывы', 'Поддержка']);
 
-    const buttonGroup = document.getElementById('button-group');
-    const currencyButton = new Button(buttonGroup, { id: 'button-region', img: '../../static/globe.svg' });
-    currencyButton.render();
+    // const buttonGroup = document.getElementById('button-group');
+    // new Button(buttonGroup,{id:'button-region',img:'../../static/globe.svg'}).render();
 
     const profileBlock = document.getElementById('button-group');
 
-    if (user) {
-      // const profile = new Profile(profileBlock)
-      // profile.render();
+    const username = localStorage.getItem('username');
+
+    if (username != null) {
+      new Link(profileBlock, { className: 'user-link', label: username }).render();
+      new Button(profileBlock, { id: 'logout', label: 'Выйти' }).render();
+
+      const logout = document.getElementById('logout');
+
+      logout.addEventListener('click', () => {
+        userHelper('remove');
+        router.go(urls.base);
+      });
     } else {
-      const loginButton = new Button(profileBlock, { id: 'button-login', label: 'Войти' });
-      loginButton.render();
-      let state = 0;
-      document.getElementById('button-login').addEventListener('click', (e) => {
-        const body = document.getElementById('root');
-        const form = new LoginForm(body, { display: 'flex' });
-        switch (state) {
-          case 0:
-            form.render();
-            state = 1;
-            break;
-          case 1:
-            body.removeChild(body.children[4]);
-            state = 0;
-            break;
-          default:
-            state = 0;
-        }
-      }, false);
+      new Button(profileBlock, { className: 'login-button', id: 'button-login', label: 'Войти' }).render();
+      const loginButton = document.getElementById('button-login');
+      loginButton.addEventListener('click', () => {
+        router.go(urls.login);
+      });
     }
   }
 }

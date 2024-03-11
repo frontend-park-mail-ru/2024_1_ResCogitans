@@ -22,13 +22,10 @@ button > a {
 
 #button-group button {
     border-style: solid;
+    background-color: var(--primary-color);
     border-radius: 20px;
     font-size: 18px;
-}
 
-#button-login {
-    background-color: var(--primary-color);
-    padding: 20px 10px;
 }
 
 #button-region {
@@ -39,17 +36,20 @@ button > a {
 #button-group {
     display: flex;
     flex-direction: row;
+    justify-content: center;
+    align-items: center;
     grid-gap: 20px;
     grid-column: span 1 / 12;
     color: var(--secondary-color);
 }
 
 #login-button {
-    margin-top: 20px;
     margin-right: 30px;
     background-color: var(--primary-color);
+    margin-bottom: 20px;
 }
 
 #register-button {
-    background-color: var(--secondary-color);
+    margin-bottom: 20px;
+    background-color: transparent;
 }

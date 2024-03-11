@@ -1,4 +1,5 @@
-@import '../src/pages/Main/Main.css';
+@import '../src/pages/PlacesPage/PlacesPage.css';
+@import '../src/pages/NotFoundPage/NotFoundPage.css';
 
 @font-face {
     font-family: 'Roboto';
@@ -14,8 +15,10 @@
 
 html, body {
     font-family: 'Roboto';
-    margin: auto;
     max-width: 1260px;
+    margin: auto;
     padding: 0 10px;
-    min-height: 100%;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
