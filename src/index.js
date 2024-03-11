@@ -10,11 +10,4 @@ if (root === null) {
 
 let startingPath;
 router.register(routes);
-
-if (window.location.pathname === '/') {
-  startingPath = urls.base;
-} else {
-  startingPath = window.location.pathname;
-}
-
-router.go(startingPath);
+router.go(window.location.pathname);

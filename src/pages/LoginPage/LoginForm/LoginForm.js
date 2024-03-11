@@ -7,6 +7,7 @@ import urls from '../../../router/urls';
 import Link from '../../../components/Header/Link/Link';
 import { router } from '../../../router/Router';
 import { login } from '../../../api/user';
+import { userHelper } from '../../../utils/localstorage';
 
 /**
 * Класс LoginForm представляет форму входа, которая может быть отрендерена в HTML.
@@ -35,7 +36,7 @@ class LoginForm {
   */
   displayErrorOrRedirect(response, error) {
     if (response.Code == null) {
-      localStorage.setItem('username', response.User.username);
+      userHelper('set', response.User.username);
       router.go(urls.base);
     } else if (response.Code != null) {
       const loginForm = document.getElementById('login-form');
@@ -72,7 +73,7 @@ class LoginForm {
       e.preventDefault();
       const username = document.getElementById('username-login').value;
       const password = document.getElementById('username-password').value;
-      login('http://jantugan.ru', { username, password }, this.displayErrorOrRedirect);
+      login('http://localhost:8080', { username, password }, this.displayErrorOrRedirect);
     });
 
     const registerButton = document.getElementById('register-button');

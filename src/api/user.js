@@ -15,7 +15,7 @@ export async function login(url, body, callback) {
       body: JSON.stringify(body),
     });
     const data = await response.json();
-    callback(data, null);
+    callback(data);
   } catch (error) {
     console.error('Error: ', error);
   }

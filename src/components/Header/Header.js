@@ -3,6 +3,7 @@ import Logo from './Logo/Logo';
 import Link from './Link/Link';
 import urls from '../../router/urls';
 import { router } from '../../router/Router';
+import { userHelper } from '../../utils/localstorage'
 
 import template from './Header.hbs';
 
@@ -36,6 +37,8 @@ class Header {
     labels.forEach((label) => new Link(parent, { label, className: 'search-link' }).render());
   }
 
+
+ 
   /**
   * Рендерит шапку, включая логотип, ссылки и кнопки в зависимости от состояния пользователя.
   */
@@ -63,7 +66,7 @@ class Header {
       const logout = document.getElementById('logout');
 
       logout.addEventListener('click', () => {
-        localStorage.removeItem('username');
+        userHelper('remove');
         router.go(urls.base);
       });
     } else {

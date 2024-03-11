@@ -1,7 +1,7 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 642:
+/***/ 261:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 var Handlebars = __webpack_require__(633);
@@ -264,7 +264,7 @@ module.exports = function(){return "";};
 
 /***/ }),
 
-/***/ 261:
+/***/ 642:
 /***/ ((module, exports, __webpack_require__) => {
 
 "use strict";
@@ -1785,7 +1785,7 @@ function appendContextPath(contextPath, id) {
 
 // Create a simple path alias to allow browserify to resolve
 // the runtime on a supported path.
-module.exports = __webpack_require__(261)["default"];
+module.exports = __webpack_require__(642)["default"];
 
 
 /***/ })
@@ -1852,25 +1852,8 @@ var __webpack_exports__ = {};
 (() => {
 "use strict";
 
-;// CONCATENATED MODULE: ./src/router/urls.js
-const urls = {
-  base: '/',
-  sights: '/sights',
-  signup: '/signup',
-  login: '/login',
-  docs: '/docs',
-};
-
-/* harmony default export */ const router_urls = (urls);
-
-// EXTERNAL MODULE: ./src/pages/LoginPage/LoginPage.hbs
-var LoginPage_LoginPage = __webpack_require__(515);
-var LoginPage_default = /*#__PURE__*/__webpack_require__.n(LoginPage_LoginPage);
-// EXTERNAL MODULE: ./src/pages/LoginPage/LoginForm/LoginForm.hbs
-var LoginForm_LoginForm = __webpack_require__(788);
-var LoginForm_default = /*#__PURE__*/__webpack_require__.n(LoginForm_LoginForm);
 // EXTERNAL MODULE: ./src/components/Button/Button.hbs
-var Button_Button = __webpack_require__(642);
+var Button_Button = __webpack_require__(261);
 var Button_default = /*#__PURE__*/__webpack_require__.n(Button_Button);
 ;// CONCATENATED MODULE: ./src/components/Button/Button.js
 
@@ -1918,6 +1901,7 @@ class Button {
       type: this.type,
     });
   }
+
   /**
   * Рендерит кнопку в DOM.
   * @returns {HTMLElement} Элемент кнопки в DOM.
@@ -1928,65 +1912,6 @@ class Button {
 }
 
 /* harmony default export */ const components_Button_Button = (Button);
-
-// EXTERNAL MODULE: ./src/components/Input/Input.hbs
-var Input_Input = __webpack_require__(19);
-var Input_default = /*#__PURE__*/__webpack_require__.n(Input_Input);
-;// CONCATENATED MODULE: ./src/components/Input/Input.js
-
-
-/**
-* Класс Input. Экземпляры этого класса - строки для ввода данных.
-* @class
-*/
-class Input {
-  /**
-  * Создает новый экземпляр поля ввода.
-  * @param {HTMLElement} parent - Родительский элемент, в который будет вставлено поле ввода.
-  * @param {Object} options - Объект с параметрами поля ввода.
-  * @param {string} [options.field=''] - Имя поля ввода.
-  * @param {string} [options.id=''] - Идентификатор поля ввода.
-  * @param {string} [options.placeholder=''] - Подсказка в поле ввода.
-  * @param {string} [options.type='text'] - Тип поля ввода (например, 'text', 'password').
-  * @param {string} [options.img=''] - URL изображения для поля ввода.
-  * @param {string} [options.className=''] - CSS-класс поля ввода.
-  */
-  constructor(parent, {
-    field = '', id = '', placeholder = '', type = 'text', img = '', className = '',
-  }) {
-    this.parent = parent;
-    this.field = field;
-    this.placeholder = placeholder;
-    this.type = type;
-    this.img = img;
-    this.className = className;
-    this.id = id;
-  }
-
-  /**
-  * Возвращает HTML-представление поля ввода.
-  * @returns {string} HTML-представление поля ввода.
-  */
-  asHTML() {
-    return Input_default()({
-      id: this.id,
-      placeholder: this.placeholder,
-      type: this.type,
-      img: this.img,
-      className: this.className,
-      field: this.field,
-    });
-  }
-
-  /**
-  * Рендерит поле ввода в DOM.
-  */
-  render() {
-    this.parent.insertAdjacentHTML('beforeend', this.asHTML());
-  }
-}
-
-/* harmony default export */ const components_Input_Input = (Input);
 
 // EXTERNAL MODULE: ./src/components/Header/Logo/Logo.hbs
 var Logo_Logo = __webpack_require__(275);
@@ -2081,6 +2006,292 @@ class Link {
 
 /* harmony default export */ const Header_Link_Link = (Link);
 
+;// CONCATENATED MODULE: ./src/router/urls.js
+const urls = {
+  base: '/',
+  sights: '/sights',
+  signup: '/signup',
+  login: '/login',
+  docs: '/docs',
+};
+
+/* harmony default export */ const router_urls = (urls);
+
+;// CONCATENATED MODULE: ./src/utils/localstorage.js
+function localstorage_userHelper(method, username) {
+    if (method == 'get') {
+      return localStorage.getItem('username');
+    } else if (method == 'set') {
+      localStorage.setItem('username', username);
+    } else if (method == 'remove') {
+        localStorage.removeItem('username');
+    }
+}
+
+/* harmony default export */ const localstorage = ((/* unused pure expression or super */ null && (localstorage_userHelper)));
+
+
+// EXTERNAL MODULE: ./src/components/Header/Header.hbs
+var Header_Header = __webpack_require__(635);
+var Header_default = /*#__PURE__*/__webpack_require__.n(Header_Header);
+;// CONCATENATED MODULE: ./src/components/Header/Header.js
+
+
+
+
+
+
+
+
+
+/**
+* Класс Header. Это шапка сайта.
+* @class
+*/
+class Header {
+  /**
+  * Создает новый экземпляр шапки сайта.
+  * @param {HTMLElement} parent - Родительский элемент, в который будет вставлена шапка сайта.
+  */
+  constructor(parent) {
+    this.parent = parent;
+  }
+
+  /**
+  * Возвращает HTML-представление шапки сайта.
+  * @returns {string} HTML-представление шапки сайта.
+  */
+  asHTML() {
+    return Header_default()(this);
+  }
+
+  /**
+  * Рендерит блок ссылок в DOM.
+  * @param {HTMLElement} parent - Родительский элемент, в который будут вставлены ссылки.
+  * @param {Array<string>} labels - Массив меток для ссылок.
+  */
+  renderLinkBlock(parent, labels) {
+    labels.forEach((label) => new Header_Link_Link(parent, { label, className: 'search-link' }).render());
+  }
+
+
+ 
+  /**
+  * Рендерит шапку, включая логотип, ссылки и кнопки в зависимости от состояния пользователя.
+  */
+  render() {
+    this.parent.insertAdjacentHTML('beforeend', this.asHTML());
+
+    const logoGroup = document.getElementById('logo-group');
+    const logo = new Header_Logo_Logo(logoGroup);
+    logo.render();
+
+    const linkBlock = document.getElementById('links');
+    this.renderLinkBlock(linkBlock, ['Альбомы', 'Отзывы', 'Поддержка']);
+
+    // const buttonGroup = document.getElementById('button-group');
+    // new Button(buttonGroup,{id:'button-region',img:'../../static/globe.svg'}).render();
+
+    const profileBlock = document.getElementById('button-group');
+
+    const username = localStorage.getItem('username');
+
+    if (username != null) {
+      new Header_Link_Link(profileBlock, { className: 'user-link', label: username }).render();
+      new components_Button_Button(profileBlock, { id: 'logout', label: 'Выйти' }).render();
+
+      const logout = document.getElementById('logout');
+
+      logout.addEventListener('click', () => {
+        localstorage_userHelper('remove');
+        router.go(router_urls.base);
+      });
+    } else {
+      new components_Button_Button(profileBlock, { className: 'login-button', id: 'button-login', label: 'Войти' }).render();
+      const loginButton = document.getElementById('button-login');
+      loginButton.addEventListener('click', () => {
+        router.go(router_urls.login);
+      });
+    }
+  }
+}
+
+/* harmony default export */ const components_Header_Header = (Header);
+
+// EXTERNAL MODULE: ./src/pages/NotFoundPage/NotFoundPage.hbs
+var NotFoundPage_NotFoundPage = __webpack_require__(389);
+var NotFoundPage_default = /*#__PURE__*/__webpack_require__.n(NotFoundPage_NotFoundPage);
+;// CONCATENATED MODULE: ./src/pages/NotFoundPage/NotFoundPage.js
+
+
+
+
+
+
+
+class NotFoundPage {
+  constructor(parent) {
+    this.parent = parent;
+  }
+
+  asHTML() {
+    return NotFoundPage_default()(this);
+  }
+
+  render() {
+    document.body.style.backgroundImage = '';
+    this.parent.insertAdjacentHTML('beforeend', this.asHTML());
+    const header = document.getElementById('header');
+    const notfound = document.getElementById('notfound');
+    new components_Header_Header(header).render();
+    new components_Button_Button(notfound, { id: 'back-button', label: 'На главную' }).render();
+
+    const backButton = document.getElementById('back-button');
+    backButton.addEventListener('click', () => {
+      router.go(router_urls.sights);
+    });
+  }
+}
+
+/* harmony default export */ const pages_NotFoundPage_NotFoundPage = (NotFoundPage);
+
+;// CONCATENATED MODULE: ./src/router/Router.js
+
+
+/**
+* Класс Router управляет навигацией между страницами приложения.
+* @class
+*/
+class Router {
+  /**
+  * Создает новый экземпляр маршрутизатора.
+  * @constructor
+  */
+  constructor() {
+    this.previousState = null;
+    this.routes = [];
+    window.addEventListener('popstate', () => this.changeLocation());
+  }
+
+  register(routes) {
+    Object.entries(routes).forEach(([path, page]) => {
+      this.route(path, page);
+    });
+  }
+
+  /**
+  * Добавляет новый маршрут в маршрутизатор.
+  * @param {string} path - Путь маршрута.
+  * @param {Object} page - Объект страницы, связанный с маршрутом.
+  * @returns {Router} Ссылку на текущий экземпляр маршрутизатора.
+  */
+  route(path, page) {
+    this.routes.push({ path, page });
+    return this;
+  }
+
+  /**
+  * Перенаправляет пользователя на указанный путь и обновляет историю браузера.
+  * @param {string} path - Путь для перенаправления.
+  */
+  go(path) {
+    window.history.pushState({}, '', path);
+    this.changeLocation();
+  }
+
+  clearContent() {
+    let content = document.getElementById('content');
+    if (!content) {
+      content = document.createElement('div');
+      content.id = 'content';
+      document.getElementById('root').appendChild(content);
+    }
+    content.innerHTML = '';
+    return content;
+  }
+
+  changeLocation() {
+    const path = window.location.pathname;
+    const route = this.routes.find((route) => route.path === path);
+    const content = this.clearContent();
+
+    if (route) {
+      const page = new route.page(content);
+      page.render();
+    } else {
+      const notFoundPage = new pages_NotFoundPage_NotFoundPage(content);
+      notFoundPage.render();
+    }
+  }
+}
+
+const router = new Router();
+
+// EXTERNAL MODULE: ./src/pages/LoginPage/LoginPage.hbs
+var LoginPage_LoginPage = __webpack_require__(515);
+var LoginPage_default = /*#__PURE__*/__webpack_require__.n(LoginPage_LoginPage);
+// EXTERNAL MODULE: ./src/pages/LoginPage/LoginForm/LoginForm.hbs
+var LoginForm_LoginForm = __webpack_require__(788);
+var LoginForm_default = /*#__PURE__*/__webpack_require__.n(LoginForm_LoginForm);
+// EXTERNAL MODULE: ./src/components/Input/Input.hbs
+var Input_Input = __webpack_require__(19);
+var Input_default = /*#__PURE__*/__webpack_require__.n(Input_Input);
+;// CONCATENATED MODULE: ./src/components/Input/Input.js
+
+
+/**
+* Класс Input. Экземпляры этого класса - строки для ввода данных.
+* @class
+*/
+class Input {
+  /**
+  * Создает новый экземпляр поля ввода.
+  * @param {HTMLElement} parent - Родительский элемент, в который будет вставлено поле ввода.
+  * @param {Object} options - Объект с параметрами поля ввода.
+  * @param {string} [options.field=''] - Имя поля ввода.
+  * @param {string} [options.id=''] - Идентификатор поля ввода.
+  * @param {string} [options.placeholder=''] - Подсказка в поле ввода.
+  * @param {string} [options.type='text'] - Тип поля ввода (например, 'text', 'password').
+  * @param {string} [options.img=''] - URL изображения для поля ввода.
+  * @param {string} [options.className=''] - CSS-класс поля ввода.
+  */
+  constructor(parent, {
+    field = '', id = '', placeholder = '', type = 'text', img = '', className = '',
+  }) {
+    this.parent = parent;
+    this.field = field;
+    this.placeholder = placeholder;
+    this.type = type;
+    this.img = img;
+    this.className = className;
+    this.id = id;
+  }
+
+  /**
+  * Возвращает HTML-представление поля ввода.
+  * @returns {string} HTML-представление поля ввода.
+  */
+  asHTML() {
+    return Input_default()({
+      id: this.id,
+      placeholder: this.placeholder,
+      type: this.type,
+      img: this.img,
+      className: this.className,
+      field: this.field,
+    });
+  }
+
+  /**
+  * Рендерит поле ввода в DOM.
+  */
+  render() {
+    this.parent.insertAdjacentHTML('beforeend', this.asHTML());
+  }
+}
+
+/* harmony default export */ const components_Input_Input = (Input);
+
 ;// CONCATENATED MODULE: ./src/api/user.js
 /**
 * Функция для выполнения входа в систему.
@@ -2088,7 +2299,7 @@ class Link {
 * @function login
 * @param {string} url - URL сервера.
 * @param {Object} body - Объект с данными для входа (например, логин и пароль).
-* @param {Function} callback - Функция обратного вызова, которая будет вызвана после выполнения запроса.
+* @param {Function} callback - Функция обратного вызова. Она будет вызвана после выполнения запроса.
 * @returns {Promise<void>}
 */
 async function login(url, body, callback) {
@@ -2099,7 +2310,7 @@ async function login(url, body, callback) {
       body: JSON.stringify(body),
     });
     const data = await response.json();
-    callback(data, null);
+    callback(data);
   } catch (error) {
     console.error('Error: ', error);
   }
@@ -2111,7 +2322,7 @@ async function login(url, body, callback) {
 * @function signup
 * @param {string} url - URL сервера.
 * @param {Object} body - Объект с данными для регистрации (например, логин и пароль).
-* @param {Function} callback - Функция обратного вызова, которая будет вызвана после выполнения запроса.
+* @param {Function} callback - Функция обратного вызова. Она будет вызвана после выполнения запроса.
 * @returns {Promise<void>}
 */
 async function signup(url, body, callback) {
@@ -2127,7 +2338,9 @@ async function signup(url, body, callback) {
     console.error('Error: ', error);
   }
 }
+
 ;// CONCATENATED MODULE: ./src/pages/LoginPage/LoginForm/LoginForm.js
+
 
 
 
@@ -2165,7 +2378,7 @@ class LoginForm {
   */
   displayErrorOrRedirect(response, error) {
     if (response.Code == null) {
-      localStorage.setItem('username', response.User.username);
+      localstorage_userHelper('set', response.User.username);
       router.go(router_urls.base);
     } else if (response.Code != null) {
       const loginForm = document.getElementById('login-form');
@@ -2202,7 +2415,7 @@ class LoginForm {
       e.preventDefault();
       const username = document.getElementById('username-login').value;
       const password = document.getElementById('username-password').value;
-      login('http://jantugan.ru', { username, password }, this.displayErrorOrRedirect);
+      login('http://localhost:8080', { username, password }, this.displayErrorOrRedirect);
     });
 
     const registerButton = document.getElementById('register-button');
@@ -2236,7 +2449,7 @@ class LoginPage {
   * @returns {string} HTML-представление страницы входа.
   */
   asHTML() {
-    return LoginPage_default()();
+    return LoginPage_default()(this);
   }
 
   /**
@@ -2250,92 +2463,6 @@ class LoginPage {
 
 /* harmony default export */ const pages_LoginPage_LoginPage = (LoginPage);
 
-
-// EXTERNAL MODULE: ./src/components/Header/Header.hbs
-var Header_Header = __webpack_require__(635);
-var Header_default = /*#__PURE__*/__webpack_require__.n(Header_Header);
-;// CONCATENATED MODULE: ./src/components/Header/Header.js
-
-
-
-
-
-
-
-
-const user = false;
-
-/**
-* Класс Header. Это шапка сайта.
-* @class
-*/
-class Header {
-  /**
-  * Создает новый экземпляр шапки сайта.
-  * @param {HTMLElement} parent - Родительский элемент, в который будет вставлена шапка сайта.
-  */
-  constructor(parent) {
-    this.parent = parent;
-  }
-
-  /**
-  * Возвращает HTML-представление шапки сайта.
-  * @returns {string} HTML-представление шапки сайта.
-  */
-  asHTML() {
-    return Header_default()(this);
-  }
-
-  /**
-  * Рендерит блок ссылок в DOM.
-  * @param {HTMLElement} parent - Родительский элемент, в который будут вставлены ссылки.
-  * @param {Array<string>} labels - Массив меток для ссылок.
-  */
-  renderLinkBlock(parent, labels) {
-    labels.forEach((label) => new Header_Link_Link(parent, { label, className: 'search-link' }).render());
-  }
-
-  /**
-  * Рендерит шапку, включая логотип, ссылки и кнопки в зависимости от состояния пользователя.
-  */
-  render() {
-    this.parent.insertAdjacentHTML('beforeend', this.asHTML());
-
-    const logoGroup = document.getElementById('logo-group');
-    const logo = new Header_Logo_Logo(logoGroup);
-    logo.render();
-
-    const linkBlock = document.getElementById('links');
-    this.renderLinkBlock(linkBlock, ['Альбомы', 'Отзывы', 'Поддержка']);
-
-    // const buttonGroup = document.getElementById('button-group');
-    // new Button(buttonGroup,{id:'button-region',img:'../../static/globe.svg'}).render();
-
-    const profileBlock = document.getElementById('button-group');
-
-    const username = localStorage.getItem('username');
-
-    if (username != null) {
-      new Header_Link_Link(profileBlock, { className: 'user-link', label: username }).render();
-      new components_Button_Button(profileBlock, { id: 'logout', label: 'Выйти' }).render();
-
-      const logout = document.getElementById('logout');
-
-      logout.addEventListener('click', () => {
-        localStorage.removeItem('username');
-        router.go(router_urls.base);
-      });
-    } else {
-      new components_Button_Button(profileBlock, { className: 'login-button', id: 'button-login', label: 'Войти' }).render();
-      const loginButton = document.getElementById('button-login');
-      loginButton.addEventListener('click', () => {
-        router.go(router_urls.login);
-      });
-    }
-  }
-}
-
-/* harmony default export */ const components_Header_Header = (Header);
 // EXTERNAL MODULE: ./src/components/MainSearch/MainSearch.hbs
 var MainSearch_MainSearch = __webpack_require__(499);
 var MainSearch_default = /*#__PURE__*/__webpack_require__.n(MainSearch_MainSearch);
@@ -2419,7 +2546,6 @@ class Place {
   * @returns {string} HTML-представление места.
   */
   asHTML() {
-    this.data.url = this.data.url.replace('public', '');
     return Place_default()(this.data);
   }
 
@@ -2442,10 +2568,10 @@ var Placelist_default = /*#__PURE__*/__webpack_require__.n(Placelist_Placelist);
 * @async
 * @function getSights
 * @param {string} url - URL для запроса данных.
-* @param {Function} callback - Функция обратного вызова, которая будет вызвана после выполнения запроса.
+* @param {Function} callback - Функция обратного вызова. Она будет вызвана после выполнения запроса.
 * @returns {Promise<void>}
 */
-async function getSights(url, callback) {
+const getSights = async (url, callback) => {
   try {
     const response = await fetch(url);
     const data = await response.json();
@@ -2453,7 +2579,9 @@ async function getSights(url, callback) {
   } catch (error) {
     console.error('Error: ', error);
   }
-}
+};
+
+/* harmony default export */ const sights = (getSights);
 
 ;// CONCATENATED MODULE: ./src/pages/PlacesPage/Placelist/Placelist.js
 
@@ -2505,7 +2633,7 @@ class Placelist {
   */
   render() {
     this.parent.insertAdjacentHTML('afterend', this.asHTML());
-    getSights('http://jantugan.ru/sights', this.getPlaces.bind(this));
+    sights('http://localhost:8080/sights', this.getPlaces.bind(this));
   }
 }
 
@@ -2604,7 +2732,7 @@ class SignupForm {
   */
   displayErrorOrRedirect(response) {
     if (response.Code == null) {
-      localStorage.setItem('username', response.User.username);
+      userHelper('set', response.User.username);
       router.go(router_urls.base);
     } else {
       const registrationForm = document.getElementById('registration-form');
@@ -2636,7 +2764,7 @@ class SignupForm {
       const username = document.getElementById('username-register').value;
       const password = document.getElementById('username-password').value;
 
-      signup('http://jantugan.ru', { username, password }, this.displayErrorOrRedirect.bind(this));
+      signup('http://localhost:8080', { username, password }, this.displayErrorOrRedirect.bind(this));
     });
   }
 }
@@ -2665,7 +2793,7 @@ class SignupPage {
   * @returns {string} HTML-представление страницы регистрации.
   */
   asHTML() {
-    return SignupPage_default()();
+    return SignupPage_default()(this);
   }
 
   /**
@@ -2678,7 +2806,6 @@ class SignupPage {
 }
 
 /* harmony default export */ const pages_SignupPage_SignupPage = (SignupPage);
-
 
 ;// CONCATENATED MODULE: ./src/pages/DocsPage/DocsPage.js
 /**
@@ -2743,112 +2870,6 @@ const routes = {
 
 /* harmony default export */ const router_routes = (routes);
 
-// EXTERNAL MODULE: ./src/pages/NotFoundPage/NotFoundPage.hbs
-var NotFoundPage_NotFoundPage = __webpack_require__(389);
-var NotFoundPage_default = /*#__PURE__*/__webpack_require__.n(NotFoundPage_NotFoundPage);
-;// CONCATENATED MODULE: ./src/pages/NotFoundPage/NotFoundPage.js
-
-
-
-
-
-
-
-class NotFoundPage {
-  constructor(parent) {
-    this.parent = parent;
-  }
-
-  asHTML() {
-    return NotFoundPage_default()(this);
-  }
-
-  render() {
-    document.body.style.backgroundImage = '';
-    this.parent.insertAdjacentHTML('beforeend', this.asHTML());
-    const header = document.getElementById('header');
-    const notfound = document.getElementById('notfound');
-    new components_Header_Header(header).render();
-    new components_Button_Button(notfound, { id: 'back-button', label: 'На главную' }).render();
-
-    const backButton = document.getElementById('back-button');
-    backButton.addEventListener('click', () => {
-      router.go(router_urls.sights);
-    });
-  }
-}
-
-/* harmony default export */ const pages_NotFoundPage_NotFoundPage = (NotFoundPage);
-
-;// CONCATENATED MODULE: ./src/router/Router.js
-
-
-
-/**
-* Класс Router управляет навигацией между страницами приложения.
-* @class
-*/
-class Router {
-  /**
-  * Создает новый экземпляр маршрутизатора.
-  * @constructor
-  */
-  constructor() {
-    this.previousState = null;
-    this.routes = [];
-    window.addEventListener('popstate', () => this.changeLocation());
-  }
-
-  register(routes) {
-    Object.entries(routes).forEach(([path, page]) => {
-      this.route(path, page);
-    });
-  }
-
-  /**
-  * Добавляет новый маршрут в маршрутизатор.
-  * @param {string} path - Путь маршрута.
-  * @param {Object} page - Объект страницы, связанный с маршрутом.
-  * @returns {Router} Ссылку на текущий экземпляр маршрутизатора.
-  */
-  route(path, page) {
-    this.routes.push({ path, page });
-    return this;
-  }
-
-  /**
-  * Перенаправляет пользователя на указанный путь и обновляет историю браузера.
-  * @param {string} path - Путь для перенаправления.
-  */
-  go(path) {
-    history.pushState({}, '', path);
-    this.changeLocation();
-  }
-
-  clearContent() {
-    const content = document.getElementById('content');
-    content.innerHTML = '';
-    return content;
-  }
-
-  changeLocation() {
-    const path = window.location.pathname;
-    const route = this.routes.find((route) => route.path === path);
-
-    const content = this.clearContent();
-
-    if (route) {
-      const page = new route.page(content);
-      page.render();
-    } else {
-      const notFoundPage = new pages_NotFoundPage_NotFoundPage(content);
-      notFoundPage.render();
-    }
-  }
-}
-
-const router = new Router();
-
 ;// CONCATENATED MODULE: ./src/index.js
 
 
@@ -2856,22 +2877,13 @@ const router = new Router();
 
 let root = document.getElementById('root');
 
-
 if (root === null) {
-  root = document.createElement('div', { id: 'root' });
   root = document.createElement('div', { id: 'root' });
 }
 
 let startingPath;
 router.register(router_routes);
-
-if (window.location.pathname === '/') {
-  startingPath = router_urls.base;
-} else {
-  startingPath = window.location.pathname;
-}
-
-router.go(startingPath);
+router.go(window.location.pathname);
 
 })();
 

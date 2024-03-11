@@ -35,7 +35,7 @@ class SignupForm {
   */
   displayErrorOrRedirect(response) {
     if (response.Code == null) {
-      localStorage.setItem('username', response.User.username);
+      userHelper('set', response.User.username);
       router.go(urls.base);
     } else {
       const registrationForm = document.getElementById('registration-form');
@@ -67,7 +67,7 @@ class SignupForm {
       const username = document.getElementById('username-register').value;
       const password = document.getElementById('username-password').value;
 
-      signup('http://jantugan.ru', { username, password }, this.displayErrorOrRedirect.bind(this));
+      signup('http://localhost:8080', { username, password }, this.displayErrorOrRedirect.bind(this));
     });
   }
 }

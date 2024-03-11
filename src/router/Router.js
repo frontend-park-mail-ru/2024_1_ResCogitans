@@ -42,7 +42,12 @@ class Router {
   }
 
   clearContent() {
-    const content = document.getElementById('content');
+    let content = document.getElementById('content');
+    if (!content) {
+      content = document.createElement('div');
+      content.id = 'content';
+      document.getElementById('root').appendChild(content);
+    }
     content.innerHTML = '';
     return content;
   }
