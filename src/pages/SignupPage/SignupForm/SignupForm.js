@@ -7,6 +7,7 @@ import urls from '../../../router/urls';
 import Logo from '../../../components/Header/Logo/Logo';
 import { signup } from '../../../api/user';
 import { router } from '../../../router/Router';
+import { userHelper } from '../../../utils/localstorage';
 
 /**
 * Класс SignupForm представляет форму регистрации, которая может быть отрендерена в HTML.

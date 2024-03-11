@@ -2012,7 +2012,6 @@ const urls = {
   sights: '/sights',
   signup: '/signup',
   login: '/login',
-  docs: '/docs',
 };
 
 /* harmony default export */ const router_urls = (urls);
@@ -2807,49 +2806,7 @@ class SignupPage {
 
 /* harmony default export */ const pages_SignupPage_SignupPage = (SignupPage);
 
-;// CONCATENATED MODULE: ./src/pages/DocsPage/DocsPage.js
-/**
-* Класс DocsPage представляет страницу документации, которая может быть отрендерена в HTML.
-* @class
-*/
-class DocsPage {
-  /**
-  * Создает новый экземпляр страницы документации.
-  * @param {HTMLElement} parent - Родительский элемент, в который будет вставлена страница.
-  */
-  constructor(parent) {
-    this.parent = parent;
-  }
-
-  /**
-  * Загружает содержимое файла `index.html` из папки `docs` и возвращает его в виде строки.
-  * @returns {Promise<string>} Промис, который разрешается содержимым файла `index.html`.
-  */
-  async loadDocsContent() {
-    const response = await fetch('/docs/index.html');
-    if (!response.ok) {
-      throw new Error('Не удалось загрузить документацию');
-    }
-    return response.text();
-  }
-
-  /**
-  * Рендерит страницу документации в DOM.
-  */
-  async render() {
-    try {
-      const content = await this.loadDocsContent();
-      this.parent.innerHTML = content;
-    } catch (error) {
-      console.error('Ошибка при загрузке документации:', error);
-    }
-  }
-}
-
-/* harmony default export */ const DocsPage_DocsPage = (DocsPage);
-
 ;// CONCATENATED MODULE: ./src/router/routes.js
-
 
 
 
@@ -2865,7 +2822,6 @@ const routes = {
   [router_urls.base]: pages_PlacesPage_PlacesPage,
   [router_urls.signup]: pages_SignupPage_SignupPage,
   [router_urls.login]: pages_LoginPage_LoginPage,
-  [router_urls.docs]: DocsPage_DocsPage,
 };
 
 /* harmony default export */ const router_routes = (routes);
