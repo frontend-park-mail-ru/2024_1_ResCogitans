@@ -7,6 +7,7 @@ import urls from '../../../router/urls';
 import Link from '../../../components/Header/Link/Link';
 import { router } from '../../../router/Router';
 import { login } from '../../../api/user';
+import { ENV_CONFIG } from '../../../../env';
 
 /**
 * Класс LoginForm представляет форму входа, которая может быть отрендерена в HTML.
@@ -72,7 +73,7 @@ class LoginForm {
       e.preventDefault();
       const username = document.getElementById('username-login').value;
       const password = document.getElementById('username-password').value;
-      login('http://jantugan.ru', { username, password }, this.displayErrorOrRedirect);
+      login(ENV_CONFIG.API_URL, { username, password }, this.displayErrorOrRedirect);
     });
 
     const registerButton = document.getElementById('register-button');

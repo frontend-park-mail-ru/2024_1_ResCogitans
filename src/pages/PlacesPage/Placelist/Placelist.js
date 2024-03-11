@@ -47,7 +47,7 @@ class Placelist {
   */
   render() {
     this.parent.insertAdjacentHTML('afterend', this.asHTML());
-    getSights('http://jantugan.ru/sights', this.getPlaces.bind(this));
+    getSights(API_URL_SIGHTS, this.getPlaces.bind(this));
   }
 }
 

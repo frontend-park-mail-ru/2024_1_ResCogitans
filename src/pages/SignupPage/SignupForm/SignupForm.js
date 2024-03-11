@@ -67,7 +67,7 @@ class SignupForm {
       const username = document.getElementById('username-register').value;
       const password = document.getElementById('username-password').value;
 
-      signup('http://jantugan.ru', { username, password }, this.displayErrorOrRedirect.bind(this));
+      signup(API_URL, { username, password }, this.displayErrorOrRedirect.bind(this));
     });
   }
 }
