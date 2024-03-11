@@ -14,7 +14,6 @@ const routes = {
   [urls.base]: PlacesPage,
   [urls.signup]: SignupPage,
   [urls.login]: LoginPage,
-  [urls.docs]: DocsPage,
 };
 
 export default routes;
