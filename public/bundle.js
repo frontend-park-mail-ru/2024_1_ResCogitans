@@ -58,7 +58,7 @@ module.exports = (Handlebars["default"] || Handlebars).template({"1":function(co
     + "\">\n"
     + ((stack1 = lookupProperty(helpers,"if").call(alias3,(depth0 != null ? lookupProperty(depth0,"img") : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":2,"column":4},"end":{"line":4,"column":11}}})) != null ? stack1 : "")
     + ((stack1 = lookupProperty(helpers,"if").call(alias3,(depth0 != null ? lookupProperty(depth0,"url") : depth0),{"name":"if","hash":{},"fn":container.program(3, data, 0),"inverse":container.program(5, data, 0),"data":data,"loc":{"start":{"line":5,"column":4},"end":{"line":9,"column":11}}})) != null ? stack1 : "")
-    + "</button>";
+    + "</button>\n";
 },"useData":true});
 
 /***/ }),
@@ -119,7 +119,7 @@ module.exports = (Handlebars["default"] || Handlebars).template({"1":function(co
 var Handlebars = __webpack_require__(633);
 function __default(obj) { return obj && (obj.__esModule ? obj["default"] : obj); }
 module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
-    return "<img src=\"../static/logo.jpg\" width=\"100px\">\n<a>GoodTrip</a>";
+    return "<img src=\"../static/logo.jpg\" width=\"100px\">\n<a>GoodTrip</a>\n";
 },"useData":true});
 
 /***/ }),
@@ -137,7 +137,7 @@ module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[8,"
         return undefined
     };
 
-  return "\n<div id=\""
+  return "<div id=\""
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"id") : depth0), depth0))
     + "\">\n    <img src=\""
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"img") : depth0), depth0))
@@ -149,7 +149,7 @@ module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[8,"
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"placeholder") : depth0), depth0))
     + "\" class=\""
     + alias2(alias1((depth0 != null ? lookupProperty(depth0,"className") : depth0), depth0))
-    + "\">\n</div>";
+    + "\">\n</div>\n";
 },"useData":true});
 
 /***/ }),
@@ -219,7 +219,7 @@ module.exports = (Handlebars["default"] || Handlebars).template({"compiler":[8,"
     + alias4(((helper = (helper = lookupProperty(helpers,"description") || (depth0 != null ? lookupProperty(depth0,"description") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"description","hash":{},"data":data,"loc":{"start":{"line":5,"column":36},"end":{"line":5,"column":51}}}) : helper)))
     + "</p>\n        <h3 class=\"card-rating\">"
     + alias4(((helper = (helper = lookupProperty(helpers,"rating") || (depth0 != null ? lookupProperty(depth0,"rating") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"rating","hash":{},"data":data,"loc":{"start":{"line":6,"column":32},"end":{"line":6,"column":42}}}) : helper)))
-    + " / 5</h3>\n    </div>\n</div>";
+    + " / 5</h3>\n    </div>\n</div>\n";
 },"useData":true});
 
 /***/ }),
@@ -2017,18 +2017,18 @@ const urls = {
 /* harmony default export */ const router_urls = (urls);
 
 ;// CONCATENATED MODULE: ./src/utils/localstorage.js
-function localstorage_userHelper(method, username) {
-    if (method == 'get') {
-      return localStorage.getItem('username');
-    } else if (method == 'set') {
-      localStorage.setItem('username', username);
-    } else if (method == 'remove') {
-        localStorage.removeItem('username');
-    }
+function userHelper(method, username) {
+  if (method === 'get') {
+    return localStorage.getItem('username');
+  } if (method === 'set') {
+    localStorage.setItem('username', username);
+  } else if (method === 'remove') {
+    localStorage.removeItem('username');
+  }
+  return null;
 }
 
-/* harmony default export */ const localstorage = ((/* unused pure expression or super */ null && (localstorage_userHelper)));
-
+/* harmony default export */ const localstorage = ((/* unused pure expression or super */ null && (userHelper)));
 
 // EXTERNAL MODULE: ./src/components/Header/Header.hbs
 var Header_Header = __webpack_require__(635);
@@ -2073,8 +2073,6 @@ class Header {
     labels.forEach((label) => new Header_Link_Link(parent, { label, className: 'search-link' }).render());
   }
 
-
- 
   /**
   * Рендерит шапку, включая логотип, ссылки и кнопки в зависимости от состояния пользователя.
   */
@@ -2102,7 +2100,7 @@ class Header {
       const logout = document.getElementById('logout');
 
       logout.addEventListener('click', () => {
-        localstorage_userHelper('remove');
+        userHelper('remove');
         router.go(router_urls.base);
       });
     } else {
@@ -2377,7 +2375,7 @@ class LoginForm {
   */
   displayErrorOrRedirect(response, error) {
     if (response.Code == null) {
-      localstorage_userHelper('set', response.User.username);
+      userHelper('set', response.User.username);
       router.go(router_urls.base);
     } else if (response.Code != null) {
       const loginForm = document.getElementById('login-form');
@@ -2704,6 +2702,7 @@ var SignupForm_default = /*#__PURE__*/__webpack_require__.n(SignupForm_SignupFor
 
 
 
+
 /**
 * Класс SignupForm представляет форму регистрации, которая может быть отрендерена в HTML.
 * @class
@@ -2830,14 +2829,12 @@ const routes = {
 
 
 
-
 let root = document.getElementById('root');
 
 if (root === null) {
   root = document.createElement('div', { id: 'root' });
 }
 
-let startingPath;
 router.register(router_routes);
 router.go(window.location.pathname);
 
