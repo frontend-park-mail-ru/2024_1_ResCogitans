@@ -30,6 +30,12 @@ class SignupForm {
     return template(this.display);
   }
 
+  renderError(message) {
+    const errorMessage = document.getElementById('error');
+    errorMessage.innerHTML = message;
+    errorMessage.style.color = "red";
+  }
+
   /**
   * Отображает ошибку или перенаправляет пользователя в зависимости от ответа сервера.
   * @param {Object} response - Ответ сервера.
@@ -39,9 +45,7 @@ class SignupForm {
       userHelper('set', response.User.username);
       router.go(urls.base);
     } else {
-      const registrationForm = document.getElementById('registration-form');
-      document.getElementById('form-error')?.remove();
-      new Link(registrationForm, { id: 'form-error', className: 'err-link', label: response.error }).render();
+      this.renderError("Эта почта уже используется");
     }
   }
 
@@ -53,22 +57,35 @@ class SignupForm {
     const logoGroup = document.getElementById('logo-group');
     new Logo(logoGroup).render();
 
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const passwordRepeatInput = document.getElementById('password-repeat');
+
+    document.querySelectorAll('.form-button').forEach((form) => form.children[1].addEventListener('click', (e) => {
+      e.preventDefault();
+      if (form.children[0].type === 'password') {
+        form.children[0].type = 'text';
+        form.children[1].children[0].src = "static/no_visible.svg";
+      } else {
+        form.children[0].type = 'password';
+        form.children[1].children[0].src = "static/visible.svg";
+      }
+    }));
+
     const registrationForm = document.getElementById('registration-form');
-    new Input(registrationForm, {
-      field: 'username-register', type: 'text', placeholder: 'Логин', className: 'form-input',
-    }).render();
-    new Input(registrationForm, {
-      field: 'username-password', type: 'password', placeholder: 'Пароль', className: 'form-input',
-    }).render();
     new Button(registrationForm, { id: 'login-button', label: 'Зарегистрироваться', type: 'submit' }).render();
 
     registrationForm.addEventListener('submit', (e) => {
       e.preventDefault();
+      const username = emailInput.value;
+      const password = passwordInput.value;
+      const passwordRepeat = passwordRepeatInput.value;
 
-      const username = document.getElementById('username-register').value;
-      const password = document.getElementById('username-password').value;
-
-      signup('http://localhost:8080', { username, password }, this.displayErrorOrRedirect.bind(this));
+      if (password !== passwordRepeat) {
+        this.renderError("Пароли не совпадают");
+      } else {
+        signup('http://localhost:8080', { username, password }, this.displayErrorOrRedirect.bind(this));
+      }
     });
   }
 }

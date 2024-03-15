@@ -25,7 +25,7 @@ class Placelist {
 
   render() {
     this.parent.insertAdjacentHTML('afterend', this.getHTML());
-    const places = get('http://jantugan.ru/sights', this.getPlaces.bind(this));
+    const places = get('http://127.0.0.1:8080/sights', this.getPlaces.bind(this));
   }
 }
 

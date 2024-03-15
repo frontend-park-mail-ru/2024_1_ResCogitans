@@ -14,8 +14,11 @@
 }
 
 .err-link {
-    color: red;
+    color: transparent;
     display: block;
+    height: 18px;
+    position: relative;
+    margin-bottom: 10px;
 }
 
 .err-link::hover {

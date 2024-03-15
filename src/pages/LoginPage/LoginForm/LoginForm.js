@@ -30,22 +30,22 @@ class LoginForm {
     return template(this.display);
   }
 
+  renderError(message) {
+    const errorMessage = document.getElementById('error');
+    errorMessage.innerHTML = message;
+    errorMessage.style.color = "red";
+  }
+
   /**
   * Отображает ошибку или перенаправляет пользователя в зависимости от ответа сервера.
   * @param {Object} response - Ответ сервера.
   */
-  displayErrorOrRedirect(response, error) {
+  displayErrorOrRedirect(response) {
     if (response.Code == null) {
       userHelper('set', response.User.username);
       router.go(urls.base);
     } else if (response.Code != null) {
-      const loginForm = document.getElementById('login-form');
-      document.getElementById('form-error')?.remove();
-      new Link(loginForm, { id: 'form-error', className: 'err-link', label: response.error }).render();
-    } else {
-      const loginForm = document.getElementById('login-form');
-      document.getElementById('form-error')?.remove();
-      new Link(loginForm, { id: 'form-error', className: 'err-link', label: error }).render();
+      this.renderError("Неверный логин или пароль");
     }
   }
 
@@ -58,22 +58,33 @@ class LoginForm {
     const logoGroup = document.getElementById('logo-group');
     new Logo(logoGroup).render();
     const loginForm = document.getElementById('login-form');
-    new Input(loginForm, {
-      field: 'username-login', type: 'text', placeholder: 'Электронная почта', className: 'form-input',
-    }).render();
-    new Input(loginForm, {
-      field: 'username-password', type: 'password', placeholder: 'Пароль', className: 'form-input',
-    }).render();
+    
     new Button(loginForm, {
       id: 'login-button', label: 'Войти', type: 'submit',
     }).render();
     new Button(loginForm, { id: 'register-button', label: 'Регистрация' }).render();
 
+
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+
+    const passwordVisibility = document.getElementById('password-visible');
+    passwordVisibility.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        passwordVisibility.children[0].src = "static/no_visible.svg";
+      } else {
+        passwordInput.type = 'password';
+        passwordVisibility.children[0].src = "static/visible.svg";
+      }
+    })
+
     loginForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      const username = document.getElementById('username-login').value;
-      const password = document.getElementById('username-password').value;
-      login('http://localhost:8080', { username, password }, this.displayErrorOrRedirect);
+      const username = emailInput.value;
+      const password = passwordInput.value;
+      login('http://localhost:8080', { username, password }, this.displayErrorOrRedirect.bind(this));
     });
 
     const registerButton = document.getElementById('register-button');

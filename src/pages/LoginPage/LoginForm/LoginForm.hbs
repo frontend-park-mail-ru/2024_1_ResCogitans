@@ -4,6 +4,13 @@
     </div>  
     <h2>Войти</h2>
     <form id="login-form" method="post">
-
+    <label for="email">Электронная почта</label>
+    <input id="email" type="email" class="form-input" required>
+    <label for="password">Пароль</label>
+    <div class="form-button">
+        <input id="password" type="password" class="form-input" required maxlength="16" title="Пароль не может быть пустым и содержать пробелы" pattern="(?=.*\d)(?=.*[A-Z])(?!.*\s).{8,}">
+        <button id="password-visible"><img src="static/visible.svg"></button>
+    </div>
+    <label id="error" class="err-link"></label>
     </form>
 </div>

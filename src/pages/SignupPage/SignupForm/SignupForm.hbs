@@ -4,6 +4,18 @@
     </div>  
     <h2>Создать аккаунт</h2>
     <form id="registration-form" method="post">
-
+    <label for="login">Электронная почта</label>
+    <input id="email" type="email" class="form-input" required>
+    <label for="password">Пароль</label>
+    <div class="form-button">
+        <input id="password" type="password" class="form-input" required maxlength="16" title="Пароль должен содержать минимум 8 символов, заглавные буквы и цифры" pattern="(?=.*\d)(?=.*[A-Z])(?!.*\s).{8,}">
+        <button class="password-visible"><img src="static/visible.svg"></button>
+    </div>
+    <label for="password-repeat">Повторите пароль</label>
+    <div class="form-button">
+        <input id="password-repeat" type="password" class="form-input" required maxlength="16" title="Пароль должен содержать минимум 8 символов, заглавные буквы и цифры" pattern="(?=.*\d)(?=.*[A-Z])(?!.*\s).{8,}">
+        <button class="password-visible"><img src="static/visible.svg"></button>
+    </div>
+    <label id="error" class="err-link"></label>  
     </form>
 </div>
