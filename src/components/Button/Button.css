@@ -11,6 +11,10 @@ button:hover {
     transition: background-color 0.1s;
 }  
 
+button:disabled {
+    opacity: 80%;
+}
+
 button > a {
     text-decoration: none;
 }
@@ -48,12 +52,12 @@ button > a {
     background-color: var(--primary-color);
 }
 
-#register-button {
+#signup-button {
     background-color: transparent;
 }
 
 
-.form-button button {
+.input-button button {
     position: absolute;
     z-index: 2;
     right: 50px;

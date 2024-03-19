@@ -87,7 +87,7 @@ class LoginForm {
       login('http://localhost:8080', { username, password }, this.displayErrorOrRedirect.bind(this));
     });
 
-    const registerButton = document.getElementById('register-button');
+    const registerButton = document.getElementById('signup-button');
     registerButton.addEventListener('click', () => {
       router.go(urls.signup);
     });

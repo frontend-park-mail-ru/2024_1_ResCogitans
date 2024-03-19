@@ -2,7 +2,6 @@ import template from './SignupForm.hbs';
 
 import Button from '../../../components/Button/Button';
 import Input from '../../../components/Input/Input';
-import Link from '../../../components/Header/Link/Link';
 import urls from '../../../router/urls';
 import Logo from '../../../components/Header/Logo/Logo';
 import { signup } from '../../../api/user';
@@ -30,10 +29,15 @@ class SignupForm {
     return template(this.display);
   }
 
-  renderError(message) {
-    const errorMessage = document.getElementById('error');
-    errorMessage.innerHTML = message;
-    errorMessage.style.color = "red";
+  renderError(parent, message) {
+    let errorMessage = parent.querySelectorAll('.err-label')[0];
+    if (message !== null) {
+      errorMessage.innerHTML = message;
+      errorMessage.classList.add('active'); 
+    } else {
+      errorMessage.innerHTML = "";
+      errorMessage.classList.remove('active');
+    }
   }
 
   /**
@@ -49,6 +53,17 @@ class SignupForm {
     }
   }
 
+  togglePasswordVisibility(inputWithButton) {
+    const icons = inputWithButton.querySelectorAll('img');
+    if (inputWithButton.children[1].type === 'password') {
+        inputWithButton.children[1].type = 'text';
+        icons.forEach((icon) => icon.src = 'static/no_visible.svg');
+      } else {
+        inputWithButton.children[1].type = 'password';
+        icons.forEach((icon) => icon.src = 'static/visible.svg');
+      }
+    }
+
   /**
   * Рендерит форму регистрации в DOM, включая логотип, поля ввода и кнопку.
   */
@@ -61,32 +76,57 @@ class SignupForm {
     const passwordInput = document.getElementById('password');
     const passwordRepeatInput = document.getElementById('password-repeat');
 
-    document.querySelectorAll('.form-button').forEach((form) => form.children[1].addEventListener('click', (e) => {
+    document.querySelectorAll('.input-button').forEach((input) => input.children[2].addEventListener('click', (e) => {
       e.preventDefault();
-      if (form.children[0].type === 'password') {
-        form.children[0].type = 'text';
-        form.children[1].children[0].src = "static/no_visible.svg";
-      } else {
-        form.children[0].type = 'password';
-        form.children[1].children[0].src = "static/visible.svg";
-      }
+      this.togglePasswordVisibility(input);
     }));
+
 
     const registrationForm = document.getElementById('registration-form');
     new Button(registrationForm, { id: 'login-button', label: 'Зарегистрироваться', type: 'submit' }).render();
+    const submitButton = document.getElementById('login-button');
+    submitButton.disabled = true;
+
+    const validator = new Input(null, {});
+
+    let username = emailInput.value;
+    let password = passwordInput.value;
+    let repeatPassword = passwordRepeatInput.value;
+
+    document.querySelectorAll('.input').forEach((input) => input.children[1].addEventListener('input', (e) => {
+      e.preventDefault();
+      submitButton.disabled = true;
+      let validationError;
+      let type = input.children[1].type;
+
+      password = passwordInput.value;
+      repeatPassword = passwordRepeatInput.value;
+
+      if (type == 'email') {
+        validationError = validator.validate(e.target.value, 1);
+      } else {
+        validationError = validator.validate(e.target.value, 2);
+      }
+      
+      if (validationError === null) {
+        if (password != repeatPassword) {
+          validationError = "Пароли не совпадают";
+          this.renderError(input, validationError);
+        } else {
+          submitButton.disabled = false;
+          document.querySelectorAll('.input-button').forEach((input) => this.renderError(input, ""))
+        }
+      } else {
+        this.renderError(input, validationError);
+      }
+     
+    }));
 
     registrationForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      const username = emailInput.value;
-      const password = passwordInput.value;
-      const passwordRepeat = passwordRepeatInput.value;
-
-      if (password !== passwordRepeat) {
-        this.renderError("Пароли не совпадают");
-      } else {
         signup('http://localhost:8080', { username, password }, this.displayErrorOrRedirect.bind(this));
       }
-    });
+    );
   }
 }
 
