@@ -1,12 +1,12 @@
 import template from './SignupForm.hbs';
 
 import Button from '../../../components/Button/Button';
-import Input from '../../../components/Input/Input';
 import urls from '../../../router/urls';
 import Logo from '../../../components/Header/Logo/Logo';
 import { signup } from '../../../api/user';
 import { router } from '../../../router/Router';
 import { userHelper } from '../../../utils/localstorage';
+import { validate } from '../../../utils/validation';
 
 /**
 * Класс SignupForm представляет форму регистрации, которая может быть отрендерена в HTML.
@@ -44,12 +44,14 @@ class SignupForm {
   * Отображает ошибку или перенаправляет пользователя в зависимости от ответа сервера.
   * @param {Object} response - Ответ сервера.
   */
-  displayErrorOrRedirect(response) {
+  displayErrorOrRedirect(response, code) {
     if (response.Code == null) {
       userHelper('set', response.User.username);
       router.go(urls.base);
-    } else {
+    } else if (response.ok) {
       this.renderError("Эта почта уже используется");
+    } else if (code == 503) {
+      this.renderError("Что-то пошло не так");
     }
   }
 
@@ -87,8 +89,6 @@ class SignupForm {
     const submitButton = document.getElementById('login-button');
     submitButton.disabled = true;
 
-    const validator = new Input(null, {});
-
     let username = emailInput.value;
     let password = passwordInput.value;
     let repeatPassword = passwordRepeatInput.value;
@@ -103,23 +103,28 @@ class SignupForm {
       repeatPassword = passwordRepeatInput.value;
 
       if (type == 'email') {
-        validationError = validator.validate(e.target.value, 1);
-      } else {
-        validationError = validator.validate(e.target.value, 2);
-      }
-      
-      if (validationError === null) {
-        if (password != repeatPassword) {
-          validationError = "Пароли не совпадают";
+        validationError = validate(e.target.value, 1);
+        if (validationError !== null) {
           this.renderError(input, validationError);
+          return;
         } else {
-          submitButton.disabled = false;
-          document.querySelectorAll('.input-button').forEach((input) => this.renderError(input, ""))
+          this.renderError(input, null);
         }
       } else {
-        this.renderError(input, validationError);
+        validationError = validate(e.target.value, 2);
+          if (validationError !== null) {
+            this.renderError(input, validationError);
+            return;
+          } else {
+            if (password != repeatPassword) {
+              this.renderError(input, "Пароли не совпадают");
+              return;
+            }
+            submitButton.disabled = false;
+            document.querySelectorAll('.input-button').forEach((input) => this.renderError(input, null));
+            return;
+          }
       }
-     
     }));
 
     registrationForm.addEventListener('submit', (e) => {

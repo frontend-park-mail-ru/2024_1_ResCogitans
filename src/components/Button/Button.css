@@ -4,11 +4,13 @@ button {
     border-radius: 20px;
     padding: 10px 10px;
     border-style: none;
+    transition: all 0.25s ease-in-out;
 }
 
 button:hover {
     opacity: 80%;
-    transition: background-color 0.1s;
+    transition: all 0.25s ease-in-out;
+    scale: 105%;
 }  
 
 button:disabled {

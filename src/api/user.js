@@ -40,6 +40,6 @@ export async function signup(url, body, callback) {
     const data = await response.json();
     callback(data);
   } catch (error) {
-    console.error('Error: ', error);
+    console.error('Error: ', error); // улучшить обработку ошибок
   }
 }

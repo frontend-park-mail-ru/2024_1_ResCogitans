@@ -26,7 +26,7 @@ class SignupPage {
   * Рендерит страницу регистрации в DOM, включая форму регистрации.
   */
   render() {
-    document.body.style.backgroundImage = 'url(\'../../static/bglogin.webp\')';
+    document.body.style.backgroundImage = 'url(\'../../static/bgsignup.jpg\')';
     new SignupForm(this.parent).render();
   }
 }
