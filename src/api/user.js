@@ -7,18 +7,15 @@
 * @param {Function} callback - Функция обратного вызова. Она будет вызвана после выполнения запроса.
 * @returns {Promise<void>}
 */
-export async function login(url, body, callback) {
-  try {
-    const response = await fetch(`${url}/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-    });
-    const data = await response.json();
-    callback(data);
-  } catch (error) {
-    console.error('Error: ', error);
-  }
+export async function login(url, body) {
+  const response = await fetch(`${url}/login`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify(body),
+  });
+  const responseData = await response.json();
+  return responseData;
 }
 
 /**
@@ -30,16 +27,23 @@ export async function login(url, body, callback) {
 * @param {Function} callback - Функция обратного вызова. Она будет вызвана после выполнения запроса.
 * @returns {Promise<void>}
 */
-export async function signup(url, body, callback) {
-  try {
-    const response = await fetch(`${url}/signup`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body),
-    });
-    const data = await response.json();
-    callback(data);
-  } catch (error) {
-    console.error('Error: ', error); // улучшить обработку ошибок
-  }
+export async function signup(url, data) {
+  const response = await fetch(`${url}/signup`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify(data),
+  });
+  const responseData = await response.json();
+  return responseData;
+}
+
+export async function logout(url, data) {
+  const response = await fetch(`${url}/logout`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+  });
+  const responseData = await response.json();
+  return responseData;
 }

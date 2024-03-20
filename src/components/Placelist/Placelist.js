@@ -6,7 +6,7 @@ class Placelist {
   constructor(parent) {
     this.parent = parent;
     this.city = 'Paris';
-    this.places = []
+    this.places = [];
   }
 
   getHTML() {
@@ -14,8 +14,8 @@ class Placelist {
   }
 
   getPlaces(data) {
-    this.places = data
-    this.renderPlaces()
+    this.places = data;
+    this.renderPlaces();
   }
 
   renderPlaces() {

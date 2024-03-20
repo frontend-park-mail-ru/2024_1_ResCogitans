@@ -1,68 +1,25 @@
+import BaseForm from '../../../components/Form/FormBase';
 import template from './LoginForm.hbs';
-
 import Button from '../../../components/Button/Button';
-import Logo from '../../../components/Header/Logo/Logo';
 import urls from '../../../router/urls';
+import Logo from '../../../components/Header/Logo/Logo';
 import { router } from '../../../router/Router';
-import { login } from '../../../api/user';
 import { userHelper } from '../../../utils/localstorage';
 import { validate } from '../../../utils/validation';
+import { login } from '../../../api/user';
 
 /**
 * Класс LoginForm представляет форму входа, которая может быть отрендерена в HTML.
 * @class
 */
-class LoginForm {
+class LoginForm extends BaseForm {
   /**
-  * Создает новый экземпляр формы входа.
-  * @param {HTMLElement} parent - Родительский элемент, в который будет вставлена форма входа.
-  */
-  constructor(parent) {
-    this.parent = parent;
-  }
-
-  /**
-  * Возвращает HTML-представление формы входа.
-  * @returns {string} HTML-представление формы входа.
-  */
+    * Возвращает HTML-представление формы входа.
+    * @returns {string} HTML-представление формы входа.
+    */
   asHTML() {
     return template(this.display);
   }
-
-  renderError(parent, message) {
-    let errorMessage = parent.querySelectorAll('.err-label')[0];
-    if (message !== null) {
-      errorMessage.innerHTML = message;
-      errorMessage.classList.add('active'); 
-    } else {
-      errorMessage.innerHTML = "";
-      errorMessage.classList.remove('active');
-    }
-  }
-
-  /**
-  * Отображает ошибку или перенаправляет пользователя в зависимости от ответа сервера.
-  * @param {Object} response - Ответ сервера.
-  */
-  displayErrorOrRedirect(response, code) {
-    if (response.Code == null) {
-      userHelper('set', response.User.username);
-      router.go(urls.base);
-    } else if (response.Code != null) {
-      this.renderError("Неверный логин или пароль");
-    }
-  }
-
-  togglePasswordVisibility(inputWithButton) {
-    const icons = inputWithButton.querySelectorAll('img');
-    if (inputWithButton.children[1].type === 'password') {
-        inputWithButton.children[1].type = 'text';
-        icons.forEach((icon) => icon.src = 'static/no_visible.svg');
-      } else {
-        inputWithButton.children[1].type = 'password';
-        icons.forEach((icon) => icon.src = 'static/visible.svg');
-      }
-    }
 
   /**
   * Рендерит форму входа в DOM, включая логотип, поля ввода и кнопки.
@@ -73,14 +30,13 @@ class LoginForm {
     const logoGroup = document.getElementById('logo-group');
     new Logo(logoGroup).render();
     const loginForm = document.getElementById('login-form');
-    
+
     new Button(loginForm, {
       id: 'login-button', label: 'Войти', type: 'submit',
     }).render();
-    new Button(loginForm, { 
-      id: 'signup-button', label: 'Регистрация'
+    new Button(loginForm, {
+      id: 'signup-button', label: 'Регистрация',
     }).render();
-
 
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
@@ -93,37 +49,36 @@ class LoginForm {
     const submitButton = document.getElementById('login-button');
     submitButton.disabled = true;
 
-    document.querySelectorAll('.input').forEach((input) => input.children[1].addEventListener('input', (e) => {
+    const inputs = document.querySelectorAll('.input');
+
+    inputs.forEach((input) => input.children[1].addEventListener('blur', (e) => {
       e.preventDefault();
+      const { type } = input.children[1];
       let validationError;
-      let type = input.children[1].type;
+      submitButton.disabled = true;
 
-      password = passwordInput.value;
-
-      if (type == 'email') {
-        validationError = validate(e.target.value, 1);
-        if (validationError !== null) {
-          this.renderError(input, validationError);
-          return;
-        }
-        this.renderError(input, null);
-      } else {
-        validationError = validate(e.target.value, 2);
-        if (validationError !== null) {
-          this.renderError(input, validationError);
-          return;
-        }
+      validationError = validate({ string: e.target.value, type });
+      this.renderError(input, validationError);
+      if (document.querySelectorAll('.has-error').length === 0) {
         submitButton.disabled = false;
-        document.querySelectorAll('.input-button').forEach((input) => this.renderError(input, null)); // сомнительно но окэй
-        return;
-        }
+      }
     }));
 
     loginForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      const username = emailInput.value;
-      const password = passwordInput.value;
-      login('http://localhost:8080', { username, password }, this.displayErrorOrRedirect.bind(this));
+      const requestBody = {
+        username: emailInput.value,
+        password: passwordInput.value,
+      };
+      login('http://127.0.0.1:8080', requestBody)
+        .then((response) => {
+          if (response.Code === undefined) {
+            userHelper('set', response.User.username);
+            router.go(urls.base);
+          } else if (response.Code === 400 || response.Code == 500) {
+            this.renderError(inputs[1], response.error);
+          }
+        });
     });
 
     const registerButton = document.getElementById('signup-button');
