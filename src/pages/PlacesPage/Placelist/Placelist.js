@@ -26,20 +26,11 @@ class Placelist {
   }
 
   /**
-  * Обрабатывает полученные данные мест и рендерит их в DOM.
-  * @param {Object} data - Данные мест.
-  */
-  getPlaces(data) {
-    this.places = data;
-    this.renderPlaces();
-  }
-
-  /**
   * Рендерит каждое место из списка в DOM.
   */
-  renderPlaces() {
+  renderPlaces(places) {
     const placelist = document.getElementById('list-places');
-    this.places.sights.forEach((data) => new Place(placelist, data).render());
+    places.sights.forEach((data) => new Place(placelist, data).render());
   }
 
   /**
@@ -47,7 +38,8 @@ class Placelist {
   */
   render() {
     this.parent.insertAdjacentHTML('afterend', this.asHTML());
-    getSights('http://localhost:8080/sights', this.getPlaces.bind(this));
+    getSights('http://localhost:8080/sights')
+      .then((responsePlaces) => this.renderPlaces(responsePlaces));
   }
 }
 

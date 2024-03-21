@@ -6,14 +6,10 @@
 * @param {Function} callback - Функция обратного вызова. Она будет вызвана после выполнения запроса.
 * @returns {Promise<void>}
 */
-const getSights = async (url, callback) => {
-  try {
-    const response = await fetch(url);
-    const data = await response.json();
-    callback(data);
-  } catch (error) {
-    console.error('Error: ', error);
-  }
+const getSights = async (url) => {
+  const response = await fetch(url);
+  const responseData = await response.json();
+  return responseData;
 };
 
 export default getSights;

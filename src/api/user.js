@@ -38,7 +38,7 @@ export async function signup(url, data) {
   return responseData;
 }
 
-export async function logout(url, data) {
+export async function logout(url) {
   const response = await fetch(`${url}/logout`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

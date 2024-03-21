@@ -1,12 +1,12 @@
-import BaseForm from '../../../components/Form/FormBase';
+import BaseForm from '../../../components/Form/BaseForm';
 import template from './LoginForm.hbs';
 import Button from '../../../components/Button/Button';
 import urls from '../../../router/urls';
 import Logo from '../../../components/Header/Logo/Logo';
 import { router } from '../../../router/Router';
 import { userHelper } from '../../../utils/localstorage';
-import { validate } from '../../../utils/validation';
 import { login } from '../../../api/user';
+import { validate } from '../../../utils/validation'
 
 /**
 * Класс LoginForm представляет форму входа, которая может быть отрендерена в HTML.
@@ -41,10 +41,7 @@ class LoginForm extends BaseForm {
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
 
-    document.querySelectorAll('.input-button').forEach((input) => input.children[2].addEventListener('click', (e) => {
-      e.preventDefault();
-      this.togglePasswordVisibility(input);
-    }));
+    this.enablePasswordVisibilityButtons();
 
     const submitButton = document.getElementById('login-button');
     submitButton.disabled = true;
