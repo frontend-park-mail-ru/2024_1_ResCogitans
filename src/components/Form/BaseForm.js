@@ -1,4 +1,4 @@
-import { validate } from '../../utils/validation'
+import { validate } from '../../utils/validation';
 
 class BaseForm {
   /**

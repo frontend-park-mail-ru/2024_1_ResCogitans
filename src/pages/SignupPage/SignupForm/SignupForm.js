@@ -1,12 +1,12 @@
-import template from './SignupForm.hbs'
-import BaseForm from '../../../components/Form/BaseForm'
-import Button from '../../../components/Button/Button'
-import urls from '../../../router/urls'
-import Logo from '../../../components/Header/Logo/Logo'
-import { signup } from '../../../api/user'
-import { router } from '../../../router/Router'
-import { userHelper } from '../../../utils/localstorage'
-import { validate } from '../../../utils/validation'
+import template from './SignupForm.hbs';
+import BaseForm from '../../../components/Form/BaseForm';
+import Button from '../../../components/Button/Button';
+import urls from '../../../router/urls';
+import Logo from '../../../components/Header/Logo/Logo';
+import { signup } from '../../../api/user';
+import { router } from '../../../router/Router';
+import { userHelper } from '../../../utils/localstorage';
+import { validate } from '../../../utils/validation';
 
 /**
 * Класс SignupForm представляет форму регистрации, которая может быть отрендерена в HTML.
@@ -39,7 +39,7 @@ class SignupForm extends BaseForm {
       (validationError === undefined) ? this.clearError(input.parentElement)
         : this.renderError(input.parentElement, validationError);
       this.enableSubmitButton();
-    }))
+    }));
 
     registrationForm.addEventListener('submit', (e) => {
       e.preventDefault();

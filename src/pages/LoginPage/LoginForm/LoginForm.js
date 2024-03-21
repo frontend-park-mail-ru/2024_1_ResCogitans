@@ -6,7 +6,7 @@ import Logo from '../../../components/Header/Logo/Logo';
 import { router } from '../../../router/Router';
 import { userHelper } from '../../../utils/localstorage';
 import { login } from '../../../api/user';
-import { validate } from '../../../utils/validation'
+import { validate } from '../../../utils/validation';
 
 /**
 * Класс LoginForm представляет форму входа, которая может быть отрендерена в HTML.
@@ -51,10 +51,9 @@ class LoginForm extends BaseForm {
     inputs.forEach((input) => input.children[1].addEventListener('blur', (e) => {
       e.preventDefault();
       const { type } = input.children[1];
-      let validationError;
       submitButton.disabled = true;
 
-      validationError = validate({ string: e.target.value, type });
+      const validationError = validate({ string: e.target.value, type });
       this.renderError(input, validationError);
       if (document.querySelectorAll('.has-error').length === 0) {
         submitButton.disabled = false;
@@ -72,7 +71,7 @@ class LoginForm extends BaseForm {
           if (response.Code === undefined) {
             userHelper('set', response.User.username);
             router.go(urls.base);
-          } else if (response.Code === 400 || response.Code == 500) {
+          } else if (response.Code === 400 || response.Code === 500) {
             this.renderError(inputs[1], response.error);
           }
         });

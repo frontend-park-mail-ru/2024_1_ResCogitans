@@ -24,7 +24,7 @@ class NotFoundPage {
 
     const backButton = document.getElementById('back-button');
     backButton.addEventListener('click', () => {
-      router.go(urls.sights);
+      router.go(urls.base);
     });
   }
 }
