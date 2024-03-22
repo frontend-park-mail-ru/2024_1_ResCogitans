@@ -1,4 +1,3 @@
-import BaseForm from '../../../components/Form/BaseForm';
 import template from './LoginForm.hbs';
 import Button from '../../../components/Button/Button';
 import urls from '../../../router/urls';
@@ -7,12 +6,13 @@ import { router } from '../../../router/Router';
 import { userHelper } from '../../../utils/localstorage';
 import { login } from '../../../api/user';
 import { validate } from '../../../utils/validation';
+import AuthorizationForm from '../../../components/Form/AuthorizationForm';
 
 /**
 * Класс LoginForm представляет форму входа, которая может быть отрендерена в HTML.
 * @class
 */
-class LoginForm extends BaseForm {
+class LoginForm extends AuthorizationForm {
   /**
     * Возвращает HTML-представление формы входа.
     * @returns {string} HTML-представление формы входа.
@@ -48,7 +48,7 @@ class LoginForm extends BaseForm {
 
     const inputs = document.querySelectorAll('.input');
 
-    inputs.forEach((input) => input.children[1].addEventListener('blur', (e) => {
+    inputs.forEach((input) => input.children[1].addEventListener('change', (e) => {
       e.preventDefault();
       const { type } = input.children[1];
       submitButton.disabled = true;

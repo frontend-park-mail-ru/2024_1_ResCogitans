@@ -3,7 +3,7 @@ const urls = {
   sights: '/sights',
   signup: '/signup',
   login: '/login',
-  notfound: '',
+  notfound: '/404',
 };
 
 export default urls;

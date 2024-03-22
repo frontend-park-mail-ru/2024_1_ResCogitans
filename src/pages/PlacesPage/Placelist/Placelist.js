@@ -1,6 +1,6 @@
 import Place from './Place/Place';
 import template from './Placelist.hbs';
-import getSights from '../../../api/sights';
+import get from '../../../api/base';
 
 /**
 * Класс Placelist представляет список мест, который может быть отрендерен в HTML.
@@ -37,7 +37,7 @@ class Placelist {
   */
   render() {
     this.parent.insertAdjacentHTML('afterend', this.asHTML());
-    getSights('http://localhost:8080/sights')
+    get('http://localhost:8080/sights')
       .then((responsePlaces) => this.renderPlaces(responsePlaces));
   }
 }

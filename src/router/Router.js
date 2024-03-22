@@ -59,7 +59,7 @@ class Router {
       const page = new route.page(content);
       page.render();
     } else {
-      const { page } = this.routes.find((obj) => obj.path === '');
+      const { page } = this.routes.find((obj) => obj.path === '/404');
       new page(content).render();
     }
   }

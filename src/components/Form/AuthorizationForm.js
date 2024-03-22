@@ -1,6 +1,6 @@
 import { validate } from '../../utils/validation';
 
-class BaseForm {
+class AuthorizationForm {
   /**
     * Создает новый экземпляр формы входа.
     * @param {HTMLElement} parent - Родительский элемент, в который будет вставлена форма входа.
@@ -17,19 +17,15 @@ class BaseForm {
     }
   }
 
+  email = document.getElementById('email');
+  password = document.getElementById('password');
+  
   enableSubmitButton = (() => {
-    const email = document.getElementById('email');
-    const password = document.getElementById('password');
-    const repeatPassword = document.getElementById('password-repeat');
     const submitButton = document.getElementById('login-button');
 
-    const isValidEmail = (validate({ string: email.value, type: email.type }) === undefined);
-    const isValidPassword = (validate({ string: password.value, type: password.type }) === undefined);
-    const passwordsMatch = password.value === repeatPassword.value;
-    !passwordsMatch ? this.renderError(repeatPassword.parentElement, 'Пароли не совпадают')
-      : this.clearError(repeatPassword.parentElement);
-
-    submitButton.disabled = !(isValidEmail && isValidPassword && passwordsMatch);
+    let errorMessages = document.querySelectorAll('.has-error');
+    const areErrors = (errorMessages.length > 0);
+    submitButton.disabled = areErrors;
   });
 
   clearError(parent) {
@@ -57,4 +53,4 @@ class BaseForm {
   }
 }
 
-export default BaseForm;
+export default AuthorizationForm;
