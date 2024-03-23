@@ -64,7 +64,7 @@ class LoginForm extends AuthorizationForm {
         username: emailInput.value,
         password: passwordInput.value,
       };
-      login('http://127.0.0.1:8080', requestBody)
+      login(process.env.API_URL, requestBody)
         .then((response) => {
           if (response.Code === undefined) {
             userHelper('set', response.User.username);

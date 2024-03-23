@@ -37,7 +37,7 @@ class Placelist {
   */
   render() {
     this.parent.insertAdjacentHTML('afterend', this.asHTML());
-    get('http://localhost:8080/sights')
+    get(`${process.env.API_URL}/sights`)
       .then((responsePlaces) => this.renderPlaces(responsePlaces));
   }
 }

@@ -56,7 +56,7 @@ class SignupForm extends AuthorizationForm {
         username: email.value,
         password: password.value,
       };
-      signup('http://127.0.0.1:8080', requestBody)
+      signup(process.env.API_URL, requestBody)
         .then((response) => {
           if (response.status === 200) {
             userHelper('set', response.data.User.username);
