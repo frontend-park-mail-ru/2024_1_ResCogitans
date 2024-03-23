@@ -1,6 +1,9 @@
 .card {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
     transition: 0.3s;
+    min-height: 200px;
     width: auto;
     border-radius: 20px;
     overflow: hidden;
@@ -14,26 +17,46 @@
     width: 100%;
     height: 200px;
     object-fit: cover;
+    zoom: 100%
+}
+
+.card img:hover {
+    zoom: 110%;
+    transition: 0.2s all;
 }
 
 .card-content {
+    display: grid;
+    grid-auto-flow: row;
     padding: 5px 10px 10px 10px;
 }
 
-.card-content h3 {
-    margin: 0;
-    font-size: 12px;
-}
-
 .card-rating {
-    text-align: right;
-    font-weight: bolder;
-    font-style: bold;
-    color: var(--main-text-color);
+    position: relative;
+    grid-row: 3;
+    width: fit-content;
+    align-self: flex-end;
+    grid-template-columns: repeat(5, 1fr);
+    fill: var(--primary-color);
 }
 
-.card-content p {
-    margin-top: 5px;
-    color: #333;
-    font-size: 10px;
+.rating-overlay {
+    background-color: white;
+    mix-blend-mode:exclusion;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: 1;
+  }
+  
+
+.card-name {
+    margin: 0px 0px;
+    font-weight: 800;
+}
+
+.card-description {
+    margin: 5px 0px;
+    font-size: 12px;
+    font-weight: 200;
 }

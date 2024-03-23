@@ -1,4 +1,5 @@
 import template from './Place.hbs';
+import starSvg from './star';
 
 /**
 * Класс Place представляет место, которое может быть отрендерено в HTML.
@@ -28,6 +29,13 @@ class Place {
   */
   render() {
     this.parent.insertAdjacentHTML('beforeend', this.asHTML());
+    const rating = document.querySelectorAll('.card-rating');
+    const element = rating[rating.length - 1];
+    const percentage = Math.round((this.data.rating / 5) * 103);
+    for (let j = 0; j < 5; j++) {
+     rating[rating.length - 1].insertAdjacentHTML('afterbegin', starSvg);
+     element.querySelector('.rating-overlay').style.width = `${percentage}%`;
+    }
   }
 }
 

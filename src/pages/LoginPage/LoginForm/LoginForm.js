@@ -48,17 +48,15 @@ class LoginForm extends AuthorizationForm {
 
     const inputs = document.querySelectorAll('.input');
 
-    inputs.forEach((input) => input.children[1].addEventListener('change', (e) => {
-      e.preventDefault();
-      const { type } = input.children[1];
-      submitButton.disabled = true;
-
-      const validationError = validate({ string: e.target.value, type });
-      this.renderError(input, validationError);
-      if (document.querySelectorAll('.has-error').length === 0) {
-        submitButton.disabled = false;
-      }
+    document.querySelectorAll('input').forEach((input) => input.addEventListener('input', () => {
+      validate({ string: input.value, type: input.type })
+        .catch((error) => {this.renderError(input.parentElement, error.message)})
+        .then(() => {
+          this.enableSubmitButton();
+        });
+        this.clearError(input.parentElement);
     }));
+
 
     loginForm.addEventListener('submit', (e) => {
       e.preventDefault();
