@@ -5,5 +5,9 @@
 #build js
 /public/bundle.js
 
+#images
+*.jpg
+
 .env.production
 .env.development
+/src/tslog.txt
