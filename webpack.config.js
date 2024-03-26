@@ -20,20 +20,19 @@ module.exports = {
     ],
   },
 
-    optimization: {
-      minimize: true,
-      minimizer: [
-        new CssMinimizerPlugin({
-          minify: CssMinimizerPlugin.lightningCssMinify,
-          minimizerOptions: {
-            targets: lightningcss.browserslistToTargets(browserslist('>= 0.25%')),
-          },
-        }),
-      ],
-    },
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new CssMinimizerPlugin({
+        minify: CssMinimizerPlugin.lightningCssMinify,
+        minimizerOptions: {
+          targets: lightningcss.browserslistToTargets(browserslist('>= 0.25%')),
+        },
+      }),
+    ],
+  },
 
   plugins: [
     new Dotenv(),
   ],
 };
-

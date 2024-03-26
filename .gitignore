@@ -8,8 +8,4 @@
 #images
 *.jpg
 
-.env.production
-.env.development
-/src/tslog.txt
-
-/src/tslog.txt
+.env
