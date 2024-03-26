@@ -3,7 +3,7 @@ export async function validate({ string: inputText, type }) {
     const emailRegexp = /^(?!.*\s)(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const passwordRegexp = /^(?!.*\s)(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,32}$/;
     const emojiRegexp = /(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])$/;
-  
+
     switch (type) {
       case 'email':
         if (inputText === '') {
@@ -26,7 +26,7 @@ export async function validate({ string: inputText, type }) {
         }
         break;
     }
-  }) 
+  });
 }
 
 export default validate;

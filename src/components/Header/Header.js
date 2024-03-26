@@ -65,7 +65,7 @@ class Header {
       const logoutButton = document.getElementById('logout');
 
       logoutButton.addEventListener('click', () => {
-        logout('http://127.0.0.1:8080');
+        logout(process.env.API_URL);
         userHelper('remove');
         router.go(urls.base);
       });

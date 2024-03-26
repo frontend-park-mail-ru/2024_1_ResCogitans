@@ -42,11 +42,11 @@ class SignupForm extends AuthorizationForm {
 
     document.querySelectorAll('input').forEach((input) => input.addEventListener('input', () => {
       validate({ string: input.value, type: input.type })
-        .catch((error) => {this.renderError(input.parentElement, error.message)})
+        .catch((error) => { this.renderError(input.parentElement, error.message); })
         .then(() => {
           this.enableSubmitButton();
         });
-        this.clearError(input.parentElement);
+      this.clearError(input.parentElement);
     }));
 
     registrationForm.addEventListener('submit', (e) => {
@@ -56,7 +56,7 @@ class SignupForm extends AuthorizationForm {
         username: email.value,
         password: password.value,
       };
-      signup('http://127.0.0.1:8080', requestBody)
+      signup(process.env.API_URL, requestBody)
         .then((response) => {
           if (response.status === 200) {
             userHelper('set', response.data.User.username);
@@ -65,8 +65,8 @@ class SignupForm extends AuthorizationForm {
           if (response.status === 400 || response.status === 500) {
             this.renderError(repeatPassword.parentElement, response.data.error);
           }
-        }
-    )});
+        });
+    });
   }
 }
 
