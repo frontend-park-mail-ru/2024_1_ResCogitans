@@ -4,33 +4,21 @@ const lightningcss = require('lightningcss');
 const browserslist = require('browserslist');
 const Dotenv = require('dotenv-webpack');
 
-module.exports = (env, argv) => {
- const isProduction = argv.mode === 'production';
-
- return {
-    mode: isProduction ? 'production' : 'development',
-    entry: './src/index.ts',
-    output: {
-      filename: 'bundle.js',
-      path: path.resolve(__dirname, 'public'),
-    },
-    module: {
-      rules: [
-        {
-          test: /\.hbs$/,
-          loader: 'handlebars-loader',
-        },
-        {
-          test: /\.tsx?$/,
-          use: 'ts-loader',
-          exclude: /node_modules/,
-        },
-      ],
-    },
-
-    resolve: {
-      extensions: ['.tsx', '.ts', '.js'],
-    },
+module.exports = {
+  mode: 'development',
+  entry: './src/index.js',
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'public'),
+  },
+  module: {
+    rules: [
+      {
+        test: /\.hbs$/,
+        loader: 'handlebars-loader',
+      },
+    ],
+  },
 
     optimization: {
       minimize: true,
@@ -44,10 +32,8 @@ module.exports = (env, argv) => {
       ],
     },
 
-    plugins: [
-      new Dotenv({
-        path: isProduction ? '.env.production' : '.env.development',
-      }),
-    ],
- };
+  plugins: [
+    new Dotenv(),
+  ],
 };
+

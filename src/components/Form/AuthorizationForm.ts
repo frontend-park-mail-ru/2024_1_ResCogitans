@@ -18,14 +18,15 @@ class AuthorizationForm {
   }
 
   email = document.getElementById('email');
+
   password = document.getElementById('password');
-  
+
   enableSubmitButton = (() => {
     const submitButton = document.getElementById('login-button');
 
-    let errorMessages = document.querySelectorAll('.has-error');
-    const areErrors = (errorMessages.length > 0);
-    submitButton.disabled = areErrors;
+    const errorMessages = document.querySelectorAll('.has-error');
+    const hasErrors = (errorMessages.length > 0);
+    submitButton.disabled = hasErrors;
   });
 
   clearError(parent) {

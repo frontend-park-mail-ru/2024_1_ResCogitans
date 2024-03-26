@@ -28,15 +28,15 @@ export async function login(url, body) {
 * @returns {Promise<void>}
 */
 export async function signup(url, data) {
-    const response = await fetch(`${url}/signup`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify(data),
-    });
+  const response = await fetch(`${url}/signup`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify(data),
+  });
 
-    const responseData = await response.json();
-    return { status : response.status, data : responseData};
+  const responseData = await response.json();
+  return { status: response.status, data: responseData };
 }
 
 export async function logout(url) {
@@ -46,5 +46,5 @@ export async function logout(url) {
     credentials: 'include',
   });
   const responseData = await response.json();
-  return { status : response.status, data : responseData} ;
+  return { status: response.status, data: responseData };
 }

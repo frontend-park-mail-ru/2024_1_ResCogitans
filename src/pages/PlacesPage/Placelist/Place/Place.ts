@@ -33,8 +33,8 @@ class Place {
     const element = rating[rating.length - 1];
     const percentage = Math.round((this.data.rating / 5) * 103);
     for (let j = 0; j < 5; j++) {
-     rating[rating.length - 1].insertAdjacentHTML('afterbegin', starSvg);
-     element.querySelector('.rating-overlay').style.width = `${percentage}%`;
+      rating[rating.length - 1].insertAdjacentHTML('afterbegin', starSvg);
+      element.querySelector('.rating-overlay').style.width = `${percentage}%`;
     }
   }
 }
