@@ -13,14 +13,17 @@
     transition: all 0.2s;
 }
 
-.err-link {
-    color: red;
+.err-label {
+    color: transparent;
     display: block;
+    height: 24px;
+    font-size: 12px;
+    position: relative;
+    margin-bottom: 10px;
 }
 
-.err-link::hover {
-    border: none;
-    background-color: none;
+.has-error {
+    color: red;
 }
 
 .user-link { 

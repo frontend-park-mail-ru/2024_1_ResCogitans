@@ -4,6 +4,22 @@
     </div>  
     <h2>Создать аккаунт</h2>
     <form id="registration-form" method="post">
-
+    <div class="input">
+        <label for="login">Электронная почта</label>
+        <input id="email" type="email" class="form-input" required>
+        <label class="err-label has-error">Введите почту</label>  
+    </div>
+    <div class="input input-button">
+        <label for="password">Пароль</label>
+        <input id="password" type="password" class="form-input" required maxlength="32">
+        <button class="password-visible"><img src="static/visible.svg"></button>
+        <label class="err-label has-error">Введите надёжный пароль</label>  
+    </div>
+    <div class="input input-button">
+        <label for="password-repeat">Повторите пароль</label>
+        <input id="password-repeat" type="password" class="form-input" required maxlength="32">
+        <button class="password-visible"><img src="static/visible.svg"></button>
+        <label class="err-label has-error">Повторите пароль</label>  
+    </div>
     </form>
 </div>

@@ -4,3 +4,8 @@
 
 #build js
 /public/bundle.js
+
+#images
+*.jpg
+
+.env

@@ -1,5 +1,3 @@
-import NotFoundPage from '../pages/NotFoundPage/NotFoundPage';
-
 /**
 * Класс Router управляет навигацией между страницами приложения.
 * @class
@@ -61,8 +59,8 @@ class Router {
       const page = new route.page(content);
       page.render();
     } else {
-      const notFoundPage = new NotFoundPage(content);
-      notFoundPage.render();
+      const { page } = this.routes.find((obj) => obj.path === '/404');
+      new page(content).render();
     }
   }
 }

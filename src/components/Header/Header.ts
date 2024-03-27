@@ -4,6 +4,7 @@ import Link from './Link/Link';
 import urls from '../../router/urls';
 import { router } from '../../router/Router';
 import { userHelper } from '../../utils/localstorage';
+import { logout } from '../../api/user';
 
 import template from './Header.hbs';
 
@@ -61,9 +62,10 @@ class Header {
       new Link(profileBlock, { className: 'user-link', label: username }).render();
       new Button(profileBlock, { id: 'logout', label: 'Выйти' }).render();
 
-      const logout = document.getElementById('logout');
+      const logoutButton = document.getElementById('logout');
 
-      logout.addEventListener('click', () => {
+      logoutButton.addEventListener('click', () => {
+        logout(process.env.API_URL);
         userHelper('remove');
         router.go(urls.base);
       });

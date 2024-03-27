@@ -2,6 +2,7 @@ const path = require('path');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const lightningcss = require('lightningcss');
 const browserslist = require('browserslist');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = {
   mode: 'development',
@@ -31,5 +32,7 @@ module.exports = {
     ],
   },
 
-  plugins: [],
+  plugins: [
+    new Dotenv(),
+  ],
 };

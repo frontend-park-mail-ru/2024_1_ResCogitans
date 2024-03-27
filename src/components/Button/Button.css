@@ -4,12 +4,18 @@ button {
     border-radius: 20px;
     padding: 10px 10px;
     border-style: none;
+    transition: all 0.25s ease-in-out;
 }
 
 button:hover {
     opacity: 80%;
-    transition: background-color 0.1s;
+    transition: all 0.25s ease-in-out;
+    scale: 105%;
 }  
+
+button:disabled {
+    opacity: 80%;
+}
 
 button > a {
     text-decoration: none;
@@ -46,10 +52,19 @@ button > a {
 #login-button {
     margin-right: 30px;
     background-color: var(--primary-color);
-    margin-bottom: 20px;
 }
 
-#register-button {
-    margin-bottom: 20px;
+#signup-button {
     background-color: transparent;
 }
+
+
+.input-button button {
+    position: absolute;
+    z-index: 2;
+    right: 50px;
+    width: 36px;
+    height: 36px;
+    background-color: transparent;
+    transition: all 0.2s ease-in-out;
+ }

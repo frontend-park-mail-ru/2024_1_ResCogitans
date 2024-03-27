@@ -1,12 +1,19 @@
 input {
     text-align: center;
     border-radius: 20px;
-    border: 1px solid var(--secondary-color);
+    border: 2px solid var(--main-text-color);
     font-size: 14px;
     height: 36px;
     width: 280px;
+    transition: all 0.25s ease-in-out;
+}
+
+input:focus {
+    outline: none;
+    scale: 105%;
+    transition: all 0.25s ease-in-out;
 }
 
 .form-input {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }

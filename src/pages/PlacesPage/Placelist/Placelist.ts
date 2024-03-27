@@ -1,6 +1,6 @@
 import Place from './Place/Place';
 import template from './Placelist.hbs';
-import getSights from '../../../api/sights';
+import get from '../../../api/base';
 
 /**
 * Класс Placelist представляет список мест, который может быть отрендерен в HTML.
@@ -14,7 +14,6 @@ class Placelist {
   constructor(parent) {
     this.parent = parent;
     this.city = 'Paris';
-    this.places = [];
   }
 
   /**
@@ -26,20 +25,11 @@ class Placelist {
   }
 
   /**
-  * Обрабатывает полученные данные мест и рендерит их в DOM.
-  * @param {Object} data - Данные мест.
-  */
-  getPlaces(data) {
-    this.places = data;
-    this.renderPlaces();
-  }
-
-  /**
   * Рендерит каждое место из списка в DOM.
   */
-  renderPlaces() {
+  renderPlaces(places) {
     const placelist = document.getElementById('list-places');
-    this.places.sights.forEach((data) => new Place(placelist, data).render());
+    places.sights.forEach((data) => new Place(placelist, data).render());
   }
 
   /**
@@ -47,7 +37,8 @@ class Placelist {
   */
   render() {
     this.parent.insertAdjacentHTML('afterend', this.asHTML());
-    getSights('http://localhost:8080/sights', this.getPlaces.bind(this));
+    get(`${process.env.API_URL}/sights`)
+      .then((responsePlaces) => this.renderPlaces(responsePlaces));
   }
 }
 
