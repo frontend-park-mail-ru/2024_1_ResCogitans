@@ -1,5 +1,4 @@
-import { router } from './router/Router';
-import routes from './router/routes';
+import { router } from "./router/router";
 
 let root = document.getElementById('root') as HTMLDivElement;
 

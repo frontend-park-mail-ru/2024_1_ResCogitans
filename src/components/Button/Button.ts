@@ -1,4 +1,5 @@
 import Base from '../Base/Base'
+import template from './Button.hbs'
 
 /**
 * Класс Button. Все кнопки являются экземплярами класса Button.

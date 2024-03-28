@@ -1,12 +1,12 @@
-import template from './LoginForm.hbs';
 import Button from '../../../components/Button/Button';
 import urls from '../../../router/urls';
 import Logo from '../../../components/Header/Logo/Logo';
-import { router } from '../../../router/Router';
+import  { router } from '../../../router/router';
 import { userHelper } from '../../../utils/localstorage';
 import { login } from '../../../api/user';
 import { validate } from '../../../utils/validation';
 import AuthorizationForm from '../../../components/Form/AuthorizationForm';
+import template from './LoginForm.hbs'
 
 /**
 * Класс LoginForm представляет форму входа, которая может быть отрендерена в HTML.
@@ -15,8 +15,8 @@ import AuthorizationForm from '../../../components/Form/AuthorizationForm';
 class LoginForm extends AuthorizationForm {
 
   async render() {
-    const htmlView = await this.asHTML()
-    this.parent.insertAdjacentHTML('beforeend', htmlView);
+      const htmlView = this.template(this);
+        this.parent.insertAdjacentHTML('beforeend', htmlView);
 
     const logoGroup = document.getElementById('logo-group') as HTMLDivElement;
     new Logo(logoGroup).render();

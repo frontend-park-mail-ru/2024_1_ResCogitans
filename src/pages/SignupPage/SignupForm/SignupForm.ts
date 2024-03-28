@@ -1,12 +1,12 @@
-import template from './SignupForm.hbs';
 import AuthorizationForm from '../../../components/Form/AuthorizationForm';
 import Button from '../../../components/Button/Button';
 import urls from '../../../router/urls';
 import Logo from '../../../components/Header/Logo/Logo';
 import { signup } from '../../../api/user';
-import { router } from '../../../router/Router';
+import  {router} from '../../../router/router';
 import { userHelper } from '../../../utils/localstorage';
 import { validate } from '../../../utils/validation';
+import template from './SignupForm.hbs'
 
 /**
 * Класс SignupForm представляет форму регистрации, которая может быть отрендерена в HTML.
@@ -17,8 +17,8 @@ class SignupForm extends AuthorizationForm {
   * Рендерит форму регистрации в DOM, включая логотип, поля ввода и кнопку.
   */
   async render() {
-    const htmlView = await this.asHTML()
-    this.parent.insertAdjacentHTML('beforeend', htmlView);
+      const htmlView = this.template(this);
+        this.parent.insertAdjacentHTML('beforeend', htmlView);
     const logoGroup = document.getElementById('logo-group') as HTMLDivElement;
     new Logo(logoGroup).render();
 

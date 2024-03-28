@@ -1,16 +1,15 @@
 import Header from '../../components/Header/Header';
 import Button from '../../components/Button/Button';
-import { router } from '../../router/Router';
+import  { router } from '../../router/router';
 import urls from '../../router/urls';
 import Base from '../../components/Base/Base';
-
-import template from './NotFoundPage.hbs';
+import template from './NotFoundPage.hbs'
 
 class NotFoundPage extends Base {
   async render() {
     document.body.style.backgroundImage = '';
-    const htmlView = await this.asHTML()
-    this.parent.insertAdjacentHTML('beforeend', htmlView);
+      const htmlView = this.template(this);
+        this.parent.insertAdjacentHTML('beforeend', htmlView);
     const header = document.getElementById('header') as HTMLDivElement;
     const notfound = document.getElementById('notfound') as HTMLDivElement;
     new Header(header).render();

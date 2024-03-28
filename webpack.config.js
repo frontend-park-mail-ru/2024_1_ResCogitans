@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const lightningcss = require('lightningcss');
 const browserslist = require('browserslist');
@@ -43,5 +44,13 @@ module.exports = {
 
   plugins: [
     new Dotenv(),
+    new webpack.ContextReplacementPlugin(/^\.\/templates\/(.*)\.hbs$/, (contextRegExp) => {
+    }),
   ],
+
+  resolve: {
+    alias: {
+      templates: path.resolve(__dirname, 'src/templates/'),
+    },
+ },
 };

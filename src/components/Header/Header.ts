@@ -2,12 +2,11 @@ import Button from '../Button/Button';
 import Logo from './Logo/Logo';
 import Link from '../Link/Link';
 import urls from '../../router/urls';
-import { router } from '../../router/Router';
+import  { router } from '../../router/router';
 import { userHelper } from '../../utils/localstorage';
 import { logout } from '../../api/user';
 import Base from '../Base/Base';
-
-import template from './Header.hbs';
+import template from './Header.hbs'
 
 /**
 * Класс Header. Это шапка сайта.
@@ -27,8 +26,8 @@ class Header extends Base {
   * Рендерит шапку, включая логотип, ссылки и кнопки в зависимости от состояния пользователя.
   */
   async render() {
-    const htmlView = await this.asHTML()
-    this.parent.insertAdjacentHTML('beforeend', htmlView);
+      const htmlView = this.template(this);
+        this.parent.insertAdjacentHTML('beforeend', htmlView);
 
     const logoGroup = document.getElementById('logo-group') as HTMLElement;
     const logo = new Logo(logoGroup);

@@ -1,4 +1,3 @@
-import template from './Logo.hbs';
 import Base from '../../Base/Base';
 
 /**

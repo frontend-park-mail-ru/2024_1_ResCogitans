@@ -2,6 +2,7 @@ import Header from '../../components/Header/Header';
 import MainSearch from '../../components/MainSearch/MainSearch';
 import Placelist from './Placelist/Placelist';
 import Base from '../../components/Base/Base'
+import template from './PlacesPage.hbs'
 
 /**
 * Класс PlacesPage представляет страницу мест, которая может быть отрендерена в HTML.
@@ -13,7 +14,7 @@ class PlacesPage extends Base {
   */
   async render() {
     document.body.style.backgroundImage = '';
-    const htmlView = await this.asHTML()
+    const htmlView = this.template(this);
     this.parent.insertAdjacentHTML('beforeend', htmlView);
  
     const header = document.getElementById('header') as HTMLElement;

@@ -1,8 +1,7 @@
 import Link from '../Link/Link';
 import Button from '../Button/Button';
 import Input from '../Input/Input';
-
-import template from './MainSearch.hbs';
+import template from './MainSearch.hbs'
 import Base from '../Base/Base'
 
 /**
@@ -16,8 +15,7 @@ class MainSearch extends Base {
   */
   async render() {
     const searchBlock = document.getElementById('main-search');
-    const htmlView = await this.asHTML()
-
+    const htmlView = this.template(this);
     searchBlock?.insertAdjacentHTML('beforeend', htmlView);
 
     const linkArea = document.getElementById('search-links') as HTMLElement;

@@ -1,4 +1,3 @@
-import template from './SignupPage.hbs';
 import SignupForm from './SignupForm/SignupForm';
 import Base from '../../components/Base/Base'
 

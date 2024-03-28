@@ -24,15 +24,15 @@ ERROR in /home/exg0rd/Desktop/Modules/src/index.ts
       TS2345: Argument of type '{ [x: string]: typeof PlacesPage; }' is not assignable to parameter of type 'Route[]'.
   Type '{ [x: string]: typeof PlacesPage; }' is missing the following properties from type 'Route[]': length, pop, push, concat, and 29 more.
 
-ERROR in /home/exg0rd/Desktop/Modules/src/router/Router.ts
-./src/router/Router.ts 13:17-22
-[tsl] ERROR in /home/exg0rd/Desktop/Modules/src/router/Router.ts(13,18)
+ERROR in /home/exg0rd/Desktop/Modules/src/router/RouterInstance.ts
+./src/router/RouterInstance.ts 13:17-22
+[tsl] ERROR in /home/exg0rd/Desktop/Modules/src/router/RouterInstance.ts(13,18)
       TS2552: Cannot find name 'Route'. Did you mean 'Routes'?
  @ ./src/index.ts 6:17-43
 
-ERROR in /home/exg0rd/Desktop/Modules/src/router/Router.ts
-./src/router/Router.ts 23:26-31
-[tsl] ERROR in /home/exg0rd/Desktop/Modules/src/router/Router.ts(23,27)
+ERROR in /home/exg0rd/Desktop/Modules/src/router/RouterInstance.ts
+./src/router/RouterInstance.ts 23:26-31
+[tsl] ERROR in /home/exg0rd/Desktop/Modules/src/router/RouterInstance.ts(23,27)
       TS2552: Cannot find name 'Route'. Did you mean 'Routes'?
  @ ./src/index.ts 6:17-43
 

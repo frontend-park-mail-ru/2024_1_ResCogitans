@@ -1,7 +1,7 @@
 import Place from './Place/Place'
-import template from './Placelist.hbs';
 import get from '../../../api/base';
 import Base from '../../../components/Base/Base'
+import template from './Placelist.hbs'
 
 interface Sight {
   id: number,
@@ -32,7 +32,7 @@ class Placelist extends Base {
   * Рендерит список мест в DOM и запрашивает данные мест.
   */
   async render() {
-    const htmlView = await this.asHTML()
+    const htmlView = this.template(this);
     this.parent.insertAdjacentHTML('afterend', htmlView);
     get(`${process.env.API_URL}/sights`)
       .then((responsePlaces) => this.renderPlaces(responsePlaces));

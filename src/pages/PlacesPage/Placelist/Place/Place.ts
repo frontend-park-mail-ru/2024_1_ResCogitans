@@ -1,7 +1,6 @@
-import template from './Place.hbs';
 import starSvg from './star';
 import Base from '../../../../components/Base/Base'
-
+import template from './Place.hbs'
 
 interface Sight {
   id: number,
@@ -29,10 +28,9 @@ class Place extends Base {
     this.data = data;
   }
 
-
   async render() {
-    const htmlView = await this.asHTML()
-    this.parent.insertAdjacentHTML('beforeend', htmlView);
+      const htmlView = this.template(this);
+        this.parent.insertAdjacentHTML('beforeend', htmlView);
     const rating = document.querySelectorAll('.card-rating');
     const element = rating[rating.length - 1];
     const percentage = Math.round((this.data.rating / 5) * 103);

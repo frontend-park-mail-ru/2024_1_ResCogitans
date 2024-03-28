@@ -2,32 +2,26 @@ import Handlebars from 'handlebars';
 
 class Base {
 
-    parent : HTMLElement;
+    parent: HTMLElement;
+    template: HandlebarsTemplateDelegate<any>;
 
     constructor(parent : HTMLElement) {
         this.parent = parent;
+        this.template = () => '';
+        this.loadTemplate();
     }
 
-    async loadTemplate(componentName : string) {
-        const templateName = `./${componentName}.hbs`;
-        const templatesContext = require.context('./', true, /\.hbs$/);
-        const template = templatesContext(templateName);
-
-        const templateModule = await import(template);
-        return templateModule.default;
+    async loadTemplate() {
+        const templateName = `src/templates/${this.constructor.name}.hbs`;
+        const templateModule = await import(templateName);
+        this.template = Handlebars.compile(templateModule.default);
     }
 
-    async asHTML() {
-        const template = await this.loadTemplate(this.constructor.name);
-        const compiledTemplate = Handlebars.compile(template);
-        const htmlView = compiledTemplate(this);
-        return htmlView;
-    }
-
+   
     async render() {
-        const htmlView = await this.asHTML();
+        const htmlView = this.template(this);
         this.parent.insertAdjacentHTML('beforeend', htmlView);
-      }
+    }
 
 }
 
