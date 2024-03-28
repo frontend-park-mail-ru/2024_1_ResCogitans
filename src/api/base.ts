@@ -6,7 +6,7 @@
 * @param {Function} callback - Функция обратного вызова. Она будет вызвана после выполнения запроса.
 * @returns {Promise<void>}
 */
-const get = async (url) => {
+const get = async ( url : string ) => {
   const response = await fetch(url);
   const responseData = await response.json();
   return responseData;

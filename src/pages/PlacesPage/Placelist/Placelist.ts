@@ -1,42 +1,39 @@
-import Place from './Place/Place';
+import Place from './Place/Place'
 import template from './Placelist.hbs';
 import get from '../../../api/base';
+import Base from '../../../components/Base/Base'
+
+interface Sight {
+  id: number,
+  rating: number,
+  name: string,
+  description: string,
+  city: string,
+  url: string
+}
+
+interface SightResponse {
+  sights: Sight[];
+ }
 
 /**
+ * 
 * Класс Placelist представляет список мест, который может быть отрендерен в HTML.
 * @class
 */
-class Placelist {
-  /**
-  * Создает новый экземпляр списка мест.
-  * @param {HTMLElement} parent - Родительский элемент, в который будет вставлен список мест.
-  */
-  constructor(parent) {
-    this.parent = parent;
-    this.city = 'Paris';
-  }
+class Placelist extends Base {
 
-  /**
-  * Возвращает HTML-представление списка мест.
-  * @returns {string} HTML-представление списка мест.
-  */
-  asHTML() {
-    return template(this.city);
-  }
-
-  /**
-  * Рендерит каждое место из списка в DOM.
-  */
-  renderPlaces(places) {
-    const placelist = document.getElementById('list-places');
+  renderPlaces(places : SightResponse) {
+    const placelist = document.getElementById('list-places') as HTMLDivElement;
     places.sights.forEach((data) => new Place(placelist, data).render());
   }
 
   /**
   * Рендерит список мест в DOM и запрашивает данные мест.
   */
-  render() {
-    this.parent.insertAdjacentHTML('afterend', this.asHTML());
+  async render() {
+    const htmlView = await this.asHTML()
+    this.parent.insertAdjacentHTML('afterend', htmlView);
     get(`${process.env.API_URL}/sights`)
       .then((responsePlaces) => this.renderPlaces(responsePlaces));
   }

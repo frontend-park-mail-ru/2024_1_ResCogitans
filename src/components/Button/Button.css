@@ -68,3 +68,12 @@ button > a {
     background-color: transparent;
     transition: all 0.2s ease-in-out;
  }
+
+ .password-visible {
+    background-image: url('static/visible.svg');
+ }
+
+
+ .password-invisible {
+    background-image: url('static/no_visible.svg');
+ }

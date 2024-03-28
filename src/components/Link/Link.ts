@@ -1,10 +1,18 @@
 import template from './Link.hbs';
+import Base from '../Base/Base';
 
 /**
 * Класс Link. Представляет ссылку, которая может быть отрендерена в HTML.
 * @class
 */
-class Link {
+class Link extends Base{
+
+  label : string | undefined;
+  url : string | undefined;
+  className : string | undefined;
+  id : string | undefined;
+  src : string | undefined;
+
   /**
   * Создает новый экземпляр ссылки.
   * @param {HTMLElement} parent - Родительский элемент, в который будет вставлена ссылка.
@@ -15,37 +23,19 @@ class Link {
   * @param {string} options.url - URL, на который будет осуществлен редирект после нажатия.
   * @param {string} [options.src=''] - URL изображения для ссылки.
   */
-  constructor(parent, {
-    id, className, label, url, src,
-  }) {
-    this.parent = parent;
-    this.label = label;
-    this.url = url;
-    this.className = className;
-    this.id = id;
-    this.src = src;
-  }
-
-  /**
-  * Возвращает HTML-представление ссылки.
-  * @returns {string} HTML-представление ссылки.
-  */
-  asHTML() {
-    return template({
-      id: this.id,
-      url: this.url,
-      className: this.className,
-      label: this.label,
-      src: this.src,
-    });
-  }
-
-  /**
-  * Рендерит ссылку в DOM.
-  */
-  render() {
-    this.parent.insertAdjacentHTML('beforeend', this.asHTML());
-  }
+  constructor(parent : HTMLElement, {id, className, label, url, src} : 
+    { id? : string, 
+      className? : string, 
+      label? : string, 
+      url? : string, 
+      src? : string})  {
+      super(parent);
+      this.label = label;
+      this.url = url;
+      this.className = className;
+      this.id = id;
+      this.src = src;
+    }
 }
 
 export default Link;

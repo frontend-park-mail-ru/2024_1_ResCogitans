@@ -1,11 +1,19 @@
-import template from './Button.hbs';
+import Base from '../Base/Base'
 
 /**
 * Класс Button. Все кнопки являются экземплярами класса Button.
 * Отвечает за отношение с другими объектами HTML верстки, типом и url.
 * @class
-*/
-class Button {
+
+*/class Button extends Base {
+
+  id? : string;
+  label? : string;
+  className? : string;
+  url? : string;
+  img? : string;
+  type? : string;
+
   /**
   * Создает новый экземпляр кнопки.
   * @param {HTMLElement} parent - Родительский элемент, в который будет вставлена кнопка.
@@ -17,39 +25,20 @@ class Button {
   * @param {string} [options.url=''] - URL, на который будет осуществлен редирект после нажатия.
   * @param {string} [options.type=''] - Тип кнопки (например, 'submit').
   */
-  constructor(parent, {
-    id, label = '', className = '', img = '', url = '', type = '',
-  }) {
-    this.parent = parent;
+  constructor(parent : HTMLElement, { id, label, className, img, url, type} : 
+    { id? : string,
+      label? : string,
+      className? : string,
+      img? : string,
+      url? : string,
+      type? : string}) {
+    super(parent);
     this.id = id;
     this.label = label;
     this.className = className;
     this.url = url;
     this.img = img;
     this.type = type;
-  }
-
-  /**
-  * Возвращает HTML-представление кнопки.
-  * @returns {string} HTML-представление кнопки.
-  */
-  asHTML() {
-    return template({
-      id: this.id,
-      label: this.label,
-      className: this.className,
-      url: this.url,
-      img: this.img,
-      type: this.type,
-    });
-  }
-
-  /**
-  * Рендерит кнопку в DOM.
-  * @returns {HTMLElement} Элемент кнопки в DOM.
-  */
-  render() {
-    this.parent.insertAdjacentHTML('beforeend', this.asHTML());
   }
 }
 
