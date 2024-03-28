@@ -2,7 +2,6 @@ import Header from '../../components/Header/Header';
 import MainSearch from '../../components/MainSearch/MainSearch';
 import Placelist from './Placelist/Placelist';
 import Base from '../../components/Base/Base'
-import template from './PlacesPage.hbs'
 
 /**
 * Класс PlacesPage представляет страницу мест, которая может быть отрендерена в HTML.

@@ -3,7 +3,7 @@ import Button from '../../../components/Button/Button';
 import urls from '../../../router/urls';
 import Logo from '../../../components/Header/Logo/Logo';
 import { signup } from '../../../api/user';
-import  {router} from '../../../router/router';
+import { router } from '../../../router/router';
 import { userHelper } from '../../../utils/localstorage';
 import { validate } from '../../../utils/validation';
 import template from './SignupForm.hbs'

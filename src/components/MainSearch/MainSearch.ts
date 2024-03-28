@@ -1,7 +1,6 @@
 import Link from '../Link/Link';
 import Button from '../Button/Button';
 import Input from '../Input/Input';
-import template from './MainSearch.hbs'
 import Base from '../Base/Base'
 
 /**

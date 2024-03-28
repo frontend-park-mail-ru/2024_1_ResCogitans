@@ -6,31 +6,32 @@ const browserslist = require('browserslist');
 const Dotenv = require('dotenv-webpack');
 
 module.exports = {
-  mode: 'development',
-  entry: './src/index.ts',
-  output: {
+ mode: 'development',
+ entry: './src/index.ts',
+ output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'public'),
-  },
-  module: {
+ },
+ module: {
     rules: [
       {
         test: /\.hbs$/,
         loader: 'handlebars-loader',
       },
       {
-        test: /\.ts$/,
-        use: 'ts-loader',
+        test: /\.tsx?$/,
+        use: 'babel-loader', 
         exclude: /node_modules/,
       },
     ],
-  },
-
-  resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.json'],
-   },
-
-  optimization: {
+ },
+ resolve: {
+    extensions: ['.ts', '.tsx', '.js'], 
+    alias: {
+      templates: path.resolve(__dirname, 'src/templates'),
+    },    
+ },
+ optimization: {
     minimize: true,
     minimizer: [
       new CssMinimizerPlugin({
@@ -40,17 +41,8 @@ module.exports = {
         },
       }),
     ],
-  },
-
-  plugins: [
-    new Dotenv(),
-    new webpack.ContextReplacementPlugin(/^\.\/templates\/(.*)\.hbs$/, (contextRegExp) => {
-    }),
-  ],
-
-  resolve: {
-    alias: {
-      templates: path.resolve(__dirname, 'src/templates/'),
-    },
  },
+ plugins: [
+    new Dotenv(),
+ ],
 };

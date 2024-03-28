@@ -6,7 +6,6 @@ import  { router } from '../../router/router';
 import { userHelper } from '../../utils/localstorage';
 import { logout } from '../../api/user';
 import Base from '../Base/Base';
-import template from './Header.hbs'
 
 /**
 * Класс Header. Это шапка сайта.

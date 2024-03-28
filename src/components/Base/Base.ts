@@ -1,5 +1,4 @@
 import Handlebars from 'handlebars';
-
 class Base {
 
     parent: HTMLElement;
@@ -12,8 +11,9 @@ class Base {
     }
 
     async loadTemplate() {
-        const templateName = `src/templates/${this.constructor.name}.hbs`;
-        const templateModule = await import(templateName);
+        const templateName = `../../templates/${this.constructor.name}.hbs`;
+        console.log(templateName);
+        const templateModule = await require(templateName);
         this.template = Handlebars.compile(templateModule.default);
     }
 
