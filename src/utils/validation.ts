@@ -1,4 +1,4 @@
-export async function validate({ string: inputText, type }) {
+export async function validate( inputText : string, type : string ): Promise<void> {
   return new Promise((resolve, reject) => {
     const emailRegexp = /^(?!.*\s)(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const passwordRegexp = /^(?!.*\s)(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,32}$/;

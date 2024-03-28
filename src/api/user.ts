@@ -7,7 +7,7 @@
 * @param {Function} callback - Функция обратного вызова. Она будет вызвана после выполнения запроса.
 * @returns {Promise<void>}
 */
-export async function login(url, body) {
+export async function login(url : string, body : any): Promise<any> {
   const response = await fetch(`${url}/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -15,7 +15,7 @@ export async function login(url, body) {
     body: JSON.stringify(body),
   });
   const responseData = await response.json();
-  return responseData;
+  return { status: response.status, data: responseData };
 }
 
 /**
@@ -27,7 +27,7 @@ export async function login(url, body) {
 * @param {Function} callback - Функция обратного вызова. Она будет вызвана после выполнения запроса.
 * @returns {Promise<void>}
 */
-export async function signup(url, data) {
+export async function signup( url : string, data : any ): Promise<any> {
   const response = await fetch(`${url}/signup`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -39,7 +39,7 @@ export async function signup(url, data) {
   return { status: response.status, data: responseData };
 }
 
-export async function logout(url) {
+export async function logout(url : string): Promise<any> {
   const response = await fetch(`${url}/logout`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
