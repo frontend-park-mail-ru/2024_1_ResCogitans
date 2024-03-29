@@ -17,10 +17,11 @@ class PlacesPage extends Base {
  
     const header = document.getElementById('header') as HTMLElement;
     const mainsearch = document.getElementById('main-search') as HTMLElement;
+    const places = document.getElementById('places') as HTMLElement;
 
     await new Header(header).render();
     await new MainSearch(mainsearch).render();
-    await new Placelist(mainsearch).render();
+    await new Placelist(places).render();
   }
 }
 

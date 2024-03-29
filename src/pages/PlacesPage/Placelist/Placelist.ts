@@ -22,10 +22,11 @@ interface SightResponse {
 */
 class Placelist extends Base {
 
-  renderPlaces(places : SightResponse) {
+  async renderPlaces(places : SightResponse) {
     const placelist = document.getElementById('list-places') as HTMLDivElement;
-    places.sights.forEach((data) => new Place(placelist, data).render());
+    const placePromises = places.sights.map((data) => new Place(placelist, data).render());
   }
+    
 
   /**
   * Рендерит список мест в DOM и запрашивает данные мест.

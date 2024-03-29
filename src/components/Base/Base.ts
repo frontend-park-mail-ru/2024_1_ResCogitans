@@ -11,18 +11,13 @@ class Base {
 
    
     async loadTemplate() {
-        try {
-            const templateModule = await import(`../../templates/${this.constructor.name}.hbs`);
-            this.template = templateModule.default; // This is now a function
-        } catch (error) {
-            console.error("Failed to load template");
-        }
+        const templateModule = await import(`../../templates/${this.constructor.name}.hbs`);
+        this.template = templateModule.default;
     }
 
     async preRender(element? : HTMLElement) {
         await this.loadTemplate();
         const html = this.template(this);
-        console.log(html);
         if (element !== undefined) {
             element.insertAdjacentHTML('beforeend', html);
         } else {

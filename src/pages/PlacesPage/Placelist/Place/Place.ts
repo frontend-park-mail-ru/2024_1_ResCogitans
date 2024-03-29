@@ -1,6 +1,5 @@
-import starSvg from './star';
 import Base from '../../../../components/Base/Base'
-import template from './Place.hbs'
+import { starSvg } from './star';
 
 interface Sight {
   id: number,
@@ -29,17 +28,22 @@ class Place extends Base {
   }
 
   async render() {
-      const htmlView = this.template(this);
-        this.parent.insertAdjacentHTML('beforeend', htmlView);
-    const rating = document.querySelectorAll('.card-rating');
-    const element = rating[rating.length - 1];
-    const percentage = Math.round((this.data.rating / 5) * 103);
-    for (let j = 0; j < 5; j++) {
-      rating[rating.length - 1].insertAdjacentHTML('afterbegin', starSvg);
-      const filter =  element.querySelector('.rating-overlay') as HTMLDivElement;
-      filter.style.width = `${percentage}%`;
+    await this.preRender();
+
+    const stars = document.querySelector(`#card-${this.data.id} .card-rating`) as HTMLElement;
+    const fullStars = Math.floor(this.data.rating);
+    const gradientPercentage = (this.data.rating % 1) * 100;
+
+    for (let i = 0; i < 5; i++) {
+      if (i < fullStars) {
+        stars.insertAdjacentHTML('beforeend', starSvg(100));
+      } else if (i === fullStars) {
+        stars.insertAdjacentHTML('beforeend', starSvg(gradientPercentage));
+      } else {
+        stars.insertAdjacentHTML('beforeend', starSvg(0));
+      }
     }
-  }
+}
 }
 
 export default Place;

@@ -32,12 +32,10 @@
 }
 
 .card-rating {
+    display: flex;
     position: relative;
-    grid-row: 3;
     width: fit-content;
     align-self: flex-end;
-    grid-template-columns: repeat(5, 1fr);
-    fill: var(--primary-color);
 }
 
 .rating-overlay {
