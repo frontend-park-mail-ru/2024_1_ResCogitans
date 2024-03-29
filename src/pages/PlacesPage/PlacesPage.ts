@@ -13,15 +13,14 @@ class PlacesPage extends Base {
   */
   async render() {
     document.body.style.backgroundImage = '';
-    const htmlView = this.template(this);
-    this.parent.insertAdjacentHTML('beforeend', htmlView);
+    await this.preRender();
  
     const header = document.getElementById('header') as HTMLElement;
     const mainsearch = document.getElementById('main-search') as HTMLElement;
 
-    new Header(header).render();
-    new MainSearch(mainsearch).render();
-    new Placelist(mainsearch).render();
+    await new Header(header).render();
+    await new MainSearch(mainsearch).render();
+    await new Placelist(mainsearch).render();
   }
 }
 

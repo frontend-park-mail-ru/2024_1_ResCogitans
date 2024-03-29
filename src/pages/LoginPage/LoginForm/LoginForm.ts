@@ -6,7 +6,6 @@ import { userHelper } from '../../../utils/localstorage';
 import { login } from '../../../api/user';
 import { validate } from '../../../utils/validation';
 import AuthorizationForm from '../../../components/Form/AuthorizationForm';
-import template from './LoginForm.hbs'
 
 /**
 * Класс LoginForm представляет форму входа, которая может быть отрендерена в HTML.
@@ -15,17 +14,16 @@ import template from './LoginForm.hbs'
 class LoginForm extends AuthorizationForm {
 
   async render() {
-      const htmlView = this.template(this);
-        this.parent.insertAdjacentHTML('beforeend', htmlView);
+    await this.preRender();
 
     const logoGroup = document.getElementById('logo-group') as HTMLDivElement;
-    new Logo(logoGroup).render();
+    await new Logo(logoGroup).render();
     const loginForm = document.getElementById('login-form') as HTMLDivElement;
 
-    new Button(loginForm, {
+    await new Button(loginForm, {
       id: 'login-button', label: 'Войти', type: 'submit',
     }).render();
-    new Button(loginForm, {
+    await new Button(loginForm, {
       id: 'signup-button', label: 'Регистрация',
     }).render();
 

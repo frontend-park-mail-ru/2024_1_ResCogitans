@@ -25,8 +25,7 @@ class Header extends Base {
   * Рендерит шапку, включая логотип, ссылки и кнопки в зависимости от состояния пользователя.
   */
   async render() {
-      const htmlView = this.template(this);
-        this.parent.insertAdjacentHTML('beforeend', htmlView);
+    await this.preRender();
 
     const logoGroup = document.getElementById('logo-group') as HTMLElement;
     const logo = new Logo(logoGroup);
@@ -40,8 +39,8 @@ class Header extends Base {
     const username = localStorage.getItem('username');
 
     if (username != null) {
-      new Link(profileBlock, { className: 'user-link', label: username }).render();
-      new Button(profileBlock, { id: 'logout', label: 'Выйти' }).render();
+      await new Link(profileBlock, { className: 'user-link', label: username }).render();
+      await new Button(profileBlock, { id: 'logout', label: 'Выйти' }).render();
 
       const logoutButton = document.getElementById('logout') as HTMLElement;
 
@@ -53,7 +52,7 @@ class Header extends Base {
         }
       });
     } else {
-      new Button(profileBlock, { className: 'login-button', id: 'button-login', label: 'Войти' }).render();
+      await new Button(profileBlock, { className: 'login-button', id: 'button-login', label: 'Войти' }).render();
       const loginButton = document.getElementById('button-login') as HTMLElement;
       loginButton.addEventListener('click', () => {
         router.go(urls.login);

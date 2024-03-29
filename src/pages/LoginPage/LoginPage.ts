@@ -10,8 +10,10 @@ class LoginPage extends Base {
   * Рендерит страницу входа в DOM, включая форму входа.
   */
   async render() {
+    await this.preRender();
+    
     document.body.style.backgroundImage = 'url(\'../../static/bglogin.webp\')';
-    new LoginForm(this.parent).render();
+    await new LoginForm(this.parent).render();
   }
 }
 

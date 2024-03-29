@@ -2,8 +2,10 @@
 /node_modules
 .vscode
 
-#build js
+# build js
 /public/bundle.js
+/public/*.ts
+/public/*.js
 
 #images
 *.jpg

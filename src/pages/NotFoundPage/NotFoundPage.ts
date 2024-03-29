@@ -3,13 +3,12 @@ import Button from '../../components/Button/Button';
 import  { router } from '../../router/router';
 import urls from '../../router/urls';
 import Base from '../../components/Base/Base';
-import template from './NotFoundPage.hbs'
 
 class NotFoundPage extends Base {
   async render() {
     document.body.style.backgroundImage = '';
-      const htmlView = this.template(this);
-        this.parent.insertAdjacentHTML('beforeend', htmlView);
+    await this.preRender();
+
     const header = document.getElementById('header') as HTMLDivElement;
     const notfound = document.getElementById('notfound') as HTMLDivElement;
     new Header(header).render();

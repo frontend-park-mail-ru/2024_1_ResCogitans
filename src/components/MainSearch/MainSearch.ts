@@ -13,9 +13,8 @@ class MainSearch extends Base {
   * Рендерит основное поле поиска в DOM, включая ссылки и поле ввода.
   */
   async render() {
-    const searchBlock = document.getElementById('main-search');
-    const htmlView = this.template(this);
-    searchBlock?.insertAdjacentHTML('beforeend', htmlView);
+    const searchBlock = document.getElementById('main-search') as HTMLElement;
+    await this.preRender(searchBlock);
 
     const linkArea = document.getElementById('search-links') as HTMLElement;
     new Link(linkArea,  { className: 'search-link', src: '../static/restaurant.svg', label: 'Рестораны'}).render();
@@ -23,14 +22,14 @@ class MainSearch extends Base {
     new Link(linkArea, { className: 'search-link', src: '../static/attraction.svg', label: 'Развлечения'}).render();
 
     const searchbarArea = document.getElementById('form-search') as HTMLElement;
-    new Input(searchbarArea, {
+    await new Input(searchbarArea, {
       id: 'searchbar',
       img: '../static/search.svg',
       type: 'text',
       placeholder: 'Всё, что душе угодно...',
     }).render();
     const searchbarDiv = document.getElementById('searchbar') as HTMLElement;
-    new Button(searchbarDiv , { type: 'submit', label: 'Поиск' }).render();
+    await new Button(searchbarDiv , { type: 'submit', label: 'Поиск' }).render();
   }
 }
 

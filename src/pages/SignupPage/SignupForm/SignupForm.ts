@@ -6,7 +6,6 @@ import { signup } from '../../../api/user';
 import { router } from '../../../router/router';
 import { userHelper } from '../../../utils/localstorage';
 import { validate } from '../../../utils/validation';
-import template from './SignupForm.hbs'
 
 /**
 * Класс SignupForm представляет форму регистрации, которая может быть отрендерена в HTML.
@@ -17,15 +16,15 @@ class SignupForm extends AuthorizationForm {
   * Рендерит форму регистрации в DOM, включая логотип, поля ввода и кнопку.
   */
   async render() {
-      const htmlView = this.template(this);
-        this.parent.insertAdjacentHTML('beforeend', htmlView);
+    await this.preRender();
+
     const logoGroup = document.getElementById('logo-group') as HTMLDivElement;
-    new Logo(logoGroup).render();
+    await new Logo(logoGroup).render();
 
     this.enablePasswordVisibilityButtons();
 
     const registrationForm = document.getElementById('registration-form') as HTMLDivElement;
-    new Button(registrationForm, { id: 'login-button', label: 'Зарегистрироваться', type: 'submit' }).render();
+    await new Button(registrationForm, { id: 'login-button', label: 'Зарегистрироваться', type: 'submit' }).render();
     const submitButton = document.getElementById('login-button') as HTMLButtonElement;
     submitButton.disabled = true;
 

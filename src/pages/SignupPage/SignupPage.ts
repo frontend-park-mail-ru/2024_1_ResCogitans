@@ -11,7 +11,7 @@ class SignupPage extends Base {
   */
   async render() {
     document.body.style.backgroundImage = 'url(\'../../static/bgsignup.jpg\')';
-    new SignupForm(this.parent).render();
+    await new SignupForm(this.parent).render();
   }
 }
 

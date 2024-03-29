@@ -15,7 +15,7 @@ module.exports = {
  module: {
     rules: [
       {
-        test: /\.hbs$/,
+        test: /\.hbs/,
         loader: 'handlebars-loader',
       },
       {
@@ -26,7 +26,7 @@ module.exports = {
     ],
  },
  resolve: {
-    extensions: ['.ts', '.tsx', '.js'], 
+    extensions: ['.hbs', '.ts', '.tsx', '.js'], 
     alias: {
       templates: path.resolve(__dirname, 'src/templates'),
     },    
