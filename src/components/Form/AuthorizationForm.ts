@@ -10,17 +10,24 @@ class AuthorizationForm extends Base {
     }
   }
 
-  email = document.getElementById('email');
+  
 
-  password = document.getElementById('password');
+  email = document.getElementById('email') as HTMLInputElement;
+
+  password = document.getElementById('password') as HTMLInputElement;
 
   enableSubmitButton = (() => {
     const submitButton : HTMLButtonElement | null = document.getElementById('login-button') as HTMLButtonElement;
     const errorMessages : NodeListOf<HTMLElement> = document.querySelectorAll('.has-error');
+    const forms : NodeListOf<HTMLInputElement> = document.querySelectorAll('input');
+    let areEmptyForms : boolean = false;
+    forms.forEach((form) => {
+      if (form.value.length === 0) {
+        areEmptyForms = true;
+        return;
+    }});
     const hasErrors : boolean = (errorMessages.length > 0);
-    if (submitButton !== null) {
-      submitButton.disabled = hasErrors;
-    }
+    submitButton.disabled = (hasErrors || areEmptyForms) ;
   });
 
   clearError(parent : HTMLElement) {

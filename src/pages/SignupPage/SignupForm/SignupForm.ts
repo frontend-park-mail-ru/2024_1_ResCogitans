@@ -1,11 +1,12 @@
-import AuthorizationForm from '../../../components/Form/AuthorizationForm';
-import Button from '../../../components/Button/Button';
-import urls from '../../../router/urls';
-import Logo from '../../../components/Header/Logo/Logo';
-import { signup } from '../../../api/user';
-import { router } from '../../../router/router';
-import { userHelper } from '../../../utils/localstorage';
-import { validate } from '../../../utils/validation';
+import AuthorizationForm from '@components/Form/AuthorizationForm';
+import Button from '@components/Button/Button';
+import urls from '@router/urls';
+import Logo from '@components/Logo/Logo';
+import { authorize } from '@api/user';
+import { router } from '@router/router';
+import { userHelper } from '@utils/localstorage';
+import { validate } from '@utils/validation';
+import { signupErrors } from '../../../types/errors';
 
 /**
 * Класс SignupForm представляет форму регистрации, которая может быть отрендерена в HTML.
@@ -32,7 +33,10 @@ class SignupForm extends AuthorizationForm {
     const password = document.getElementById('password') as HTMLInputElement;
     const repeatPassword = document.getElementById('password-repeat') as HTMLInputElement;
 
-    document.querySelectorAll('input').forEach((input) => input.addEventListener('input', () => {
+    const form = document.querySelector('form') as HTMLFormElement;
+
+    form.addEventListener('input', (e: Event) => {
+      const input = e.target as HTMLInputElement; 
       const parent = input.parentElement as HTMLElement;
       validate( input.value, input.type )
         .catch((error) => { this.renderError(parent, error.message); })
@@ -40,7 +44,8 @@ class SignupForm extends AuthorizationForm {
           this.enableSubmitButton();
         });
       this.clearError(parent);
-    }));
+      }
+    );
 
     registrationForm.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -51,15 +56,15 @@ class SignupForm extends AuthorizationForm {
       };
 
       const lowestInput = repeatPassword.parentElement as HTMLDivElement;
-      if ( process.env.API_URL !== null && process.env.API_URL !== undefined )
-      signup(process.env.API_URL, requestBody)
+      authorize('signup', requestBody)
         .then((response) => {
+          const responseData = response.data;
           if (response.status === 200) {
-            userHelper('set', response.data.User.username);
+            userHelper('set', responseData.username);
             router.go(urls.base);
           }
           if (response.status === 400 || response.status === 500) {
-            this.renderError(lowestInput, response.data.error);
+            this.renderError(lowestInput, signupErrors[responseData.error]);
           }
         });
     });

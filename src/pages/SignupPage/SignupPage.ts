@@ -1,5 +1,5 @@
 import SignupForm from './SignupForm/SignupForm';
-import Base from '../../components/Base/Base'
+import Base from '@components/Base/Base'
 
 /**
 * Класс SignupPage представляет страницу регистрации, которая может быть отрендерена в HTML.
@@ -10,7 +10,6 @@ class SignupPage extends Base {
   * Рендерит страницу регистрации в DOM, включая форму регистрации.
   */
   async render() {
-    document.body.style.backgroundImage = 'url(\'../../static/bgsignup.jpg\')';
     await new SignupForm(this.parent).render();
   }
 }

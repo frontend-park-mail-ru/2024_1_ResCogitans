@@ -1,14 +1,5 @@
-import Base from '../../../../components/Base/Base'
-import { starSvg } from './star';
-
-interface Sight {
-  id: number,
-  rating: number,
-  name: string,
-  description: string,
-  city: string,
-  url: string
-}
+import Base from '@components/Base/Base'
+import { Sight } from 'src/types/api'
 
 /**
 * Класс Place представляет место, которое может быть отрендерено в HTML.
@@ -30,17 +21,17 @@ class Place extends Base {
   async render() {
     await this.preRender();
 
-    const stars = document.querySelector(`#card-${this.data.id} .card-rating`) as HTMLElement;
-    const fullStars = Math.floor(this.data.rating);
-    const gradientPercentage = (this.data.rating % 1) * 100;
+    const stars = document.querySelectorAll(`#card-${this.data.id} .card-rating span`) as NodeListOf<HTMLElement>;
+    const fullStars = Math.round(this.data.rating);
 
     for (let i = 0; i < 5; i++) {
+      const starElement = stars[i] as HTMLElement;
       if (i < fullStars) {
-        stars.insertAdjacentHTML('beforeend', starSvg(100));
+        starElement.classList.add('filled');
       } else if (i === fullStars) {
-        stars.insertAdjacentHTML('beforeend', starSvg(gradientPercentage));
+        starElement.classList.add('partial');
       } else {
-        stars.insertAdjacentHTML('beforeend', starSvg(0));
+        starElement.classList.add('empty');
       }
     }
 }

@@ -1,4 +1,4 @@
-import Base from '../../Base/Base';
+import Base from '@components/Base/Base';
 
 /**
 * Класс Logo представляет логотип, который может быть отрендерен в HTML.

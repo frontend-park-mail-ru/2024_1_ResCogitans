@@ -1,11 +1,11 @@
-import Button from '../Button/Button';
-import Logo from './Logo/Logo';
-import Link from '../Link/Link';
-import urls from '../../router/urls';
-import  { router } from '../../router/router';
-import { userHelper } from '../../utils/localstorage';
-import { logout } from '../../api/user';
-import Base from '../Base/Base';
+import Button from '@components/Button/Button';
+import Logo from '@components/Logo/Logo';
+import Link from '@components/Link/Link';
+import urls from '@router/urls';
+import  { router } from '@router/router';
+import { userHelper } from '@utils/localstorage';
+import { authorize } from '@api/user';
+import Base from '@components/Base/Base'
 
 /**
 * Класс Header. Это шапка сайта.
@@ -37,6 +37,7 @@ class Header extends Base {
     const profileBlock = document.getElementById('button-group') as HTMLElement;
 
     const username = localStorage.getItem('username');
+    // backend request to check validation and not local storage 
 
     if (username != null) {
       await new Link(profileBlock, { className: 'user-link', label: username }).render();
@@ -45,11 +46,9 @@ class Header extends Base {
       const logoutButton = document.getElementById('logout') as HTMLElement;
 
       logoutButton.addEventListener('click', () => {
-        if (process.env.API_URL !== undefined) {
-          logout(process.env.API_URL);
-          userHelper('remove');
-          router.go(urls.base);
-        }
+        authorize('logout');
+        userHelper('remove');
+        router.go(urls.base);
       });
     } else {
       await new Button(profileBlock, { className: 'login-button', id: 'button-login', label: 'Войти' }).render();

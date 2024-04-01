@@ -1,4 +1,15 @@
-import routes from './routes'
+import urls from '@router/urls';
+import LoginPage from '@pages/LoginPage/LoginPage';
+import PlacesPage from '@pages/PlacesPage/PlacesPage';
+import SignupPage from '@pages/SignupPage/SignupPage';
+import NotFoundPage from '@pages/NotFoundPage/NotFoundPage';
+
+const routes = {
+  [urls.base]: PlacesPage,
+  [urls.signup]: SignupPage,
+  [urls.login]: LoginPage,
+  [urls.notfound]: NotFoundPage,
+};
 
 interface Page {
   render: () => void;

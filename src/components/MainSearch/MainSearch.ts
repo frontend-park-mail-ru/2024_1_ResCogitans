@@ -1,7 +1,7 @@
-import Link from '../Link/Link';
-import Button from '../Button/Button';
-import Input from '../Input/Input';
-import Base from '../Base/Base'
+import Link from '@components/Link/Link';
+import Button from '@components/Button/Button';
+import Input from '@components/Input/Input';
+import Base from '@components/Base/Base';
 
 /**
 * Класс MainSearch представляет основное поле поиска, которое может быть отрендерено в HTML.
@@ -17,14 +17,14 @@ class MainSearch extends Base {
     await this.preRender(searchBlock);
 
     const linkArea = document.getElementById('search-links') as HTMLElement;
-    new Link(linkArea,  { className: 'search-link', src: '../static/restaurant.svg', label: 'Рестораны'}).render();
-    new Link(linkArea, { className: 'search-link', src: '../static/hotel.svg', label: 'Отели'}).render();
-    new Link(linkArea, { className: 'search-link', src: '../static/attraction.svg', label: 'Развлечения'}).render();
+    new Link(linkArea,  { className: 'search-link', src: 'static/restaurant.svg', label: 'Рестораны'}).render();
+    new Link(linkArea, { className: 'search-link', src: 'static/hotel.svg', label: 'Отели'}).render();
+    new Link(linkArea, { className: 'search-link', src: 'static/attraction.svg', label: 'Развлечения'}).render();
 
     const searchbarArea = document.getElementById('form-search') as HTMLElement;
     await new Input(searchbarArea, {
       id: 'searchbar',
-      img: '../static/search.svg',
+      img: 'static/search.svg',
       type: 'text',
       placeholder: 'Всё, что душе угодно...',
     }).render();

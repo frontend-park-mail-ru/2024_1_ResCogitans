@@ -1,11 +1,12 @@
-import Button from '../../../components/Button/Button';
-import urls from '../../../router/urls';
-import Logo from '../../../components/Header/Logo/Logo';
-import  { router } from '../../../router/router';
-import { userHelper } from '../../../utils/localstorage';
-import { login } from '../../../api/user';
-import { validate } from '../../../utils/validation';
-import AuthorizationForm from '../../../components/Form/AuthorizationForm';
+import Button from '@components/Button/Button';
+import urls from '@router/urls';
+import Logo from '@components/Logo/Logo';
+import  { router } from '@router/router';
+import { userHelper } from '@utils/localstorage';
+import { authorize } from '@api/user';
+import { validate } from '@utils/validation';
+import AuthorizationForm from '@components/Form/AuthorizationForm';
+import { loginErrors } from '../../../types/errors';
 
 /**
 * Класс LoginForm представляет форму входа, которая может быть отрендерена в HTML.
@@ -53,18 +54,17 @@ class LoginForm extends AuthorizationForm {
         username: emailInput.value,
         password: passwordInput.value,
       };
-      if (process.env.API_URL !== null && process.env.API_URL !== undefined) {
-        login(process.env.API_URL, requestBody)
+        authorize('login', requestBody)
         .then((response) => {
-          if (response.Code === undefined) {
-            userHelper('set', response.User.username);
+          const responseData = response.data;
+          if (response.status === 200) {
+            userHelper('set', responseData.username);
             router.go(urls.base);
-          } else if (response.Code === 400 || response.Code === 500) {
+          } else if (response.status === 400 || response.status === 500) {
             const lowestInputDiv = inputs[1] as HTMLDivElement;
-            this.renderError(lowestInputDiv, response.error);
+            this.renderError(lowestInputDiv, loginErrors[response.status]);
           }
         });
-      }
     });
 
     const registerButton = document.getElementById('signup-button') as HTMLButtonElement;

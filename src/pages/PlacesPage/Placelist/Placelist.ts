@@ -1,19 +1,7 @@
 import Place from './Place/Place'
-import get from '../../../api/base';
-import Base from '../../../components/Base/Base'
-
-interface Sight {
-  id: number,
-  rating: number,
-  name: string,
-  description: string,
-  city: string,
-  url: string
-}
-
-interface SightResponse {
-  sights: Sight[];
- }
+import get from '@api/base';
+import Base from '@components/Base/Base'
+import { Sight } from 'src/types/api';
 
 /**
  * 
@@ -22,9 +10,10 @@ interface SightResponse {
 */
 class Placelist extends Base {
 
-  async renderPlaces(places : SightResponse) {
+  async renderPlaces(places : Array<Sight>) {
     const placelist = document.getElementById('list-places') as HTMLDivElement;
-    const placePromises = places.sights.map((data) => new Place(placelist, data).render());
+    console.log(places);
+    const placePromises = places.map((data) => new Place(placelist, data).render());
   }
     
 
@@ -34,7 +23,7 @@ class Placelist extends Base {
   async render() {
     await this.preRender();
 
-    get(`${process.env.API_URL}/sights`)
+    get("sights")
       .then((responsePlaces) => this.renderPlaces(responsePlaces));
   }
 }
