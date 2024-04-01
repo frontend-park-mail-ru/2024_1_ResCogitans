@@ -1,4 +1,4 @@
-import Base from '../Base/Base'
+import Base from '@components/Base/Base'
 
 class AuthorizationForm extends Base {
 

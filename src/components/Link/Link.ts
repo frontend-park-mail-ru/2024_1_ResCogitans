@@ -1,4 +1,4 @@
-import Base from '../Base/Base';
+import Base from '@components/Base/Base'
 
 /**
 * Класс Link. Представляет ссылку, которая может быть отрендерена в HTML.

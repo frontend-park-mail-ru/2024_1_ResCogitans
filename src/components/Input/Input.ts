@@ -1,4 +1,4 @@
-import Base from '../Base/Base'
+import Base from '@components/Base/Base'
 
 /**
 * Класс Input. Экземпляры этого класса - строки для ввода данных.
