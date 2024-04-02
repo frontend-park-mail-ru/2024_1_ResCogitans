@@ -4,7 +4,7 @@ import PlacesPage from '@pages/PlacesPage/PlacesPage';
 import SignupPage from '@pages/SignupPage/SignupPage';
 import NotFoundPage from '@pages/NotFoundPage/NotFoundPage';
 
-const routes = {
+const routesList = {
   [urls.base]: PlacesPage,
   [urls.signup]: SignupPage,
   [urls.login]: LoginPage,
@@ -13,7 +13,7 @@ const routes = {
 
 interface Page {
   render: () => void;
- }
+}
  
  type Routes = Record<string, new (content: HTMLElement) => Page>;
 
@@ -24,6 +24,7 @@ interface Page {
 class Router {
 
   routes : Routes;
+
   /**
   * Создает новый экземпляр маршрутизатора.
   * @constructor
@@ -42,7 +43,7 @@ class Router {
   route(path: string, PageConstructor: new (content: HTMLElement) => Page) {
     this.routes[path] = PageConstructor;
     return this;
- }
+  }
 
   /**
   * Перенаправляет пользователя на указанный путь и обновляет историю браузера.
@@ -67,20 +68,20 @@ class Router {
 
   changeLocation() {
     const path = window.location.pathname;
-    const PageConstructor = this.routes[path];
+    const PageConstructorFromRoutes = this.routes[path];
     const content = this.clearContent();
 
-    if (PageConstructor) {
-      const page = new PageConstructor(content);
+    if (PageConstructorFromRoutes) {
+      const page = new PageConstructorFromRoutes(content);
       page.render();
     } else {
-      const PageConstructor = this.routes['/404'];
-      if (PageConstructor) {
-        new PageConstructor(content).render();
+      const PageConstructorNotFound = this.routes['/404'];
+      if (PageConstructorNotFound) {
+        new PageConstructorNotFound(content).render();
       }
     }
- }
+  }
 }
 
-const router = new Router(routes);
+const router = new Router(routesList);
 export { router };

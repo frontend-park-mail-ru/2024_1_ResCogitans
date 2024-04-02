@@ -5,7 +5,7 @@ import urls from '@router/urls';
 import  { router } from '@router/router';
 import { userHelper } from '@utils/localstorage';
 import { authorize } from '@api/user';
-import Base from '@components/Base/Base'
+import Base from '@components/Base/Base';
 
 /**
 * Класс Header. Это шапка сайта.

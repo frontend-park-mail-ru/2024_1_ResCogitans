@@ -17,9 +17,9 @@ class MainSearch extends Base {
     await this.preRender(searchBlock);
 
     const linkArea = document.getElementById('search-links') as HTMLElement;
-    new Link(linkArea,  { className: 'search-link', src: 'static/restaurant.svg', label: 'Рестораны'}).render();
-    new Link(linkArea, { className: 'search-link', src: 'static/hotel.svg', label: 'Отели'}).render();
-    new Link(linkArea, { className: 'search-link', src: 'static/attraction.svg', label: 'Развлечения'}).render();
+    new Link(linkArea,  { className: 'search-link', src: 'static/restaurant.svg', label: 'Рестораны' }).render();
+    new Link(linkArea, { className: 'search-link', src: 'static/hotel.svg', label: 'Отели' }).render();
+    new Link(linkArea, { className: 'search-link', src: 'static/attraction.svg', label: 'Развлечения' }).render();
 
     const searchbarArea = document.getElementById('form-search') as HTMLElement;
     await new Input(searchbarArea, {
@@ -29,7 +29,7 @@ class MainSearch extends Base {
       placeholder: 'Всё, что душе угодно...',
     }).render();
     const searchbarDiv = document.getElementById('searchbar') as HTMLElement;
-    await new Button(searchbarDiv , { type: 'submit', label: 'Поиск' }).render();
+    await new Button(searchbarDiv, { type: 'submit', label: 'Поиск' }).render();
   }
 }
 

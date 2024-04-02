@@ -1,5 +1,5 @@
 import { UserAuthResponse, UserAuthRequest } from 'src/types/api';
-import { ENV_CONFIG } from '../../envConfig'
+import { ENV_CONFIG } from '../../envConfig';
 
 export async function authorize(endpoint : string, body? : UserAuthRequest): Promise<UserAuthResponse> {
   const response = await fetch(`${ENV_CONFIG.API_URL}/${endpoint}`, {
@@ -16,6 +16,6 @@ export async function authorize(endpoint : string, body? : UserAuthRequest): Pro
       code: responseData.code,
       error: responseData.error,
     },
- };
- return userAuthResponse;
+  };
+  return userAuthResponse;
 }

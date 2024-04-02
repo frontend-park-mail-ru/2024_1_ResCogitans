@@ -2,7 +2,7 @@ import Header from '@components/Header/Header';
 import Button from '@components/Button/Button';
 import  { router } from '@router/router';
 import urls from '@router/urls';
-import Base from '@components/Base/Base'
+import Base from '@components/Base/Base';
 
 class NotFoundPage extends Base {
   async render() {

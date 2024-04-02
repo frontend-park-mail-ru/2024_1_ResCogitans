@@ -1,4 +1,4 @@
-import { router } from "@router/router";
+import { router } from '@router/router';
 
 let root = document.getElementById('root') as HTMLDivElement;
 

@@ -1,5 +1,5 @@
 import LoginForm from './LoginForm/LoginForm';
-import Base from '@components/Base/Base'
+import Base from '@components/Base/Base';
 
 /**
 * Класс LoginPage представляет страницу входа, которая может быть отрендерена в HTML.

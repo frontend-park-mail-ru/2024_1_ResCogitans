@@ -44,7 +44,7 @@ class SignupForm extends AuthorizationForm {
           this.enableSubmitButton();
         });
       this.clearError(parent);
-      }
+    },
     );
 
     registrationForm.addEventListener('submit', (e) => {

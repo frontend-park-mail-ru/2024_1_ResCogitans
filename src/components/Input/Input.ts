@@ -1,4 +1,4 @@
-import Base from '@components/Base/Base'
+import Base from '@components/Base/Base';
 
 /**
 * Класс Input. Экземпляры этого класса - строки для ввода данных.
@@ -7,10 +7,15 @@ import Base from '@components/Base/Base'
 class Input extends Base {
 
   field? : string;
+
   id? : string;
+
   placeholder? : string;
+
   type? : string;
+
   img? : string;
+
   className? : string;
 
   /**
@@ -24,15 +29,15 @@ class Input extends Base {
   * @param {string} [options.img=''] - URL изображения для поля ввода.
   * @param {string} [options.className=''] - CSS-класс поля ввода.
   */
-  constructor(parent : HTMLElement, {field, id, placeholder, type, img, className} : 
-    { field? : string,
-      id? : string,
-      placeholder? : string,
-      type? : string,
-      img? : string,
-      className? : string
-    }) {
-    super(parent)
+  constructor(parent : HTMLElement, { field, id, placeholder, type, img, className } : 
+  { field? : string,
+    id? : string,
+    placeholder? : string,
+    type? : string,
+    img? : string,
+    className? : string
+  }) {
+    super(parent);
     this.field = field;
     this.placeholder = placeholder;
     this.type = type;

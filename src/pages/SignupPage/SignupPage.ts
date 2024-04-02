@@ -1,5 +1,5 @@
 import SignupForm from './SignupForm/SignupForm';
-import Base from '@components/Base/Base'
+import Base from '@components/Base/Base';
 
 /**
 * Класс SignupPage представляет страницу регистрации, которая может быть отрендерена в HTML.

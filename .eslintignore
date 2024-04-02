@@ -1,2 +1,4 @@
 public/
 server.js
+webpack.config.js
+.eslintrc.js

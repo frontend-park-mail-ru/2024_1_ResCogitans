@@ -1,6 +1,6 @@
-import Place from './Place/Place'
+import Place from './Place/Place';
 import get from '@api/base';
-import Base from '@components/Base/Base'
+import Base from '@components/Base/Base';
 import { Sight } from 'src/types/api';
 
 /**
@@ -13,7 +13,7 @@ class Placelist extends Base {
   async renderPlaces(places : Array<Sight>) {
     const placelist = document.getElementById('list-places') as HTMLDivElement;
     console.log(places);
-    const placePromises = places.map((data) => new Place(placelist, data).render());
+    places.map((data) => new Place(placelist, data).render());
   }
     
 
@@ -23,7 +23,7 @@ class Placelist extends Base {
   async render() {
     await this.preRender();
 
-    get("sights")
+    get('sights')
       .then((responsePlaces) => this.renderPlaces(responsePlaces));
   }
 }

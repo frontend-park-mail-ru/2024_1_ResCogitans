@@ -11,6 +11,6 @@ export async function get( endpoint : string ) : Promise<any> {
   const response = await fetch(`${ENV_CONFIG.API_URL}/${endpoint}`);
   const responseData = await response.json();
   return responseData;
-};
+}
 
 export default get;

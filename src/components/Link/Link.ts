@@ -1,15 +1,19 @@
-import Base from '@components/Base/Base'
+import Base from '@components/Base/Base';
 
 /**
 * Класс Link. Представляет ссылку, которая может быть отрендерена в HTML.
 * @class
 */
-class Link extends Base{
+class Link extends Base {
 
   label : string | undefined;
+
   url : string | undefined;
+
   className : string | undefined;
+
   id : string | undefined;
+
   src : string | undefined;
 
   /**
@@ -22,19 +26,19 @@ class Link extends Base{
   * @param {string} options.url - URL, на который будет осуществлен редирект после нажатия.
   * @param {string} [options.src=''] - URL изображения для ссылки.
   */
-  constructor(parent : HTMLElement, {id, className, label, url, src} : 
-    { id? : string, 
-      className? : string, 
-      label? : string, 
-      url? : string, 
-      src? : string})  {
-      super(parent);
-      this.label = label;
-      this.url = url;
-      this.className = className;
-      this.id = id;
-      this.src = src;
-    }
+  constructor(parent : HTMLElement, { id, className, label, url, src } : 
+  { id? : string, 
+    className? : string, 
+    label? : string, 
+    url? : string, 
+    src? : string })  {
+    super(parent);
+    this.label = label;
+    this.url = url;
+    this.className = className;
+    this.id = id;
+    this.src = src;
+  }
 }
 
 export default Link;

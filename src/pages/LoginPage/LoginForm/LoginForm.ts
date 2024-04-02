@@ -54,7 +54,7 @@ class LoginForm extends AuthorizationForm {
         username: emailInput.value,
         password: passwordInput.value,
       };
-        authorize('login', requestBody)
+      authorize('login', requestBody)
         .then((response) => {
           const responseData = response.data;
           if (response.status === 200) {

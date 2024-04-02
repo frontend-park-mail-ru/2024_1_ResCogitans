@@ -1,5 +1,5 @@
-import Base from '@components/Base/Base'
-import { Sight } from 'src/types/api'
+import Base from '@components/Base/Base';
+import { Sight } from 'src/types/api';
 
 /**
 * Класс Place представляет место, которое может быть отрендерено в HTML.
@@ -8,6 +8,7 @@ import { Sight } from 'src/types/api'
 class Place extends Base {
 
   data : Sight;
+
   /**
   * Создает новый экземпляр места.
   * @param {HTMLElement} parent - Родительский элемент, в который будет вставлено место.
@@ -34,7 +35,7 @@ class Place extends Base {
         starElement.classList.add('empty');
       }
     }
-}
+  }
 }
 
 export default Place;

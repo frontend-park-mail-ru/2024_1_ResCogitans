@@ -1,4 +1,4 @@
-import Base from '@components/Base/Base'
+import Base from '@components/Base/Base';
 
 class AuthorizationForm extends Base {
 
@@ -25,7 +25,8 @@ class AuthorizationForm extends Base {
       if (form.value.length === 0) {
         areEmptyForms = true;
         return;
-    }});
+      }
+    });
     const hasErrors : boolean = (errorMessages.length > 0);
     submitButton.disabled = (hasErrors || areEmptyForms) ;
   });
@@ -39,9 +40,10 @@ class AuthorizationForm extends Base {
   enablePasswordVisibilityButtons() {
     document.querySelectorAll('.input-button').forEach((input) => {
       input.querySelector('button')?.addEventListener('click', (e) => {
-      e.preventDefault();
-      this.togglePasswordVisibility(input as HTMLElement);
-    })});
+        e.preventDefault();
+        this.togglePasswordVisibility(input as HTMLElement);
+      });
+    });
   }
 
   togglePasswordVisibility(inputWithButton : HTMLElement) {
@@ -51,7 +53,7 @@ class AuthorizationForm extends Base {
     if (inputElement.type === 'password') {
       inputElement.type = 'text';
       icon?.classList.replace('password-invisible', 'password-visible');
-     } else {
+    } else {
       inputElement.type = 'password';
       icon?.classList.replace('password-visible', 'password-invisible');
     }
