@@ -39,5 +39,8 @@
     "build": "webpack --mode production && node server.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
-  }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": "eslint --fix"
+ }
 }
