@@ -23,7 +23,7 @@ class Base {
       this.parent.insertAdjacentHTML('beforeend', html);
     }
   }
-   
+  const wait;
   async render() {
     await this.preRender();
   }
