@@ -10,6 +10,7 @@ class Base {
 
    
   async loadTemplate() {
+    const what = true;
     const templateModule = await import(`../../templates/${this.constructor.name}.hbs`);
     this.template = templateModule.default;
   }
