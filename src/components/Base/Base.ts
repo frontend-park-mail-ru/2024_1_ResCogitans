@@ -26,7 +26,5 @@ class Base {
   async render() {
     await this.preRender();
   }
-
 }
-
 export default Base;
