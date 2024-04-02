@@ -10,7 +10,6 @@ class Base {
 
    
   async loadTemplate() {
-    const what = true;
     const templateModule = await import(`../../templates/${this.constructor.name}.hbs`);
     this.template = templateModule.default;
   }
@@ -24,6 +23,7 @@ class Base {
       this.parent.insertAdjacentHTML('beforeend', html);
     }
   }
+
   async render() {
     await this.preRender();
   }
