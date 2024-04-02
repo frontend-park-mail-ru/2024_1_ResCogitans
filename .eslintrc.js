@@ -26,5 +26,6 @@ module.exports = {
     'class-methods-use-this': 'off',
     'import/extensions': 'off',
     'import/no-extraneous-dependencies': 'off',
+    "eol-last": ["error", "always"],
    },   
 };

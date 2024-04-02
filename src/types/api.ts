@@ -3,13 +3,15 @@ export interface UserAuthRequest {
   password: string;
 }
 
-export interface UserAuthResponse {
+export interface UserAuthResponseData {
+  username?: string;
+  code: number;
+  error: string;
+}
+
+export interface WithResponse<T> {
   status: number;
-  data: {
-    username?: string;
-    code: number;
-    error: string;
-  }
+  data: T;
 }
 
 export interface Sight {

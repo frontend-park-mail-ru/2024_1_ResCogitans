@@ -1,7 +1,7 @@
-import { UserAuthResponse, UserAuthRequest } from 'src/types/api';
+import { WithResponse, UserAuthRequest, UserAuthResponseData } from 'src/types/api';
 import { ENV_CONFIG } from '../../envConfig';
 
-export async function authorize(endpoint : string, body? : UserAuthRequest): Promise<UserAuthResponse> {
+export async function authorize(endpoint : string, body? : UserAuthRequest): Promise<WithResponse<UserAuthResponseData>> {
   const response = await fetch(`${ENV_CONFIG.API_URL}/${endpoint}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -9,7 +9,7 @@ export async function authorize(endpoint : string, body? : UserAuthRequest): Pro
     body: JSON.stringify(body),
   });
   const responseData = await response.json();
-  const userAuthResponse: UserAuthResponse = {
+  const userAuthResponse: WithResponse<UserAuthResponseData> = {
     status: response.status,
     data: {
       username: responseData.username,

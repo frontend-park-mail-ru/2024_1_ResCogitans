@@ -11,6 +11,7 @@ class LoginPage extends Base {
   */
   async render() {
     await this.preRender();
+    document.body.classList.add('auth-background');
     await new LoginForm(this.parent).render();
   }
 }

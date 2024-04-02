@@ -10,6 +10,7 @@ class SignupPage extends Base {
   * Рендерит страницу регистрации в DOM, включая форму регистрации.
   */
   async render() {
+    document.body.classList.add('auth-background');
     await new SignupForm(this.parent).render();
   }
 }

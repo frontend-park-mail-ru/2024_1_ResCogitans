@@ -1,5 +1,3 @@
-@import '../../components/Button/Button.css';
-@import '../../components/Header/Header.css';
-@import '../../components/Input/Input.css';
-@import '../../components/MainSearch/MainSearch.css';
-@import '../../pages/PlacesPage/Placelist/Placelist.css';
+.auth-background {
+    background-image: url('../../../static/bgsignup.jpg');
+}
