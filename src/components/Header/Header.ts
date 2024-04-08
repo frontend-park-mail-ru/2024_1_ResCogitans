@@ -3,7 +3,6 @@ import Logo from '@components/Logo/Logo';
 import Link from '@components/Link/Link';
 import urls from '@router/urls';
 import  { router } from '@router/router';
-import { userHelper } from '@utils/localstorage';
 import { authorize } from '@api/user';
 import Base from '@components/Base/Base';
 
@@ -36,15 +35,15 @@ class Header extends Base {
     const username = localStorage.getItem('username');
     // backend request to check validation and not local storage 
 
-    if (username != null) {
+    if (username !== null) {
       await new Link(profileBlock, { className: 'user-link', label: username, url : `/profile/${username}` }).render();
       await new Button(profileBlock, { id: 'logout', label: 'Выйти' }).render();
 
       const logoutButton = document.getElementById('logout') as HTMLElement;
 
       logoutButton.addEventListener('click', () => {
+        localStorage.clear();
         authorize('logout');
-        userHelper('remove');
         router.go(urls.base);
       });
     } else {

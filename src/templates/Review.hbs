@@ -1,31 +1,18 @@
 <div class="review" id="review-{{this.reviewContent.id}}">
      <div class="review-top">
-          {{#if this.isNotProfile}}
           <img src="/static/placeholder.jpg">
           <p class="review-username">{{this.reviewContent.username}}</p>
-          {{else}}
-          <a href="/sights/{{this.place.id}}">
-               <h3>{{this.place.name}}</h3>
-          </a>
-          {{/if}}
      </div>
      <div class="review-content">
-          {{#if this.isNotProfile}}
-          <a href="/sights/{{this.place.id}}">
-               <h3>{{this.place.name}}</h3>
-          </a>
-          {{else}}
-          {{/if}}
           <p class="review-text">{{this.reviewContent.feedback}}</p>
-
      </div>
      <div class="rating">
 
      </div>
-     <div>
+     <div class="review-buttons">
           {{#if this.isOwn}}
-          <button class="button-edit-review">Изменить отзыв</button>
-          <button class="button-delete-review button-danger">Удалить отзыв</button>
+               <button class="button-edit-review">Изменить отзыв</button>
+               <button class="button-delete-review button-danger">Удалить отзыв</button>
           {{/if}}
      </div>
 </div>

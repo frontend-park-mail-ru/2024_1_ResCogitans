@@ -25,7 +25,7 @@
          </div>
       </div>
    </div>
-   <h2 class="h3-no-margin">Отзывы</h2>
+   <h2 class="h3-no-margin" id="reviews-label">Отзывы</h2>
    <div class="sight-reviews">
 
    </div>
@@ -33,7 +33,8 @@
       <form id="review-form" method="post">
          <h3>Ваши впечатления о месте:</h3>
          <div class="input">
-            <textarea class="review-textarea" type="text" required rows="8" placeholder="Оставьте отзыв об этом месте..."></textarea>
+            <textarea class="review-textarea" type="text" required rows="8"
+               placeholder="Оставьте отзыв об этом месте..."></textarea>
             <label for="rate">Оценка</label>
             <input id="rate" type="number" min="1" max="5" value="5">
             <label class="err-label"></label>
@@ -41,4 +42,26 @@
          <button id="review-submit" type="submit" class="button-primary">Отправить</button>
       </form>
    </div>
+
+   <dialog class="delete-dialog">
+      <label>Вы действительно хотите удалить отзыв?</label>
+      <form method="dialog">
+         <menu>
+            <button class="button-danger" type="submit">Да</button>
+            <button class="cancel" type="reset">Отмена</button>
+         </menu>
+      </form>
+   </dialog>
+
+   <dialog class="edit-dialog">
+      <label>Отредактируйте отзыв</label>
+      <form>
+         <textarea id="editTextArea" rows="8"></textarea>
+         <input id="rate" type="number" min="1" max="5" value="5">
+         <menu>
+            <button class="button-danger" type="submit">Изменить</button>
+            <button class="cancel" type="reset">Отмена</button>
+         </menu>
+      </form>
+   </dialog>
 </div>

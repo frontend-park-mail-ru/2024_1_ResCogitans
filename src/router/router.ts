@@ -52,7 +52,9 @@ class Router {
     if (!path.startsWith('/')) {
       path = '/' + path;
     }
-    window.history.pushState({}, '', path);
+    if (window.location.pathname !== path) {
+      window.history.pushState({}, '', path);
+    }
     this.changeLocation();
   }
 

@@ -1,6 +1,5 @@
 import Base from '@components/Base/Base';
 import Header from '@components/Header/Header';
-import Review from '@components/Review/Review';
 import { UserProfile } from 'src/types/api';
 
 const userProfileExample : UserProfile = {
@@ -29,14 +28,6 @@ class ProfilePage extends Base {
       alert(this.userdata);
     });
 
-    let response = get(`sight/${this.id}`);
-    const reviewsDiv = document.querySelector('.profile-reviews') as HTMLDivElement;
-
-    if (response.data.comments === null) {
-      reviewsDiv.insertAdjacentHTML('beforeend', '<p>Оставьте отзыв первыми</p>');
-    } else {
-      response.data.comments.forEach((review) => new Review(reviewsDiv, review, true).render());
-    }
   }
 }
 

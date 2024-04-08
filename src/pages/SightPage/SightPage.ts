@@ -23,7 +23,7 @@ class SightPage extends Base {
       reviewsDiv.insertAdjacentHTML('beforeend', '<p>Оставьте отзыв первыми</p>');
     } else {
       response.data.comments.forEach((review) => {
-        new Review(reviewsDiv, review, true, (review.username === username)).render();
+        new Review(reviewsDiv, this.id, review, (review.username === username)).render();
       });
     }
   
@@ -52,20 +52,72 @@ class SightPage extends Base {
 
     await this.renderReviews(responseSight);
 
+    const reviewsLabel = document.querySelector('#reviews-label') as HTMLHeadingElement;
+    if (responseSight.data.comments !== null) {
+      reviewsLabel.innerHTML += ` (${responseSight.data.comments.length})`;
+    }
+   
     submitButton?.addEventListener('click', (e) => {
       e.preventDefault();
       const feedback = reviewForm.value;
-      const sightID = this.id;
-      //  const userID = parseInt(localStorage.getItem('userID'));
-      const userID = 6;
+      const userID = parseInt(localStorage.getItem('userID'));
       const rating = parseInt(rateForm.value);
-      const requestBody = { userID, sightID, rating, feedback };
+      const requestBody = { userID, rating, feedback };
       post(`sight/${this.id}/create`, requestBody).then((responseCreateReview) => {
         if (responseCreateReview.status !== 200) {
           router.go('login');
+        } else {
+          window.location.reload();
         }
       });
     });
+
+    const cancelButtons = document.querySelectorAll('.cancel') as NodeListOf<HTMLButtonElement>;
+
+    const deleteDialog = document.querySelector('.delete-dialog') as HTMLDialogElement;
+    const editDialog = document.querySelector('.edit-dialog') as HTMLDialogElement;
+
+    const deleteModalButton = deleteDialog.querySelector('.button-danger') as HTMLButtonElement;
+    const editModalButton = editDialog.querySelector('.button-danger') as HTMLButtonElement;
+   
+    cancelButtons.forEach((button : HTMLButtonElement) => button.addEventListener('click', function () {
+      document.querySelector('.staged-delete')?.classList.remove('staged-delete');
+      deleteDialog.close();
+      editDialog.close();
+    }));
+
+    deleteModalButton?.addEventListener('click', (e) => {
+      e.preventDefault();
+      const commentID = document.querySelector('.staged-delete')?.id.split('-')[1];
+      post(`sight/${this.id}/delete/${commentID}`, {}).then((responseDeleteReview) => {
+        if (responseDeleteReview.status !== 200) {
+          router.go('login');
+        } else {
+          deleteDialog.close();
+        }
+        window.location.reload();
+      });
+    });
+
+    editModalButton?.addEventListener('click', (e) => {
+      e.preventDefault();
+      const commentID = document.querySelector('.staged-delete')?.id.split('-')[1];
+      const feedbackField = editDialog.querySelector('#editTextArea') as HTMLTextAreaElement;
+      const userID = parseInt(localStorage.getItem('userID'));
+      const ratingField = editDialog.querySelector('#rate') as HTMLTextAreaElement;
+      const feedback = feedbackField.value;
+      const rating = parseInt(ratingField.value);
+      post(`sight/${this.id}/edit/${commentID}`, { rating : rating, feedback : feedback, userID : userID }).then((responseDeleteReview) => {
+        if (responseDeleteReview.status !== 200) {
+          router.go('login');
+        } else {
+          deleteDialog.close();
+        }
+        window.location.reload();
+      });
+    });
+
+
   }   
 }
  

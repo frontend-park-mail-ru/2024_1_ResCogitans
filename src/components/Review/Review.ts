@@ -6,14 +6,14 @@ class Review extends Base {
 
   reviewContent : ReviewContent;
 
-  isNotProfile : boolean;
+  placeID : number;
 
   isOwn : boolean;
     
-  constructor(parent : HTMLElement, reviewContent : ReviewContent, isNotProfile : boolean, isOwn : boolean) {
+  constructor(parent : HTMLElement, placeID : number, reviewContent : ReviewContent, isOwn : boolean) {
     super(parent);
+    this.placeID = placeID;
     this.reviewContent = reviewContent;
-    this.isNotProfile = isNotProfile;
     this.isOwn = isOwn;
   }
 
@@ -22,59 +22,25 @@ class Review extends Base {
     const ratingDiv = document.querySelector(`#review-${this.reviewContent.id} .rating`) as HTMLDivElement;
     await new Stars(ratingDiv, this.reviewContent.rating).render();
        
+
+    const editDialog = document.querySelector('.edit-dialog') as HTMLDialogElement;
+
     const editReviewButton = document.querySelector(`#review-${this.reviewContent.id} .button-edit-review`);
     editReviewButton?.addEventListener('click', () => {
-      alert(this.reviewContent.id);
+      document.querySelector(`#review-${this.reviewContent.id}`)?.classList.add('staged-delete');
+      editDialog.showModal();
     });
 
-    const deleteReviewButton = document.querySelector(`#review-${this.reviewContent.id} .button-delete-review`);
+    const deleteDialog = document.querySelector('.delete-dialog') as HTMLDialogElement;
+
+    const deleteReviewButton = document.querySelector(`#review-${this.reviewContent.id} .button-delete-review`) as HTMLButtonElement;
+    
     deleteReviewButton?.addEventListener('click', () => {
-      alert(this.reviewContent.id);
+      deleteDialog.showModal();
+      document.querySelector(`#review-${this.reviewContent.id}`)?.classList.add('staged-delete');
     });
   }
 }
 
 export default Review;
 
-// <!-- Простой попап диалог с формой -->
-// <dialog id="favDialog">
-//   <form method="dialog">
-//     <section>
-//       <p>
-//         <label for="favAnimal">Favorite animal:</label>
-//         <select id="favAnimal">
-//           <option></option>
-//           <option>Brine shrimp</option>
-//           <option>Red panda</option>
-//           <option>Spider monkey</option>
-//         </select>
-//       </p>
-//     </section>
-//     <menu>
-//       <button id="cancel" type="reset">Cancel</button>
-//       <button type="submit">Confirm</button>
-//     </menu>
-//   </form>
-// </dialog>
-
-// <menu>
-//   <button id="updateDetails">Update details</button>
-// </menu>
-
-// <script>
-//   (function () {
-//     var updateButton = document.getElementById("updateDetails");
-//     var cancelButton = document.getElementById("cancel");
-//     var favDialog = document.getElementById("favDialog");
-
-//     // Update button opens a modal dialog
-//     updateButton.addEventListener("click", function () {
-//       favDialog.showModal();
-//     });
-
-//     // Form cancel button closes the dialog box
-//     cancelButton.addEventListener("click", function () {
-//       favDialog.close();
-//     });
-//   })();
-// </script>

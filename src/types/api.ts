@@ -30,6 +30,7 @@ export interface Sight {
 
 export interface ReviewContent {
   id : number;
+  placename: string;
   username : string;
   rating : number;
   content : string;

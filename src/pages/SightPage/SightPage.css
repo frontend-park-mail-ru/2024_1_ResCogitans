@@ -35,9 +35,32 @@
 }
 
 textarea {
-    font-size: 24px;
+    margin: 10px;
+    font-size: 16px;
 }
 
 #rate {
     width: 40px;
+}
+
+.review-buttons {
+    display: flex;
+}
+
+.review-buttons button {
+    margin: 20px;
+}
+
+dialog {
+    border: 3px solid var(--primary-color);
+    min-height: 300px;
+    min-width: 400px;
+    border-radius: 20px;
+}
+
+menu {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: 1fr 1fr;
+    padding-left: 0;
 }
