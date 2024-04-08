@@ -1,5 +1,6 @@
 import Base from '@components/Base/Base';
 import { Sight } from 'src/types/api';
+import Stars from '@components/Stars/Stars';
 
 /**
 * Класс Place представляет место, которое может быть отрендерено в HTML.
@@ -21,20 +22,8 @@ class Place extends Base {
 
   async render() {
     await this.preRender();
-
-    const stars = document.querySelectorAll(`#card-${this.data.id} .card-rating span`) as NodeListOf<HTMLElement>;
-    const fullStars = Math.round(this.data.rating);
-
-    for (let i = 0; i < 5; i++) {
-      const starElement = stars[i] as HTMLElement;
-      if (i < fullStars) {
-        starElement.classList.add('filled');
-      } else if (i === fullStars) {
-        starElement.classList.add('partial');
-      } else {
-        starElement.classList.add('empty');
-      }
-    }
+    const stars = document.querySelector(`#card-${this.data.id} .rating`) as HTMLDivElement;
+    await new Stars(stars, this.data.rating).render();
   }
 }
 

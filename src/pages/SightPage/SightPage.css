@@ -1,0 +1,43 @@
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.sight-container {
+    display: grid;
+    grid-auto-flow: row;
+    gap: 10px;
+    padding: 10px;
+}
+
+.sight-image {
+    width: 100%;
+    border-radius: 20px;
+    height: auto;
+}
+
+.sight-block {
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.h3-no-margin {
+    margin-top: 0px;
+    margin-bottom: 5px;
+}
+
+textarea {
+    font-size: 24px;
+}
+
+#rate {
+    width: 40px;
+}

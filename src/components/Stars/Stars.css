@@ -1,0 +1,20 @@
+.star {
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+    border: 2px solid var(--primary-color);
+    background-color: transparent;
+    border-radius: 50%;
+}
+
+.filled {
+    background-color: var(--primary-color);
+}
+
+.partial {
+    background-image: linear-gradient(to right, var(--primary-color) 50%, transparent 50%);
+}
+
+.empty {
+    background-color: transparent;
+}

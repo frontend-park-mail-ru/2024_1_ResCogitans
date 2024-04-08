@@ -10,7 +10,23 @@ import { ENV_CONFIG } from '../../envConfig';
 export async function get( endpoint : string ) : Promise<any> {
   const response = await fetch(`${ENV_CONFIG.API_URL}/${endpoint}`);
   const responseData = await response.json();
-  return responseData;
+  return { data: responseData, status: response.status };
 }
 
-export default get;
+
+export async function post(endpoint : string, body? : unknown): Promise<unknown> {
+  const response = await fetch(`${ENV_CONFIG.API_URL}/${endpoint}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify(body),
+  });
+  const responseData = await response.json();
+  console.log(body);
+  return { data: responseData, status: response.status };
+}
+
+
+export default { get, post };
+
+

@@ -3,19 +3,23 @@ import LoginPage from '@pages/LoginPage/LoginPage';
 import PlacesPage from '@pages/PlacesPage/PlacesPage';
 import SignupPage from '@pages/SignupPage/SignupPage';
 import NotFoundPage from '@pages/NotFoundPage/NotFoundPage';
+import ProfilePage from '@pages/ProfilePage/ProfilePage';
+import SightPage from '@pages/SightPage/SightPage';
 
 const routesList = {
   [urls.base]: PlacesPage,
   [urls.signup]: SignupPage,
   [urls.login]: LoginPage,
   [urls.notfound]: NotFoundPage,
+  [urls.profile]: ProfilePage,
+  [urls.sight]: SightPage,
 };
 
 interface Page {
   render: () => void;
 }
  
- type Routes = Record<string, new (content: HTMLElement) => Page>;
+type Routes = Record<string, new (content: HTMLElement, username?: string) => Page>;
 
 /**
 * Класс Router управляет навигацией между страницами приложения.
@@ -34,13 +38,8 @@ class Router {
     window.addEventListener('popstate', () => this.changeLocation());
   }
 
-  /**
-  * Добавляет новый маршрут в маршрутизатор.
-  * @param {string} path - Путь маршрута.
-  * @param {Object} page - Объект страницы, связанный с маршрутом.
-  * @returns {Router} Ссылку на текущий экземпляр маршрутизатора.
-  */
-  route(path: string, PageConstructor: new (content: HTMLElement) => Page) {
+  
+  route(path: string, PageConstructor: new (content: HTMLElement, username? : string) => Page) {
     this.routes[path] = PageConstructor;
     return this;
   }
@@ -49,10 +48,18 @@ class Router {
   * Перенаправляет пользователя на указанный путь и обновляет историю браузера.
   * @param {string} path - Путь для перенаправления.
   */
-  go(path : string) {
+  go(path: string) {
+    if (!path.startsWith('/')) {
+      path = '/' + path;
+    }
     window.history.pushState({}, '', path);
     this.changeLocation();
   }
+
+  goBack() {
+    window.history.back();
+  }
+   
 
   clearContent() {
     let content = document.getElementById('content');
@@ -67,15 +74,22 @@ class Router {
   }
 
   changeLocation() {
-    const path = window.location.pathname;
-    const PageConstructorFromRoutes = this.routes[path];
+    let path = window.location.pathname;
+    const PageConstructorFromRoutes = this.routes[path.split('/')[1]];
     const content = this.clearContent();
 
     if (PageConstructorFromRoutes) {
-      const page = new PageConstructorFromRoutes(content);
-      page.render();
+      let page;
+      if (path.startsWith(`/${urls.profile}`)) {
+        page = new PageConstructorFromRoutes(content);
+      } else if (path.startsWith(`/${urls.sight}`)) {
+        page = new PageConstructorFromRoutes(content);
+      } else {
+        page = new PageConstructorFromRoutes(content);
+      }
+      page?.render();
     } else {
-      const PageConstructorNotFound = this.routes['/404'];
+      const PageConstructorNotFound = this.routes['404'];
       if (PageConstructorNotFound) {
         new PageConstructorNotFound(content).render();
       }

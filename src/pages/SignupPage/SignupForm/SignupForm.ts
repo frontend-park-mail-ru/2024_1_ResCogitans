@@ -60,7 +60,8 @@ class SignupForm extends AuthorizationForm {
         .then((response) => {
           const responseData = response.data;
           if (response.status === 200) {
-            userHelper('set', responseData.username);
+            userHelper('set', responseData.user?.username);
+            localStorage.setItem('userID', responseData.user?.id);
             router.go(urls.base);
           }
           if (response.status === 400 || response.status === 500) {

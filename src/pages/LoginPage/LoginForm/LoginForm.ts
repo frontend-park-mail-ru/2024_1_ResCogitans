@@ -58,8 +58,9 @@ class LoginForm extends AuthorizationForm {
         .then((response) => {
           const responseData = response.data;
           if (response.status === 200) {
-            userHelper('set', responseData.username);
-            router.go(urls.base);
+            userHelper('set', responseData.user?.username); 
+            localStorage.setItem('userID', responseData.user?.id);
+            router.goBack();
           } else if (response.status === 400 || response.status === 500) {
             const lowestInputDiv = inputs[1] as HTMLDivElement;
             this.renderError(lowestInputDiv, loginErrors[response.status]);

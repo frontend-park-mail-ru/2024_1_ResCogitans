@@ -31,16 +31,13 @@ class Header extends Base {
     const logo = new Logo(logoGroup);
     logo.render();
 
-    const linkBlock = document.getElementById('links') as HTMLElement;
-    this.renderLinkBlock(linkBlock, ['Альбомы', 'Отзывы', 'Поддержка']);
-
     const profileBlock = document.getElementById('button-group') as HTMLElement;
 
     const username = localStorage.getItem('username');
     // backend request to check validation and not local storage 
 
     if (username != null) {
-      await new Link(profileBlock, { className: 'user-link', label: username }).render();
+      await new Link(profileBlock, { className: 'user-link', label: username, url : `/profile/${username}` }).render();
       await new Button(profileBlock, { id: 'logout', label: 'Выйти' }).render();
 
       const logoutButton = document.getElementById('logout') as HTMLElement;

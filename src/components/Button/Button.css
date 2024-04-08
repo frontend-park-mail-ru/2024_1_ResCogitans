@@ -31,7 +31,6 @@ button > a {
     background-color: var(--primary-color);
     border-radius: 20px;
     font-size: 18px;
-
 }
 
 #button-region {
@@ -76,4 +75,11 @@ button > a {
 
  .password-invisible {
     background-image: url('static/no_visible.svg');
+ }
+
+ .button-danger {
+    border: solid darkred;
+    background-color: red;
+    color: white;
+    font-weight: 800;
  }

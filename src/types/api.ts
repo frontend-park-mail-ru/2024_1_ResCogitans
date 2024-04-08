@@ -3,8 +3,13 @@ export interface UserAuthRequest {
   password: string;
 }
 
+export interface User {
+  id: number;
+  username: string;
+}
+
 export interface UserAuthResponseData {
-  username?: string;
+  user?: User;
   code: number;
   error: string;
 }
@@ -21,4 +26,18 @@ export interface Sight {
   description: string,
   city: string,
   url: string
+}
+
+export interface ReviewContent {
+  id : number;
+  username : string;
+  rating : number;
+  content : string;
+  notprofile: boolean;
+}
+
+export interface UserProfile {
+  id: number;
+  username : string;
+  status: string;
 }
