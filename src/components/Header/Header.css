@@ -1,7 +1,5 @@
-@import './Link/Link.css';
-@import '../../pages/LoginPage/LoginForm/LoginForm.css';
-@import './Logo/Logo.css';
-@import '../../pages/SignupPage/SignupPage.css';
+@import '../Link/Link.css';
+@import '../Logo/Logo.css';
 
 #links { 
     font-weight: 600;

@@ -1,5 +1,11 @@
+@import '../src/components/Button/Button.css';
+@import '../src/components/Header/Header.css';
+@import '../src/components/Input/Input.css';
+@import '../src/components/MainSearch/MainSearch.css';
+@import '../src/pages/PlacesPage/Placelist/Placelist.css';
 @import '../src/pages/PlacesPage/PlacesPage.css';
 @import '../src/pages/NotFoundPage/NotFoundPage.css';
+@import '../src/components/Form/Form.css';
 
 @font-face {
     font-family: 'Roboto';

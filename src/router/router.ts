@@ -1,22 +1,37 @@
+import urls from '@router/urls';
+import LoginPage from '@pages/LoginPage/LoginPage';
+import PlacesPage from '@pages/PlacesPage/PlacesPage';
+import SignupPage from '@pages/SignupPage/SignupPage';
+import NotFoundPage from '@pages/NotFoundPage/NotFoundPage';
+
+const routesList = {
+  [urls.base]: PlacesPage,
+  [urls.signup]: SignupPage,
+  [urls.login]: LoginPage,
+  [urls.notfound]: NotFoundPage,
+};
+
+interface Page {
+  render: () => void;
+}
+ 
+ type Routes = Record<string, new (content: HTMLElement) => Page>;
+
 /**
 * Класс Router управляет навигацией между страницами приложения.
 * @class
 */
 class Router {
+
+  routes : Routes;
+
   /**
   * Создает новый экземпляр маршрутизатора.
   * @constructor
   */
-  constructor() {
-    this.previousState = null;
-    this.routes = [];
+  constructor(routes: Routes) {
+    this.routes = routes;
     window.addEventListener('popstate', () => this.changeLocation());
-  }
-
-  register(routes) {
-    Object.entries(routes).forEach(([path, page]) => {
-      this.route(path, page);
-    });
   }
 
   /**
@@ -25,8 +40,8 @@ class Router {
   * @param {Object} page - Объект страницы, связанный с маршрутом.
   * @returns {Router} Ссылку на текущий экземпляр маршрутизатора.
   */
-  route(path, page) {
-    this.routes.push({ path, page });
+  route(path: string, PageConstructor: new (content: HTMLElement) => Page) {
+    this.routes[path] = PageConstructor;
     return this;
   }
 
@@ -34,7 +49,7 @@ class Router {
   * Перенаправляет пользователя на указанный путь и обновляет историю браузера.
   * @param {string} path - Путь для перенаправления.
   */
-  go(path) {
+  go(path : string) {
     window.history.pushState({}, '', path);
     this.changeLocation();
   }
@@ -44,7 +59,8 @@ class Router {
     if (!content) {
       content = document.createElement('div');
       content.id = 'content';
-      document.getElementById('root').appendChild(content);
+      const root = document.getElementById('root') as HTMLDivElement;
+      root.appendChild(content);
     }
     content.innerHTML = '';
     return content;
@@ -52,17 +68,20 @@ class Router {
 
   changeLocation() {
     const path = window.location.pathname;
-    const route = this.routes.find((route) => route.path === path);
+    const PageConstructorFromRoutes = this.routes[path];
     const content = this.clearContent();
 
-    if (route) {
-      const page = new route.page(content);
+    if (PageConstructorFromRoutes) {
+      const page = new PageConstructorFromRoutes(content);
       page.render();
     } else {
-      const { page } = this.routes.find((obj) => obj.path === '/404');
-      new page(content).render();
+      const PageConstructorNotFound = this.routes['/404'];
+      if (PageConstructorNotFound) {
+        new PageConstructorNotFound(content).render();
+      }
     }
   }
 }
 
-export const router = new Router();
+const router = new Router(routesList);
+export { router };

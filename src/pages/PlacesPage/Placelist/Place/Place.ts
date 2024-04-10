@@ -1,40 +1,39 @@
-import template from './Place.hbs';
-import starSvg from './star';
+import Base from '@components/Base/Base';
+import { Sight } from 'src/types/api';
 
 /**
 * Класс Place представляет место, которое может быть отрендерено в HTML.
 * @class
 */
-class Place {
+class Place extends Base {
+
+  data : Sight;
+
   /**
   * Создает новый экземпляр места.
   * @param {HTMLElement} parent - Родительский элемент, в который будет вставлено место.
   * @param {Object} data - Объект с данными места.
   */
-  constructor(parent, data) {
-    this.parent = parent;
+  constructor(parent : HTMLElement, data : Sight) {
+    super(parent);
     this.data = data;
   }
 
-  /**
-  * Возвращает HTML-представление места.
-  * @returns {string} HTML-представление места.
-  */
-  asHTML() {
-    return template(this.data);
-  }
+  async render() {
+    await this.preRender();
 
-  /**
-  * Рендерит место в DOM.
-  */
-  render() {
-    this.parent.insertAdjacentHTML('beforeend', this.asHTML());
-    const rating = document.querySelectorAll('.card-rating');
-    const element = rating[rating.length - 1];
-    const percentage = Math.round((this.data.rating / 5) * 103);
-    for (let j = 0; j < 5; j++) {
-      rating[rating.length - 1].insertAdjacentHTML('afterbegin', starSvg);
-      element.querySelector('.rating-overlay').style.width = `${percentage}%`;
+    const stars = document.querySelectorAll(`#card-${this.data.id} .card-rating span`) as NodeListOf<HTMLElement>;
+    const fullStars = Math.round(this.data.rating);
+
+    for (let i = 0; i < 5; i++) {
+      const starElement = stars[i] as HTMLElement;
+      if (i < fullStars) {
+        starElement.classList.add('filled');
+      } else if (i === fullStars) {
+        starElement.classList.add('partial');
+      } else {
+        starElement.classList.add('empty');
+      }
     }
   }
 }

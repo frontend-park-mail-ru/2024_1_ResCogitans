@@ -1,28 +1,20 @@
-import Header from '../../components/Header/Header';
-import Button from '../../components/Button/Button';
-import { router } from '../../router/Router';
-import urls from '../../router/urls';
+import Header from '@components/Header/Header';
+import Button from '@components/Button/Button';
+import  { router } from '@router/router';
+import urls from '@router/urls';
+import Base from '@components/Base/Base';
 
-import template from './NotFoundPage.hbs';
-
-class NotFoundPage {
-  constructor(parent) {
-    this.parent = parent;
-  }
-
-  asHTML() {
-    return template(this);
-  }
-
-  render() {
+class NotFoundPage extends Base {
+  async render() {
     document.body.style.backgroundImage = '';
-    this.parent.insertAdjacentHTML('beforeend', this.asHTML());
-    const header = document.getElementById('header');
-    const notfound = document.getElementById('notfound');
-    new Header(header).render();
-    new Button(notfound, { id: 'back-button', label: 'На главную' }).render();
+    await this.preRender();
 
-    const backButton = document.getElementById('back-button');
+    const header = document.getElementById('header') as HTMLDivElement;
+    const notfound = document.getElementById('notfound') as HTMLDivElement;
+    await new Header(header).render();
+    await new Button(notfound, { id: 'back-button', label: 'На главную' }).render();
+
+    const backButton = document.getElementById('back-button') as HTMLButtonElement;
     backButton.addEventListener('click', () => {
       router.go(urls.base);
     });

@@ -3,14 +3,14 @@ module.exports = {
     browser: true,
     es2021: true,
   },
-  extends: 'airbnb-base',
+  extends: 'airbnb-typescript/base',
   overrides: [
     {
       env: {
         node: true,
       },
       files: [
-        '.eslintrc.{js,cjs}',
+        '.eslintrc.{js, cjs}',
       ],
       parserOptions: {
         sourceType: 'script',
@@ -20,8 +20,12 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest',
     sourceType: 'module',
+    project: './tsconfig.json'
   },
   rules: {
     'class-methods-use-this': 'off',
-  },
+    'import/extensions': 'off',
+    'import/no-extraneous-dependencies': 'off',
+    "eol-last": ["error", "always"],
+   },   
 };

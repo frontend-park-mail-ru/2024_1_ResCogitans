@@ -32,12 +32,11 @@
 }
 
 .card-rating {
+    margin-top: 20px;
+    display: flex;
     position: relative;
-    grid-row: 3;
     width: fit-content;
     align-self: flex-end;
-    grid-template-columns: repeat(5, 1fr);
-    fill: var(--primary-color);
 }
 
 .rating-overlay {
@@ -58,4 +57,26 @@
 .card-description {
     margin: 5px 0px;
     font-size: 12px;
+}
+
+
+.star {
+    width: 24px;
+    height: 24px;
+    margin-right: 5px;
+    border: 2px solid var(--primary-color);
+    background-color: transparent;
+    border-radius: 50%;
+}
+
+.filled {
+    background-color: var(--primary-color);
+}
+
+.partial {
+    background-image: linear-gradient(to right, var(--primary-color) 50%, transparent 50%);
+}
+
+.empty {
+    background-color: transparent;
 }

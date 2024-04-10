@@ -1,15 +1,16 @@
+import { ENV_CONFIG } from '../../envConfig';
+
 /**
 * Функция для выполнения GET запроса к указанному URL.
 * @async
 * @function get
 * @param {string} url - URL для запроса данных.
-* @param {Function} callback - Функция обратного вызова. Она будет вызвана после выполнения запроса.
 * @returns {Promise<void>}
 */
-const get = async (url) => {
-  const response = await fetch(url);
+export async function get( endpoint : string ) : Promise<any> {
+  const response = await fetch(`${ENV_CONFIG.API_URL}/${endpoint}`);
   const responseData = await response.json();
   return responseData;
-};
+}
 
 export default get;

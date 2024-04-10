@@ -6,7 +6,7 @@ const Dotenv = require('dotenv-webpack');
 
 module.exports = {
   mode: 'development',
-  entry: './src/index.js',
+  entry: './src/index.ts',
   output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'public'),
@@ -14,12 +14,28 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.hbs$/,
+        test: /\.hbs/,
         loader: 'handlebars-loader',
+      },
+      {
+        test: /\.tsx?$/,
+        use: 'babel-loader',
+        exclude: /node_modules/,
       },
     ],
   },
-
+  resolve: {
+    extensions: ['.hbs', '.ts', '.tsx', '.js'],
+    alias: {
+      '@router': path.resolve(__dirname, 'src/router'),
+      '@pages': path.resolve(__dirname, 'src/pages'),
+      '@components': path.resolve(__dirname, 'src/components'),
+      '@utils': path.resolve(__dirname, 'src/utils'),
+      '@types': path.resolve(__dirname, 'src/types'),
+      '@static': path.resolve(__dirname, 'static/'),
+      '@api': path.resolve(__dirname, 'src/api'),
+    },
+  },
   optimization: {
     minimize: true,
     minimizer: [
@@ -31,7 +47,6 @@ module.exports = {
       }),
     ],
   },
-
   plugins: [
     new Dotenv(),
   ],

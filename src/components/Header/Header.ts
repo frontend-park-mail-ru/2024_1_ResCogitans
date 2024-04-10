@@ -1,77 +1,58 @@
-import Button from '../Button/Button';
-import Logo from './Logo/Logo';
-import Link from './Link/Link';
-import urls from '../../router/urls';
-import { router } from '../../router/Router';
-import { userHelper } from '../../utils/localstorage';
-import { logout } from '../../api/user';
-
-import template from './Header.hbs';
+import Button from '@components/Button/Button';
+import Logo from '@components/Logo/Logo';
+import Link from '@components/Link/Link';
+import urls from '@router/urls';
+import  { router } from '@router/router';
+import { userHelper } from '@utils/localstorage';
+import { authorize } from '@api/user';
+import Base from '@components/Base/Base';
 
 /**
 * Класс Header. Это шапка сайта.
 * @class
 */
-class Header {
-  /**
-  * Создает новый экземпляр шапки сайта.
-  * @param {HTMLElement} parent - Родительский элемент, в который будет вставлена шапка сайта.
-  */
-  constructor(parent) {
-    this.parent = parent;
-  }
-
-  /**
-  * Возвращает HTML-представление шапки сайта.
-  * @returns {string} HTML-представление шапки сайта.
-  */
-  asHTML() {
-    return template(this);
-  }
-
+class Header extends Base {
   /**
   * Рендерит блок ссылок в DOM.
   * @param {HTMLElement} parent - Родительский элемент, в который будут вставлены ссылки.
   * @param {Array<string>} labels - Массив меток для ссылок.
   */
-  renderLinkBlock(parent, labels) {
+  renderLinkBlock(parent : HTMLElement, labels : Array<string>) {
     labels.forEach((label) => new Link(parent, { label, className: 'search-link' }).render());
   }
 
   /**
   * Рендерит шапку, включая логотип, ссылки и кнопки в зависимости от состояния пользователя.
   */
-  render() {
-    this.parent.insertAdjacentHTML('beforeend', this.asHTML());
+  async render() {
+    await this.preRender();
 
-    const logoGroup = document.getElementById('logo-group');
+    const logoGroup = document.getElementById('logo-group') as HTMLElement;
     const logo = new Logo(logoGroup);
     logo.render();
 
-    const linkBlock = document.getElementById('links');
+    const linkBlock = document.getElementById('links') as HTMLElement;
     this.renderLinkBlock(linkBlock, ['Альбомы', 'Отзывы', 'Поддержка']);
 
-    // const buttonGroup = document.getElementById('button-group');
-    // new Button(buttonGroup,{id:'button-region',img:'../../static/globe.svg'}).render();
-
-    const profileBlock = document.getElementById('button-group');
+    const profileBlock = document.getElementById('button-group') as HTMLElement;
 
     const username = localStorage.getItem('username');
+    // backend request to check validation and not local storage 
 
     if (username != null) {
-      new Link(profileBlock, { className: 'user-link', label: username }).render();
-      new Button(profileBlock, { id: 'logout', label: 'Выйти' }).render();
+      await new Link(profileBlock, { className: 'user-link', label: username }).render();
+      await new Button(profileBlock, { id: 'logout', label: 'Выйти' }).render();
 
-      const logoutButton = document.getElementById('logout');
+      const logoutButton = document.getElementById('logout') as HTMLElement;
 
       logoutButton.addEventListener('click', () => {
-        logout(process.env.API_URL);
+        authorize('logout');
         userHelper('remove');
         router.go(urls.base);
       });
     } else {
-      new Button(profileBlock, { className: 'login-button', id: 'button-login', label: 'Войти' }).render();
-      const loginButton = document.getElementById('button-login');
+      await new Button(profileBlock, { className: 'login-button', id: 'button-login', label: 'Войти' }).render();
+      const loginButton = document.getElementById('button-login') as HTMLElement;
       loginButton.addEventListener('click', () => {
         router.go(urls.login);
       });
