@@ -1,4 +1,4 @@
-input {
+input[type="text"], input[type="password"], input[type="email"] {
     text-align: center;
     border-radius: 20px;
     border: 2px solid var(--main-text-color);

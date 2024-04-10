@@ -10,6 +10,7 @@
 @import '../src/pages/ProfilePage/ProfilePage.css';
 @import '../src/pages/NotFoundPage/NotFoundPage.css';
 @import '../src/pages/SightPage/SightPage.css';
+@import '../src/pages/JourneyPage/JourneyPage.css';
 
 
 
@@ -23,6 +24,7 @@
     --primary-color: #8fc4b2;
     --primary-color-lighter: #9cd7c3;
     --secondary-color: #d9d9d9;
+    --size: 3px;
 }
 
 html, body {

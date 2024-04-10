@@ -7,8 +7,10 @@ import { ENV_CONFIG } from '../../envConfig';
 * @param {string} url - URL для запроса данных.
 * @returns {Promise<void>}
 */
-export async function get( endpoint : string ) : Promise<any> {
-  const response = await fetch(`${ENV_CONFIG.API_URL}/${endpoint}`);
+export async function get( endpoint : string, body? : unknown) : Promise<unknown> {
+  const response = await fetch(`${ENV_CONFIG.API_URL}/${endpoint}`, {
+    body : JSON.stringify(body),
+  });
   const responseData = await response.json();
   return { data: responseData, status: response.status };
 }
@@ -22,7 +24,7 @@ export async function post(endpoint : string, body? : unknown): Promise<unknown>
     body: JSON.stringify(body),
   });
   const responseData = await response.json();
-  console.log(body);
+  console.log(responseData);
   return { data: responseData, status: response.status };
 }
 

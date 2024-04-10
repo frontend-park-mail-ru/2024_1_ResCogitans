@@ -41,4 +41,5 @@ export interface UserProfile {
   id: number;
   username : string;
   status: string;
+  avatarURL : string;
 }

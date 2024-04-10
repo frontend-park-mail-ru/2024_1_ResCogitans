@@ -7,6 +7,10 @@ button {
     transition: all 0.25s ease-in-out;
 }
 
+.button-primary {
+    background-color: var(--primary-color);
+}
+
 button:hover {
     opacity: 80%;
     transition: all 0.25s ease-in-out;
@@ -48,7 +52,7 @@ button > a {
     color: var(--secondary-color);
 }
 
-#login-button {
+#button-submit {
     margin-right: 30px;
     background-color: var(--primary-color);
 }

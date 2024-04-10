@@ -17,7 +17,7 @@ class AuthorizationForm extends Base {
   password = document.getElementById('password') as HTMLInputElement;
 
   enableSubmitButton = (() => {
-    const submitButton : HTMLButtonElement | null = document.getElementById('login-button') as HTMLButtonElement;
+    const submitButton : HTMLButtonElement | null = document.getElementById('button-submit') as HTMLButtonElement;
     const errorMessages : NodeListOf<HTMLElement> = document.querySelectorAll('.has-error');
     const forms : NodeListOf<HTMLInputElement> = document.querySelectorAll('input');
     let areEmptyForms : boolean = false;
@@ -33,13 +33,15 @@ class AuthorizationForm extends Base {
 
   clearError(parent : HTMLElement) {
     const errorMessage = parent.querySelectorAll('.err-label')[0] as HTMLElement;
-    errorMessage.innerHTML = '';
-    errorMessage.classList.remove('has-error');
+    if (errorMessage !== undefined) {
+      errorMessage.innerHTML = '';
+      errorMessage.classList.remove('has-error');
+    }
   }
 
   enablePasswordVisibilityButtons() {
     document.querySelectorAll('.input-button').forEach((input) => {
-      input.querySelector('button')?.addEventListener('click', (e) => {
+      input.querySelector('button')?.addEventListener('click', (e : Event) => {
         e.preventDefault();
         this.togglePasswordVisibility(input as HTMLElement);
       });

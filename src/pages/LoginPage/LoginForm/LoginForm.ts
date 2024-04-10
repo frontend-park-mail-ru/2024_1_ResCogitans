@@ -22,7 +22,7 @@ class LoginForm extends AuthorizationForm {
     const loginForm = document.getElementById('login-form') as HTMLDivElement;
 
     await new Button(loginForm, {
-      id: 'login-button', label: 'Войти', type: 'submit',
+      id: 'button-submit', label: 'Войти', type: 'submit',
     }).render();
     await new Button(loginForm, {
       id: 'signup-button', label: 'Регистрация',
@@ -33,22 +33,31 @@ class LoginForm extends AuthorizationForm {
 
     this.enablePasswordVisibilityButtons();
 
-    const submitButton = document.getElementById('login-button') as HTMLButtonElement;
+    const submitButton = document.getElementById('button-submit') as HTMLButtonElement;
     submitButton.disabled = true;
+    
+    const lowestInputDiv = passwordInput.parentElement as HTMLDivElement;
 
-    const inputs = document.querySelectorAll('.input');
-
-    document.querySelectorAll('input').forEach((input) => input.addEventListener('input', () => {
-      const inputParent = input.parentElement as HTMLDivElement;
+    loginForm.addEventListener('input', (e: Event) => {
+      const input = e.target as HTMLInputElement; 
+      const parent = input.parentElement as HTMLElement;
       validate( input.value, input.type )
-        .catch((error) => { this.renderError(inputParent, error.message); })
+        .catch((error) => { this.renderError(parent, error.message); })
         .then(() => {
           this.enableSubmitButton();
         });
-      this.clearError(inputParent);
-    }));
+      this.clearError(parent);
+    },
+    );
 
-    loginForm.addEventListener('submit', (e) => {
+    loginForm.addEventListener('click', () => {
+      const elementsWithError = document.querySelectorAll('.has-error');
+      elementsWithError.forEach(element => {
+        element.classList.remove('has-error');
+      });
+    }); 
+
+    loginForm.addEventListener('submit', (e : Event) => {
       e.preventDefault();
       const requestBody = {
         username: emailInput.value,
@@ -58,11 +67,10 @@ class LoginForm extends AuthorizationForm {
         .then((response) => {
           const responseData = response.data;
           if (response.status === 200) {
-            userHelper('set', responseData.user?.username); 
+            userHelper('set', responseData.user?.username.split('@')[0]); 
             localStorage.setItem('userID', responseData.user?.id);
             router.goBack();
           } else if (response.status === 400 || response.status === 500) {
-            const lowestInputDiv = inputs[1] as HTMLDivElement;
             this.renderError(lowestInputDiv, loginErrors[response.status]);
           }
         });

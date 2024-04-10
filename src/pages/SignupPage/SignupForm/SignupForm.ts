@@ -25,17 +25,15 @@ class SignupForm extends AuthorizationForm {
     this.enablePasswordVisibilityButtons();
 
     const registrationForm = document.getElementById('registration-form') as HTMLDivElement;
-    await new Button(registrationForm, { id: 'login-button', label: 'Зарегистрироваться', type: 'submit' }).render();
-    const submitButton = document.getElementById('login-button') as HTMLButtonElement;
+    await new Button(registrationForm, { id: 'button-submit', label: 'Зарегистрироваться', type: 'submit' }).render();
+    const submitButton = document.getElementById('button-submit') as HTMLButtonElement;
     submitButton.disabled = true;
 
     const email = document.getElementById('email') as HTMLInputElement;
     const password = document.getElementById('password') as HTMLInputElement;
     const repeatPassword = document.getElementById('password-repeat') as HTMLInputElement;
 
-    const form = document.querySelector('form') as HTMLFormElement;
-
-    form.addEventListener('input', (e: Event) => {
+    registrationForm.addEventListener('input', (e: Event) => {
       const input = e.target as HTMLInputElement; 
       const parent = input.parentElement as HTMLElement;
       validate( input.value, input.type )
@@ -47,7 +45,14 @@ class SignupForm extends AuthorizationForm {
     },
     );
 
-    registrationForm.addEventListener('submit', (e) => {
+    registrationForm.addEventListener('click', () => {
+      const elementsWithError = document.querySelectorAll('.has-error');
+      elementsWithError.forEach(element => {
+        element.classList.remove('has-error');
+      });
+    }); 
+
+    registrationForm.addEventListener('submit', (e : Event) => {
       e.preventDefault();
 
       const requestBody = {
@@ -55,12 +60,21 @@ class SignupForm extends AuthorizationForm {
         password: password?.value,
       };
 
+
       const lowestInput = repeatPassword.parentElement as HTMLDivElement;
+      
+      if (password.value !== repeatPassword.value) {
+        this.renderError(lowestInput, 'Пароли не совпадают');
+        return;
+      } else {
+        this.clearError(lowestInput);
+      }
+
       authorize('signup', requestBody)
         .then((response) => {
           const responseData = response.data;
           if (response.status === 200) {
-            userHelper('set', responseData.user?.username);
+            userHelper('set', responseData.user?.username.split('@')[0]);
             localStorage.setItem('userID', responseData.user?.id);
             router.go(urls.base);
           }

@@ -23,11 +23,12 @@ class SightPage extends Base {
       reviewsDiv.insertAdjacentHTML('beforeend', '<p>Оставьте отзыв первыми</p>');
     } else {
       response.data.comments.forEach((review) => {
+        review.username = review.username.split('@')[0];
         new Review(reviewsDiv, this.id, review, (review.username === username)).render();
       });
-    }
-  
+    }  
   }
+
 
   async render() {
     const responseSight = await get(`sight/${this.id}`);
@@ -57,7 +58,7 @@ class SightPage extends Base {
       reviewsLabel.innerHTML += ` (${responseSight.data.comments.length})`;
     }
    
-    submitButton?.addEventListener('click', (e) => {
+    submitButton?.addEventListener('click', (e : Event) => {
       e.preventDefault();
       const feedback = reviewForm.value;
       const userID = parseInt(localStorage.getItem('userID'));
@@ -86,20 +87,19 @@ class SightPage extends Base {
       editDialog.close();
     }));
 
-    deleteModalButton?.addEventListener('click', (e) => {
+    deleteModalButton?.addEventListener('click', (e : Event) => {
       e.preventDefault();
       const commentID = document.querySelector('.staged-delete')?.id.split('-')[1];
       post(`sight/${this.id}/delete/${commentID}`, {}).then((responseDeleteReview) => {
         if (responseDeleteReview.status !== 200) {
           router.go('login');
-        } else {
-          deleteDialog.close();
         }
+        deleteDialog.close();
         window.location.reload();
       });
     });
 
-    editModalButton?.addEventListener('click', (e) => {
+    editModalButton?.addEventListener('click', (e : Event) => {
       e.preventDefault();
       const commentID = document.querySelector('.staged-delete')?.id.split('-')[1];
       const feedbackField = editDialog.querySelector('#editTextArea') as HTMLTextAreaElement;
@@ -107,17 +107,15 @@ class SightPage extends Base {
       const ratingField = editDialog.querySelector('#rate') as HTMLTextAreaElement;
       const feedback = feedbackField.value;
       const rating = parseInt(ratingField.value);
-      post(`sight/${this.id}/edit/${commentID}`, { rating : rating, feedback : feedback, userID : userID }).then((responseDeleteReview) => {
+      const body = { rating : rating, feedback : feedback, userID : userID };
+      post(`sight/${this.id}/edit/${commentID}`, body).then((responseDeleteReview) => {
         if (responseDeleteReview.status !== 200) {
           router.go('login');
-        } else {
-          deleteDialog.close();
         }
+        deleteDialog.close();
         window.location.reload();
       });
     });
-
-
   }   
 }
  

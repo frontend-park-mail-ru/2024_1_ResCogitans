@@ -6,6 +6,10 @@
     text-decoration: none;
 }
 
+.input label {
+    margin-right: 15px;
+}
+
 .search-link:hover {
     border-bottom: 3px solid var(--main-text-color);
     opacity: 80%;

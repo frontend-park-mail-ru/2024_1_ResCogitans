@@ -1,0 +1,37 @@
+<div id="header">
+
+</div>
+
+
+<div class="container" id="journey-info">
+   {{#if this.journey.name}}
+   <h1 class="h3-no-margin">{{this.journey.name}}</h1>
+   {{else}}
+   <h1 class="h3-no-margin">Редактирование поездки</h1>
+   {{/if}}
+
+   <div class="container">
+      <form method="post">
+      <h2>Расскажите о поездке</h2>
+      <div class="input">
+         <label for="journey-name">Название</label>
+         <input id="journey-name" class="form-input" maxlength="32" type="text" required></input>
+         <label class="err-label"></label>
+      </div>
+      <div class="input">
+         <label for="journey-description">Описание</label>
+         <textarea id="journey-description" class="form-input" type="text" required></textarea>
+      </div>
+      <button id="button-submit" class="button-primary" type="submit">Создать</button>
+   </form>
+   </div>
+   
+</div>
+
+<div class="container">
+   <select class="custom-select" multiple="multiple" id="sight-select"></select>
+</div>
+
+<div class="container main" id="list-places">
+
+</div>
