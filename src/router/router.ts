@@ -41,7 +41,7 @@ class Router {
   }
 
   
-  route(path: string, PageConstructor: new (content: HTMLElement, username? : string) => Page) {
+  route(path: string, PageConstructor: new (content: HTMLElement, param? : string) => Page) {
     this.routes[path] = PageConstructor;
     return this;
   }
@@ -82,16 +82,18 @@ class Router {
     const PageConstructorFromRoutes = this.routes[path.split('/')[1]];
     const content = this.clearContent();
 
-    if (PageConstructorFromRoutes) {
+    if (PageConstructorFromRoutes) { // implement better routing with parameters
       let page;
       if (path.startsWith(`/${urls.profile}`)) {
         page = new PageConstructorFromRoutes(content);
       } else if (path.startsWith(`/${urls.sight}`)) {
         page = new PageConstructorFromRoutes(content);
+      } else if (path.startsWith(`/${urls.journey}`)) {
+        page = new PageConstructorFromRoutes(content, path.split('/')[2]);
       } else {
         page = new PageConstructorFromRoutes(content);
       }
-      page?.render();
+       page?.render();
     } else {
       const PageConstructorNotFound = this.routes['404'];
       if (PageConstructorNotFound) {

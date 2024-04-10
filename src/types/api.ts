@@ -19,15 +19,6 @@ export interface WithResponse<T> {
   data: T;
 }
 
-export interface Sight {
-  id: number,
-  rating: number,
-  name: string,
-  description: string,
-  city: string,
-  url: string
-}
-
 export interface ReviewContent {
   id : number;
   placename: string;
@@ -42,4 +33,22 @@ export interface UserProfile {
   username : string;
   status: string;
   avatarURL : string;
+}
+
+export interface Journey {
+  tripID : number,
+  userID : number,
+  username : string,
+  name : string;
+  description : string;
+  sights : Sight[];
+}
+
+export interface Sight {
+  id: number,
+  rating: number,
+  name: string,
+  description: string,
+  city: string,
+  url: string
 }

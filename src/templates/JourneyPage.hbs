@@ -4,33 +4,44 @@
 
 
 <div class="container" id="journey-info">
-   {{#if this.journey.name}}
+   {{#if this.tripID}}
    <h1 class="h3-no-margin">{{this.journey.name}}</h1>
    {{else}}
    <h1 class="h3-no-margin">Редактирование поездки</h1>
+   <h1 class="h3-no-margin">{{this.journey.name}}</h1>
    {{/if}}
 
    <div class="container">
-      <form method="post">
-      <h2>Расскажите о поездке</h2>
-      <div class="input">
-         <label for="journey-name">Название</label>
-         <input id="journey-name" class="form-input" maxlength="32" type="text" required></input>
-         <label class="err-label"></label>
-      </div>
-      <div class="input">
-         <label for="journey-description">Описание</label>
-         <textarea id="journey-description" class="form-input" type="text" required></textarea>
-      </div>
-      <button id="button-submit" class="button-primary" type="submit">Создать</button>
-   </form>
+      {{#if this.isEdit}}
+          <form method="post">
+         <h2>Расскажите о поездке</h2>
+         <div class="input">
+            <label for="journey-name">Название</label>
+            <input id="journey-name" class="form-input" maxlength="32" type="text" required placeholder="{{this.journey.name}}"></input>
+            <label class="err-label"></label>
+         </div>
+         <div class="input">
+            <label for="journey-description">Описание</label>
+            <textarea id="journey-description" class="form-input" type="text" required placeholder="{{this.journey.description}}"></textarea>
+         </div>
+         <button id="button-submit" class="button-primary" type="submit">Изменить</button>
+      </form>
+      {{else}}
+      <p>{{this.journey.description}}</p>
+      {{/if}}
+      {{#if this.isOwn}}
+      <button id="button-delete-journey" class="button-danger">Удалить</button>
+      <button id="button-edit-journey" class="button-primary">Изменить</button>
+      {{/if}}
    </div>
-   
 </div>
-
+{{#if this.isEdit}}
 <div class="container">
+    <h2>Список мест</h2>
    <select class="custom-select" multiple="multiple" id="sight-select"></select>
 </div>
+{{/if}}
+
 
 <div class="container main" id="list-places">
 

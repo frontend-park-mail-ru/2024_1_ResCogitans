@@ -3,15 +3,16 @@ import Header from '@components/Header/Header';
 import { UserProfile } from 'src/types/api';
 import { validate } from '@utils/validation';
 import AuthorizationForm from '@components/Form/AuthorizationForm';
-import { get } from '@api/base';
+import { get, post } from '@api/base';
 import { router } from '@router/router';
+import previewJourney from './PreviewJourney';
 
 class ProfilePage extends Base {
 
   userdata : UserProfile;
 
   isOwn : boolean;
-
+  userID : string;
   usernameURL : string;
 
   form : AuthorizationForm;
@@ -19,13 +20,13 @@ class ProfilePage extends Base {
   constructor(parent : HTMLElement) {
     super(parent);
     this.form = new AuthorizationForm(parent);
-    this.usernameURL = window.location.pathname.split('/')[2];
-    this.isOwn = (this.usernameURL === localStorage.getItem('username')); // нужна отдельная глобальная сущность пользователя, которая не будет зависеть от localStorage!!!
+    this.userID = window.location.pathname.split('/')[2];
+    this.isOwn = (this.userID === localStorage.getItem('userID')); // нужна отдельная глобальная сущность пользователя, которая не будет зависеть от localStorage!!!
   }
 
   async render() {
-    const profileData = await get(`profile/${this.usernameURL}`);
-    this.userdata = profileData.data.userdata;
+    const profileData = await get(`profile/${this.userID}`);
+    this.userdata = {id : profileData.data.id, username : profileData.data.username.split('@')[0], status : profileData.data.bio, avatarURL : profileData.data.avatar};
     if (profileData.status !== 200) {
       router.go('404');
       return;
@@ -76,24 +77,27 @@ class ProfilePage extends Base {
 
     submitButton.addEventListener('click', (e : Event) => {
       e.preventDefault();
-      console.log(usernameField.value, passwordField.value, repeatPasswordField.value, statusField.value);
-      fetch('http://127.0.0.1:8080/upload', { // TO DO
-        method: 'POST',
-        body: formData,
-      });
-    });
+      const profileRequestBody = {userID: this.userdata.id, username : usernameField.value, bio : statusField.value};
+      post(`profile/${this.userdata.id}/edit`, profileRequestBody);
+        // post(`upload`, formData).then(() =>  window.location.reload())
+  });
 
-    const journeyList = await get('/trips', this.userdata.id);
-    if (journeyList.status === 200) {
-      await this.renderJourneys();
+    const journeyList = await get(`${this.userdata.id}/trips`);
+    console.log(journeyList);
+    if (journeyList.status === 200 && journeyList.data.journeys.length > 0) {
+      const journeyDiv = document.querySelector('.profile-journeys') as HTMLDivElement;
+      journeyDiv.innerHTML = "";
+      journeyList.data.journeys.forEach((journey) => journeyDiv.innerHTML = previewJourney(journey.name, journey.description, journey.id));
     }
-
-    if (this.isOwn) {
+   
       const newJourneyButton = document.querySelector('#create-journey') as HTMLButtonElement;
-      newJourneyButton.addEventListener('click', () => {
-        router.go('trip');
-      });
-    }
+      console.log(newJourneyButton);
+      if (newJourneyButton) {
+        newJourneyButton.addEventListener('click', () => {
+          console.log('clkcked');
+          router.go('journey');
+        });
+      }
   }
 }
 
