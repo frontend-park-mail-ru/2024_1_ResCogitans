@@ -5,6 +5,7 @@ import { Sight } from 'src/types/api';
 
 /**
  * 
+ * 
 * Класс Placelist представляет список мест, который может быть отрендерен в HTML.
 * @class
 */
@@ -14,6 +15,7 @@ class Placelist extends Base {
     const placelist = document.getElementById('list-places') as HTMLDivElement;
     sights.forEach((data) => new Place(placelist, data).render());
   }
+    
     
 
   /**

@@ -11,11 +11,13 @@ import Base from '@components/Base/Base';
 * @class
 */
 class Header extends Base {
+class Header extends Base {
   /**
   * Рендерит блок ссылок в DOM.
   * @param {HTMLElement} parent - Родительский элемент, в который будут вставлены ссылки.
   * @param {Array<string>} labels - Массив меток для ссылок.
   */
+  renderLinkBlock(parent : HTMLElement, labels : Array<string>) {
   renderLinkBlock(parent : HTMLElement, labels : Array<string>) {
     labels.forEach((label) => new Link(parent, { label, className: 'search-link' }).render());
   }
@@ -25,7 +27,10 @@ class Header extends Base {
   */
   async render() {
     await this.preRender();
+  async render() {
+    await this.preRender();
 
+    const logoGroup = document.getElementById('logo-group') as HTMLElement;
     const logoGroup = document.getElementById('logo-group') as HTMLElement;
     const logo = new Logo(logoGroup);
     logo.render();
@@ -41,6 +46,7 @@ class Header extends Base {
       await new Button(profileBlock, { id: 'logout', label: 'Выйти' }).render();
 
       const logoutButton = document.getElementById('logout') as HTMLElement;
+      const logoutButton = document.getElementById('logout') as HTMLElement;
 
       logoutButton.addEventListener('click', () => {
         localStorage.clear();
@@ -48,6 +54,8 @@ class Header extends Base {
         router.go(urls.base);
       });
     } else {
+      await new Button(profileBlock, { className: 'login-button', id: 'button-login', label: 'Войти' }).render();
+      const loginButton = document.getElementById('button-login') as HTMLElement;
       await new Button(profileBlock, { className: 'login-button', id: 'button-login', label: 'Войти' }).render();
       const loginButton = document.getElementById('button-login') as HTMLElement;
       loginButton.addEventListener('click', () => {
