@@ -78,13 +78,17 @@ class ProfilePage extends Base {
     submitButton.addEventListener('click', (e : Event) => {
       e.preventDefault();
       const profileRequestBody = {userID: this.userdata.id, username : usernameField.value, bio : statusField.value};
-      post(`profile/${this.userdata.id}/edit`, profileRequestBody);
-        // post(`upload`, formData).then(() =>  window.location.reload())
+      post(`profile/${this.userdata.id}/edit`, profileRequestBody).then((response) => {
+        if (response.status === 200) {
+          window.location.reload();
+        }
+      });
+      
   });
 
     const journeyList = await get(`${this.userdata.id}/trips`);
     console.log(journeyList);
-    if (journeyList.status === 200 && journeyList.data.journeys.length > 0) {
+    if (journeyList.status === 200 && journeyList.data.journeys !== null) {
       const journeyDiv = document.querySelector('.profile-journeys') as HTMLDivElement;
       journeyDiv.innerHTML = "";
       journeyList.data.journeys.forEach((journey) => journeyDiv.innerHTML = previewJourney(journey.name, journey.description, journey.id));

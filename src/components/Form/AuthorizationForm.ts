@@ -1,10 +1,5 @@
 import Base from '@components/Base/Base';
-import Base from '@components/Base/Base';
 
-class AuthorizationForm extends Base {
-
-  renderError(parent : HTMLElement, message : string) {
-    const errorMessage = parent.querySelectorAll('.err-label')[0] as HTMLElement;
 class AuthorizationForm extends Base {
 
   renderError(parent : HTMLElement, message : string) {
@@ -15,17 +10,10 @@ class AuthorizationForm extends Base {
     }
   }
 
-  
-
   email = document.getElementById('email') as HTMLInputElement;
 
   password = document.getElementById('password') as HTMLInputElement;
   
-
-  email = document.getElementById('email') as HTMLInputElement;
-
-  password = document.getElementById('password') as HTMLInputElement;
-
   enableSubmitButton = (() => {
     const submitButton : HTMLButtonElement | null = document.getElementById('button-submit') as HTMLButtonElement;
     const errorMessages : NodeListOf<HTMLElement> = document.querySelectorAll('.has-error');
@@ -65,16 +53,7 @@ class AuthorizationForm extends Base {
     if (inputElement.type === 'password') {
       inputElement.type = 'text';
       icon?.classList.replace('password-invisible', 'password-visible');
-  togglePasswordVisibility(inputWithButton : HTMLElement) {
-    const icon = inputWithButton.querySelector('img');
-    const inputElement = inputWithButton.children[1] as HTMLInputElement;
-   
-    if (inputElement.type === 'password') {
-      inputElement.type = 'text';
-      icon?.classList.replace('password-invisible', 'password-visible');
     } else {
-      inputElement.type = 'password';
-      icon?.classList.replace('password-visible', 'password-invisible');
       inputElement.type = 'password';
       icon?.classList.replace('password-visible', 'password-invisible');
     }

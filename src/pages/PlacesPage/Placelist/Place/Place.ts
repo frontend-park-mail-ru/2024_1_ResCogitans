@@ -6,9 +6,6 @@ import Stars from '@components/Stars/Stars';
 * Класс Place представляет место, которое может быть отрендерено в HTML.
 * @class
 */
-class Place extends Base {
-
-  data : Sight;
 
 class Place extends Base {
 
@@ -19,8 +16,6 @@ class Place extends Base {
   * @param {HTMLElement} parent - Родительский элемент, в который будет вставлено место.
   * @param {Object} data - Объект с данными места.
   */
-  constructor(parent : HTMLElement, data : Sight) {
-    super(parent);
   constructor(parent : HTMLElement, data : Sight) {
     super(parent);
     this.data = data;

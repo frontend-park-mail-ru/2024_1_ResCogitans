@@ -7,16 +7,6 @@ import { authorize } from '@api/user';
 import { validate } from '@utils/validation';
 import AuthorizationForm from '@components/Form/AuthorizationForm';
 import { loginErrors } from '../../../types/errors';
-import Button from '@components/Button/Button';
-import urls from '@router/urls';
-import Logo from '@components/Logo/Logo';
-import  { router } from '@router/router';
-import { userHelper } from '@utils/localstorage';
-import { authorize } from '@api/user';
-import { validate } from '@utils/validation';
-import AuthorizationForm from '@components/Form/AuthorizationForm';
-import { loginErrors } from '../../../types/errors';
-
 /**
 * Класс LoginForm представляет форму входа, которая может быть отрендерена в HTML.
 * @class
@@ -26,12 +16,6 @@ class LoginForm extends AuthorizationForm {
   async render() {
     await this.preRender();
 
-  async render() {
-    await this.preRender();
-
-    const logoGroup = document.getElementById('logo-group') as HTMLDivElement;
-    await new Logo(logoGroup).render();
-    const loginForm = document.getElementById('login-form') as HTMLDivElement;
     const logoGroup = document.getElementById('logo-group') as HTMLDivElement;
     await new Logo(logoGroup).render();
     const loginForm = document.getElementById('login-form') as HTMLDivElement;
@@ -39,13 +23,7 @@ class LoginForm extends AuthorizationForm {
     await new Button(loginForm, {
       id: 'button-submit', label: 'Войти', type: 'submit',
     }).render();
-    await new Button(loginForm, {
-    await new Button(loginForm, {
-      id: 'signup-button', label: 'Регистрация',
-    }).render();
-
-    const emailInput = document.getElementById('email') as HTMLInputElement;
-    const passwordInput = document.getElementById('password') as HTMLInputElement;
+    
     const emailInput = document.getElementById('email') as HTMLInputElement;
     const passwordInput = document.getElementById('password') as HTMLInputElement;
 
@@ -53,7 +31,12 @@ class LoginForm extends AuthorizationForm {
 
     const submitButton = document.getElementById('button-submit') as HTMLButtonElement;
     submitButton.disabled = true;
+
     
+    await new Button(loginForm, {
+      id: 'signup-button', label: 'Регистрация',
+    }).render();
+   
     const lowestInputDiv = passwordInput.parentElement as HTMLDivElement;
 
     loginForm.addEventListener('input', (e: Event) => {
@@ -82,7 +65,6 @@ class LoginForm extends AuthorizationForm {
         password: passwordInput.value,
       };
       authorize('login', requestBody)
-      authorize('login', requestBody)
         .then((response) => {
           const responseData = response.data;
           if (response.status === 200) {
@@ -95,7 +77,6 @@ class LoginForm extends AuthorizationForm {
         });
     });
 
-    const registerButton = document.getElementById('signup-button') as HTMLButtonElement;
     const registerButton = document.getElementById('signup-button') as HTMLButtonElement;
     registerButton.addEventListener('click', () => {
       router.go(urls.signup);
