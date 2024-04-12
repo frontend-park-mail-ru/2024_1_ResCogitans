@@ -10,11 +10,17 @@ class Place extends Base {
 
   data : Sight;
 
+class Place extends Base {
+
+  data : Sight;
+
   /**
   * Создает новый экземпляр места.
   * @param {HTMLElement} parent - Родительский элемент, в который будет вставлено место.
   * @param {Object} data - Объект с данными места.
   */
+  constructor(parent : HTMLElement, data : Sight) {
+    super(parent);
   constructor(parent : HTMLElement, data : Sight) {
     super(parent);
     this.data = data;

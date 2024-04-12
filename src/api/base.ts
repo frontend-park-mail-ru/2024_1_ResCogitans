@@ -1,5 +1,7 @@
 import { ENV_CONFIG } from '../../envConfig';
 
+import { ENV_CONFIG } from '../../envConfig';
+
 /**
 * Функция для выполнения GET запроса к указанному URL.
 * @async
