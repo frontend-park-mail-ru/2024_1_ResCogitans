@@ -1,6 +1,11 @@
 .search-link {
     border-bottom: 3px solid white;
 }
+
+ol a {
+    text-decoration: none;
+}
+
 .search-link a:link, a:visited {
     color: var(--main-text-color);
     text-decoration: none;

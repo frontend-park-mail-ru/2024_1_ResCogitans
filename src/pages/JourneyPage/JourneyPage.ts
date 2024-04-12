@@ -1,6 +1,6 @@
 import Base from '@components/Base/Base';
 import Header from '@components/Header/Header';
-import { Journey } from 'src/types/api';
+import { Journey, Sight } from 'src/types/api';
 import Place from '@pages/PlacesPage/Placelist/Place/Place';
 import { get, post } from '@api/base';
 import { router } from '@router/router';
@@ -46,32 +46,45 @@ class JourneyPage extends Base {
 
   IDs : number[];
 
-  tripID : string;
+  tripID? : string;
 
   journey : Journey;
 
-  // sights: Sight[];
-
   isOwn : boolean;
-  isEdit : boolean;
-  type : string;
 
-  constructor(parent : HTMLElement, tripID? : string) {
+  isEdit : boolean;
+
+  type? : string;
+
+  constructor(parent : HTMLElement) {
+
     super(parent);
     this.IDs = [];
-    this.tripID = tripID;
-    this.isEdit = true;
     this.isOwn = false;
+
+    if (arguments[1].length > 2) {
+      router.go('404');
+    }
+    console.log(arguments[1]);
+    if (arguments[1][0] === 'edit' || arguments[1][0] === 'new') {
+      this.type = arguments[1][0];
+      this.tripID = arguments[1][2];
+      this.isEdit = true;
+    } else {
+      this.isEdit = false;
+      this.tripID = arguments[1][0];
+      this.type = 'view';
+    }
   }
 
   async addSightsToOptions() {
-
     if (this.isEdit === false) {
       return;
     }  
     const placelist = document.querySelector('#list-places') as HTMLDivElement;
     const sightResponse = await get('sights');
-    sightResponse.data.sights.sort((a, b) => {
+
+    sightResponse.data.sights.sort((a : Sight, b : Sight) => {
       const A = a.name.toUpperCase();
       const B = b.name.toUpperCase();
       if (A < B) {return -1;}
@@ -115,101 +128,98 @@ class JourneyPage extends Base {
   }
 
   async render() {
-
-    this.type = localStorage.getItem('journeyType');
     if (this.type === null) {
-      this.type = "edit";
+      this.type = 'new';
     }
+
     switch (this.type) {
-      case "edit":
-      this.isOwn = (localStorage.getItem('username') === this.journey.id);
-      console.log("HERE1");
-      if (localStorage.getItem('userID') === undefined) {
-        router.go('login');
-      }
+      case 'new':
 
-      await this.preRender(); 
+        if (localStorage.getItem('userID') === undefined) {
+          router.go('login');
+        }
 
-      const header = document.getElementById('header') as HTMLElement;
-      document.body.classList.remove('auth-background');
-      await new Header(header).render();
-  
-      this.addSightsToOptions();
-              
-          const submitButton = document.getElementById('button-submit') as HTMLButtonElement;
-          submitButton.addEventListener('click', (e : Event) => {
-            e.preventDefault();
-            const userID = parseInt(localStorage.getItem('userID'));
-            if (userID === null) {
+        await this.preRender(); 
+
+        const header = document.getElementById('header') as HTMLElement;
+        document.body.classList.remove('auth-background');
+        await new Header(header).render();
+
+        const journeyInfoDiv = document.getElementById('journey-info');
+        const title = document.createElement('h1');
+        title.textContent = 'Создание поездки';
+        journeyInfoDiv?.insertAdjacentElement('afterbegin', title);
+    
+        this.addSightsToOptions();
+                
+        const submitButton = document.getElementById('button-submit') as HTMLButtonElement;
+            
+        submitButton.addEventListener('click', (e : Event) => {
+          e.preventDefault();
+          const userID = parseInt(localStorage.getItem('userID'));
+          
+          const nameInput = document.querySelector('input') as HTMLInputElement;
+          const descriptionInput = document.querySelector('textarea') as HTMLTextAreaElement; 
+          const body = { userID : userID, name : nameInput.value, description : descriptionInput.value };
+    
+          post('trip/create', body).then((response) => {
+            if (response.status === 200) {
+              this.tripID = response.data.id;
+
+              this.IDs.map((sightID) => {
+                post(`trip/${this.tripID}/sight/add`, { sightID : sightID }).then((responseData) => {
+                  localStorage.setItem('journeyType', 'view');
+                  router.go(`journey/${this.tripID}`);
+                });
+              });
+            } else {
               router.go('login');
             }
-  
-            const nameInput = document.querySelector('input') as HTMLInputElement;
-            const descriptionInput = document.querySelector('textarea') as HTMLTextAreaElement; 
-            const body = { userID : userID, name : nameInput.value, description : descriptionInput.value };
-  
-            post('trip/create', body).then((response) => {
-              if (response.status === 200) {
-                this.tripID = response.data.id;
-                this.IDs.map((sightID) => {
-                  post(`trip/${this.tripID}/sight/add`, { sightID : sightID }).then((responseData) => {
-                    localStorage.setItem('journeyType', "view");
-                    console.log('going to', this.tripID);
-                    router.go(`journey/${this.tripID}`);
-                  });
-                });
-              } else {
-                router.go('login');
-              }
-            });
           });
-          break;
-    case "view":
-      console.log("HERE2");
-      console.log(window.location.pathname.split('/'));
-      this.tripID = window.location.pathname.split('/')[2];
-      if (this.tripID === undefined) {
-        localStorage.setItem('journeyType', 'edit');
-        return;
-      } else {
-        this.isEdit = false;
-        const journeyResponse = await get(`trip/${this.tripID}`);
-        if (journeyResponse.status === 200 && journeyResponse.data.journey !== null) {
-          this.journey = journeyResponse.data.journey;
-          this.isOwn = (localStorage.getItem('username') === this.journey.username)
-          await this.preRender();
-          const header = document.getElementById('header') as HTMLElement;
-          document.body.classList.remove('auth-background');
-          await new Header(header).render();
-  
-          this.addSightsToOptions();
+        });
+        break;
+      case 'view':
+          const journeyResponse = await get(`trip/${this.tripID}`);
 
-          const placelist = document.querySelector('#list-places') as HTMLDivElement;
-          journeyResponse.data.sights.forEach((sight) =>  new Place(placelist, sight).render());
-
+          if (journeyResponse.status === 200 && journeyResponse.data.journey !== null) {
+            this.journey = journeyResponse.data.journey;
+            
+            await this.preRender();
+            
+            const header = document.getElementById('header') as HTMLElement;
+            document.body.classList.remove('auth-background');
+            await new Header(header).render();
   
-          const form = document.querySelector('form') as HTMLFormElement;
+            const journeyInfoDiv = document.getElementById('journey-info');
+            const title = document.createElement('h1');
+            title.textContent = `${this.journey.name}`;
+            journeyInfoDiv?.insertAdjacentElement('afterbegin', title);
+
+            this.addSightsToOptions();
+
+            const placelist = document.querySelector('#list-places') as HTMLDivElement;
+            journeyResponse.data.sights.forEach((sight) =>  new Place(placelist, sight).render());
+  
+            const form = document.querySelector('form') as HTMLFormElement;
           
-          const editJourneyButton = document.getElementById('button-edit-journey');
-          const deleteJourneyButton = document.getElementById('button-delete-journey');
+            const editJourneyButton = document.getElementById('button-edit-journey');
+            const deleteJourneyButton = document.getElementById('button-delete-journey');
   
-          editJourneyButton?.addEventListener('click', () => {
-            localStorage.setItem('journeyType', "edit");
-            router.go(`journey/${this.tripID}`);
-            alert("click");
-          });
+            editJourneyButton?.addEventListener('click', () => {
+              localStorage.setItem('journeyType', 'edit');
+              router.go(`journey/${this.tripID}`);
+              alert('click');
+            });
   
-          deleteJourneyButton?.addEventListener('click', () => {
-            localStorage.setItem('journeyType', "edit");
-            router.go(`journey/${this.tripID}`);
-            alert("click");
-          });
-          break;
-      }
-      }
-    }
-    
-  }
+            deleteJourneyButton?.addEventListener('click', () => {
+              localStorage.setItem('journeyType', 'edit');
+              router.go(`journey/${this.tripID}`);
+              alert('click');
+            });
+            break;
+          }
+        }
+    } 
 }
 
 export default JourneyPage;

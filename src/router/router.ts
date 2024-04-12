@@ -21,50 +21,35 @@ interface Page {
   render: () => void;
 }
  
-type Routes = Record<string, new (content: HTMLElement, username?: string) => Page>;
+type Routes = Record<string, new (content: HTMLElement, ...args : any[]) => Page>;
 
-/**
-* Класс Router управляет навигацией между страницами приложения.
-* @class
-*/
 class Router {
-
-  routes : Routes;
-
-  /**
-  * Создает новый экземпляр маршрутизатора.
-  * @constructor
-  */
+  routes: Routes;
+ 
   constructor(routes: Routes) {
     this.routes = routes;
     window.addEventListener('popstate', () => this.changeLocation());
   }
-
-  
-  route(path: string, PageConstructor: new (content: HTMLElement, param? : string) => Page) {
+ 
+  route(path: string, PageConstructor: new (content: HTMLElement, param?: string) => Page) {
     this.routes[path] = PageConstructor;
     return this;
   }
-
-  /**
-  * Перенаправляет пользователя на указанный путь и обновляет историю браузера.
-  * @param {string} path - Путь для перенаправления.
-  */
-  go(path: string) {
+ 
+  go(path: string, params?: string) {
     if (!path.startsWith('/')) {
       path = '/' + path;
     }
     if (window.location.pathname !== path) {
-      window.history.pushState({}, '', path);
+      window.history.pushState({ params }, '', path);
     }
     this.changeLocation();
   }
-
+ 
   goBack() {
     window.history.back();
   }
-   
-
+ 
   clearContent() {
     let content = document.getElementById('content');
     if (!content) {
@@ -76,24 +61,16 @@ class Router {
     content.innerHTML = '';
     return content;
   }
-
+ 
   changeLocation() {
     let path = window.location.pathname;
     const PageConstructorFromRoutes = this.routes[path.split('/')[1]];
     const content = this.clearContent();
+    const params = path.split('/').slice(2);
 
-    if (PageConstructorFromRoutes) { // implement better routing with parameters
-      let page;
-      if (path.startsWith(`/${urls.profile}`)) {
-        page = new PageConstructorFromRoutes(content);
-      } else if (path.startsWith(`/${urls.sight}`)) {
-        page = new PageConstructorFromRoutes(content);
-      } else if (path.startsWith(`/${urls.journey}`)) {
-        page = new PageConstructorFromRoutes(content, path.split('/')[2]);
-      } else {
-        page = new PageConstructorFromRoutes(content);
-      }
-       page?.render();
+    if (PageConstructorFromRoutes) {
+      const page = new PageConstructorFromRoutes(content, params);
+      page.render();
     } else {
       const PageConstructorNotFound = this.routes['404'];
       if (PageConstructorNotFound) {
@@ -102,6 +79,7 @@ class Router {
     }
   }
 }
+ 
 
 const router = new Router(routesList);
 export { router };

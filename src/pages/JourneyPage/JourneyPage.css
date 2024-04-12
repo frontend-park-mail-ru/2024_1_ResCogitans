@@ -5,9 +5,7 @@
   
   select {
     appearance: none;
-    /*  safari  */
     -webkit-appearance: none;
-    /*  other styles for aesthetics */
     width: 100%;
     font-size: 1.15rem;
     padding: 0.675em 6em 0.675em 1em;

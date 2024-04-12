@@ -2,15 +2,7 @@
 
 </div>
 
-
 <div class="container" id="journey-info">
-   {{#if this.tripID}}
-   <h1 class="h3-no-margin">{{this.journey.name}}</h1>
-   {{else}}
-   <h1 class="h3-no-margin">Редактирование поездки</h1>
-   <h1 class="h3-no-margin">{{this.journey.name}}</h1>
-   {{/if}}
-
    <div class="container">
       {{#if this.isEdit}}
           <form method="post">

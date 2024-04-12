@@ -80,3 +80,29 @@
 .review-content {
   margin-left: 20px;
 }
+
+ol {
+	list-style-type: none; 
+	counter-reset: num;
+	margin: 0 0 0 60px;
+	padding: 15px 0 5px 0;
+	font-size: 16px;
+}
+ol li {
+	position: relative;	
+	margin: 0 0 0 0;
+	padding: 0 0 10px 0;
+}
+ol li:before {
+	content: counter(num); 
+	counter-increment: num;
+	display: inline-block;
+	position: absolute;
+	top: 0px;
+	left: -60px;
+	width: 50px;    
+	color: var(--primary-color);
+	text-align: center;
+	font-size: 40px;
+	font-weight: bold;
+}

@@ -9,21 +9,21 @@
             <p>{{this.userdata.status}}</p>
         </div>
     </div>
-    <button id="profile-edit-button">Редактировать профиль</button>
+    {{#if this.isOwn}}
+       <button id="profile-edit-button">Редактировать профиль</button>
+    {{/if}}
 </div>
 <div class="profile-container">
     <div id="search-links">
         <h2 class="h3-no-margin">Поездки</h2>
     </div>
     <div class="profile-journeys">
-    {{#if this.isOwn}}
-        <h3 class="h3-no-margin">Вы еще не создавали поездки</h3>
-    {{else}}
-        <h3 class="h3-no-margin">Пользователь еще не создавал поездки</h3>
-    {{/if}}
+          <ol>
+
+        </ol>
     </div>
     {{#if this.isOwn}}
-        <button id="create-journey" class="button-primary">Создать новую поездку</button>
+        <button id="create-journey" href="/journey/new" class="button-primary">Создать новую поездку</button>
     {{/if}}
 </div>
 </div>

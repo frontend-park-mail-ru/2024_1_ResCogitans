@@ -5,33 +5,39 @@ import { validate } from '@utils/validation';
 import AuthorizationForm from '@components/Form/AuthorizationForm';
 import { get, post } from '@api/base';
 import { router } from '@router/router';
-import previewJourney from './PreviewJourney';
+import JourneyPreview from './JourneyPreview';
 
 class ProfilePage extends Base {
 
   userdata : UserProfile;
 
   isOwn : boolean;
+
   userID : string;
+
   usernameURL : string;
 
   form : AuthorizationForm;
 
   constructor(parent : HTMLElement) {
+ 
     super(parent);
     this.form = new AuthorizationForm(parent);
-    this.userID = window.location.pathname.split('/')[2];
+    this.userID = arguments[1][0];
+    console.log(this.userID);
     this.isOwn = (this.userID === localStorage.getItem('userID')); // нужна отдельная глобальная сущность пользователя, которая не будет зависеть от localStorage!!!
   }
 
   async render() {
     const profileData = await get(`profile/${this.userID}`);
-    this.userdata = {id : profileData.data.id, username : profileData.data.username.split('@')[0], status : profileData.data.bio, avatarURL : profileData.data.avatar};
+    console.log(profileData);
     if (profileData.status !== 200) {
       router.go('404');
       return;
     }
 
+    this.userdata = { id : profileData.data.id, username : profileData.data.username.split('@')[0], status : profileData.data.bio, avatarURL : profileData.data.avatar };
+    
     await this.preRender();
     const header = document.getElementById('header') as HTMLElement;
     document.body.classList.remove('auth-background');
@@ -39,6 +45,7 @@ class ProfilePage extends Base {
 
     const profileSettingsButton = document.querySelector('#profile-edit-button') as HTMLButtonElement;
     const profileEditForm = document.querySelector('dialog') as HTMLDialogElement;
+    
     profileSettingsButton?.addEventListener('click', () => {
       profileEditForm.showModal();
     });
@@ -77,31 +84,22 @@ class ProfilePage extends Base {
 
     submitButton.addEventListener('click', (e : Event) => {
       e.preventDefault();
-      const profileRequestBody = {userID: this.userdata.id, username : usernameField.value, bio : statusField.value};
+      const profileRequestBody = { userID: this.userdata.id, username : usernameField.value, bio : statusField.value };
       post(`profile/${this.userdata.id}/edit`, profileRequestBody).then((response) => {
         if (response.status === 200) {
-          window.location.reload();
+          window.location.reload(); //todo
         }
       });
       
-  });
+    });
 
     const journeyList = await get(`${this.userdata.id}/trips`);
-    console.log(journeyList);
     if (journeyList.status === 200 && journeyList.data.journeys !== null) {
-      const journeyDiv = document.querySelector('.profile-journeys') as HTMLDivElement;
-      journeyDiv.innerHTML = "";
-      journeyList.data.journeys.forEach((journey) => journeyDiv.innerHTML = previewJourney(journey.name, journey.description, journey.id));
+      const journeyDiv = document.querySelector('.profile-journeys ol') as HTMLDivElement;
+      journeyDiv.innerHTML = '';
+      journeyList.data.journeys.forEach((journey) => new JourneyPreview(journeyDiv, journey).render());
     }
    
-      const newJourneyButton = document.querySelector('#create-journey') as HTMLButtonElement;
-      console.log(newJourneyButton);
-      if (newJourneyButton) {
-        newJourneyButton.addEventListener('click', () => {
-          console.log('clkcked');
-          router.go('journey');
-        });
-      }
   }
 }
 
