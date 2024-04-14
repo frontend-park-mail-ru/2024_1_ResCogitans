@@ -17,7 +17,6 @@ class SightPage extends Base {
   }
   
   async renderReviews(response : unknown) {
-    const username = this.userData?.userID;
     const reviewsDiv = document.querySelector('.sight-reviews') as HTMLDivElement;
 
     if (response.data.comments === null) {
@@ -25,7 +24,7 @@ class SightPage extends Base {
     } else {
       response.data.comments.forEach((review) => {
         review.username = review.username;
-        new Review(reviewsDiv, this.id, review, (review.username === username)).render();
+        new Review(reviewsDiv, this.id, review, (review.userID === this.userData.userID)).render();
       });
     }  
   }
@@ -75,6 +74,8 @@ class SightPage extends Base {
       post(`sight/${this.id}/create`, requestBody).then((responseCreateReview) => {
         if (responseCreateReview.status !== 200) {
           router.go('login');
+        } else {
+          router.go(`sights/${this.id}`);
         } 
       });
     });
@@ -97,11 +98,12 @@ class SightPage extends Base {
       e.preventDefault();
       const commentID = document.querySelector('.staged-delete')?.id.split('-')[1];
       post(`sight/${this.id}/delete/${commentID}`, {}).then((responseDeleteReview) => {
-        if (responseDeleteReview.status !== 200) {
+        if (responseDeleteReview.status === 401) {
           router.go('login');
+        } else {
+          deleteDialog.close();
+          router.go(`sights/${this.id}`);
         }
-        deleteDialog.close();
-        window.location.reload();
       });
     });
 
@@ -115,11 +117,12 @@ class SightPage extends Base {
       const rating = parseInt(ratingField.value);
       const body = { rating : rating, feedback : feedback, userID : userID };
       post(`sight/${this.id}/edit/${commentID}`, body).then((responseDeleteReview) => {
-        if (responseDeleteReview.status !== 200) {
+        if (responseDeleteReview.status === 401) {
           router.go('login');
+        } else {
+          deleteDialog.close();
+          router.go(`sights/${this.id}`);
         }
-        deleteDialog.close();
-        window.location.reload();
       });
     });
   }   

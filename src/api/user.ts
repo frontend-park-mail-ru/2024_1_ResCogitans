@@ -22,3 +22,16 @@ export async function authorize(endpoint : string, body? : UserAuthRequest): Pro
   };
   return userAuthResponse;
 }
+
+
+export async function imageUpload(endpoint : string, body? : FormData) {
+  const response = await fetch(`${ENV_CONFIG.API_URL}/${endpoint}`, {
+    method: 'POST',
+    credentials: 'include',
+    body: body,
+  });
+  console.log(body);
+  const responseData = await response.json();
+ 
+  return { data: responseData, status: response.status };
+}

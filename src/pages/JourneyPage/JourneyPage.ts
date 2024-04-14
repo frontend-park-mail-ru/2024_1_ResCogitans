@@ -4,41 +4,9 @@ import { Journey, Sight, JourneyResponse } from 'src/types/api';
 import Place from '@pages/PlacesPage/Placelist/Place/Place';
 import { get, post } from '@api/base';
 import { router } from '@router/router';
+import urls from '@router/urls';
+import AuthorizationForm from '@components/Form/AuthorizationForm';
 
-
-// const exampleJourney: Journey = {
-//   tripID: 1,
-//   userID : 1,
-//   username: "testuser33",
-//   name: "Summer Adventure",
-//   description: "A summer trip exploring beautiful sights",
-//   sights: [
-//      {
-//        id: 1,
-//        rating: 5,
-//        name: "Eiffel Tower",
-//        description: "Iconic landmark in Paris",
-//        city: "Paris",
-//        url: "/public/3.jpg"
-//      },
-//      {
-//        id: 2,
-//        rating: 4,
-//        name: "Colosseum",
-//        description: "An ancient amphitheatre in Rome",
-//        city: "Rome",
-//        url: "/public/2.jpg"
-//      },
-//      {
-//        id: 3,
-//        rating: 3,
-//        name: "Statue of Liberty",
-//        description: "A symbol of freedom and democracy",
-//        city: "New York",
-//        url: "/public/3.jpg"
-//      }
-//   ]
-//  };
 class JourneyPage extends Base {
 
   parent : HTMLElement;
@@ -70,13 +38,14 @@ class JourneyPage extends Base {
 
     if (arguments[1][0] === 'edit' || arguments[1][0] === 'new') {
       this.type = arguments[1][0];
-      this.tripID = arguments[1][2];
+      this.tripID = arguments[1][1];
       this.isEdit = true;
     } else {
       this.isEdit = false;
       this.tripID = arguments[1][0];
       this.type = 'view';
     }
+    console.log(this.type);
   }
 
   async addSightsToOptions() {
@@ -157,27 +126,33 @@ class JourneyPage extends Base {
      
     
         this.addSightsToOptions();
-                
+          
         const submitButton = document.getElementById('button-submit') as HTMLButtonElement;
         submitButton.textContent = 'Создать';
+        document.getElementById('button-delete-journey')?.remove();
+        const form = document.querySelector('form') as HTMLFormElement; 
             
-        submitButton.addEventListener('click', (e : Event) => {
+        form.addEventListener('submit', (e : Event) => {
           e.preventDefault();
-          const userID = this.userData.userID;
-          
+
+          if (this.IDs.length === 0) { 
+            const authForm = new AuthorizationForm(form);
+            authForm.renderError(form, 'Выберите места для поездки');
+            return;
+          } 
+
+          const userID = this.userData.userID;          
           const nameInput = document.querySelector('input') as HTMLInputElement;
           const descriptionInput = document.querySelector('textarea') as HTMLTextAreaElement; 
           const body = { userID : userID, name : nameInput.value, description : descriptionInput.value };
-    
+       
           post('trip/create', body).then((response) => {
             if (response.status === 200) {
               this.tripID = response.data.id;
-
-              this.IDs.map((sightID) => {
-                post(`trip/${this.tripID}/sight/add`, { sightID : sightID }).then(() => {
-                });
+              post(`trip/${this.tripID}/sight/add`, { sightIDs : this.IDs }).then(() => {
+                this.type = 'view';
+                router.go(`journey/${this.tripID}`);
               });
-              router.go(`journey/${this.tripID}`);
             } else {
               router.go('login');
             }
@@ -188,9 +163,9 @@ class JourneyPage extends Base {
       case 'edit':
         
         const journeyResponse = await get(`trip/${this.tripID}`) as JourneyResponse;
-        this.isOwn = this.userData.userID === journeyResponse.data.userID;
+        this.isOwn = true;
 
-        if (journeyResponse.status === 200 && journeyResponse.data.journey !== null) {
+        if (journeyResponse.status === 200 && journeyResponse.data.sights !== null) {
           this.journey = journeyResponse.data.journey;
             
           await this.preRender();
@@ -209,21 +184,43 @@ class JourneyPage extends Base {
           const placelist = document.querySelector('#list-places') as HTMLDivElement;
           journeyResponse.data.sights.forEach((sight) =>  new Place(placelist, sight).render());
   
-          // const form = document.querySelector('form') as HTMLFormElement;
-          
+          const editForm = document.querySelector('form') as HTMLFormElement;
           const editJourneyButton = document.getElementById('button-edit-journey');
           const deleteJourneyButton = document.getElementById('button-delete-journey');
 
-          // console.log(this.isOwn, journeyResponse);
-  
-          editJourneyButton?.addEventListener('click', () => {
-            router.go(`journey/edit/${this.tripID}`);
-          });
-  
+          const deleteDialog = document.querySelector('.delete-dialog') as HTMLDialogElement;
+      
+          const deleteModalButton = deleteDialog.querySelector('#button-delete') as HTMLButtonElement;
+        
           deleteJourneyButton?.addEventListener('click', () => {
-            router.go(`journey/edit/${this.tripID}`);
-            alert('click');
+            deleteDialog.showModal();
           });
+
+          deleteModalButton?.addEventListener('click', () => {
+            post(`trip/${this.tripID}/delete`, {}).then(() => {
+              deleteDialog.close();
+              router.go(urls.base);
+            });
+          });
+  
+          if (this.type === 'view') {
+            editJourneyButton?.addEventListener('click', () => {
+              router.go(`journey/edit/${this.tripID}`);
+            });
+          } else if (this.type === 'edit') {
+            editForm.addEventListener('submit', (e : Event) => {
+              const userID = this.userData.userID;          
+              const nameInput = document.querySelector('input') as HTMLInputElement;
+              const descriptionInput = document.querySelector('textarea') as HTMLTextAreaElement; 
+              const body = { userID : userID, name : nameInput.value, description : descriptionInput.value };
+
+              e.preventDefault();
+              post(`trip/${this.tripID}/sight/add`, { body : body, sightIDs : this.IDs }).then(() => {
+                this.type = 'view';
+                router.go(`journey/${this.tripID}`);
+              });
+            });
+          }
           break;
         } else {
           router.go('404');

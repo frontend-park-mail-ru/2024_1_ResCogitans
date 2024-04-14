@@ -6,6 +6,8 @@ import AuthorizationForm from '@components/Form/AuthorizationForm';
 import { get, post } from '@api/base';
 import { router } from '@router/router';
 import JourneyPreview from './JourneyPreview';
+import { imageUpload } from '@api/user';
+import { signupErrors } from '@types/errors';
 
 class ProfilePage extends Base {
 
@@ -31,14 +33,10 @@ class ProfilePage extends Base {
   async render() {
     const profileData = await get(`profile/${this.userID}`);
     console.log(profileData);
-    if (profileData.status !== 200) {
-      router.go('404');
-      return;
-    }
 
-    console.log(this.isOwn, this.userID, this.userData.userID);
-
-    this.userdata = { id : profileData.data.id, username : profileData.data.username, status : profileData.data.bio, avatarURL : profileData.data.avatar };
+    const authForm = new AuthorizationForm(this.parent);
+    const avatar = profileData.data.avatar.replace(/.*\/public\//, '/public/');
+    this.userdata = { id : profileData.data.id, username : profileData.data.username, status : profileData.data.bio, avatar : avatar };
     
     await this.preRender();
     const header = document.getElementById('header') as HTMLElement;
@@ -70,8 +68,7 @@ class ProfilePage extends Base {
     const inputs = document.querySelectorAll('input') as NodeListOf<HTMLInputElement>;
 
     const usernameField = inputs[0];
-    // const passwordField = inputs[1];
-    // const repeatPasswordField = inputs[2];
+    const passwordField = inputs[1];
     const statusField = document.querySelector('textarea') as HTMLTextAreaElement;
 
     const imageInput = document.querySelector('#profile-edit-avatar') as HTMLInputElement;
@@ -80,19 +77,25 @@ class ProfilePage extends Base {
     imageInput.addEventListener('change', () => {
       if (imageInput.files) {
         formData = new FormData();
-        formData.append('image', imageInput.files[0]);
+        formData.append('file', imageInput.files[0]);
       }
     });
 
     submitButton.addEventListener('click', (e : Event) => {
       e.preventDefault();
       const profileRequestBody = { userID: this.userdata.id, username : usernameField.value, bio : statusField.value };
-      post(`profile/${this.userdata.id}/edit`, profileRequestBody).then((response) => {
-        if (response.status === 200) {
-          window.location.reload(); //todo
-        }
+      post(`profile/${this.userdata.id}/edit`, profileRequestBody).then(() => {
+        post(`profile/${this.userdata.id}/reset_password`, { password : passwordField.value }).then((passwordResponse) => {
+          if (passwordResponse.status === 401) {
+            authForm.renderError(document.querySelectorAll('.input')[2], signupErrors[passwordResponse.data.error]);
+          }
+          imageUpload(`profile/${this.userdata.id}/upload`, formData).then((response) => {
+            if (response.status === 200) {
+              router.go(`profile/${this.userdata.id}`);
+            }
+          });
+        });
       });
-      
     });
 
     const journeyList = await get(`${this.userdata.id}/trips`);
