@@ -6,6 +6,7 @@ import { router } from '@router/router';
 import { authUser } from '@utils/localstorage';
 import { validate } from '@utils/validation';
 import { signupErrors } from '../../../types/errors';
+import urls from '@router/urls';
 
 /**
 * Класс SignupForm представляет форму регистрации, которая может быть отрендерена в HTML.
@@ -79,7 +80,7 @@ class SignupForm extends AuthorizationForm {
             if (responseID !== undefined && responseUsername !== undefined) {
               authUser(responseUsername, responseID);
             }
-            router.goBack();
+            router.go(urls.base);
           }
           if (response.status === 400 || response.status === 500) {
             this.renderError(lowestInput, signupErrors[responseData.error]);
