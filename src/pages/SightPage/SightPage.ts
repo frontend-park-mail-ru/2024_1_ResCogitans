@@ -58,6 +58,8 @@ class SightPage extends Base {
     if (responseSight.data.comments !== null) {
       reviewsLabel.innerHTML += ` (${responseSight.data.comments.length})`;
     }
+
+    console.log(this.userData);
    
     submitButton?.addEventListener('click', (e : Event) => {
       e.preventDefault();

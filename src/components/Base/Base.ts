@@ -5,14 +5,14 @@ class Base {
   parent: HTMLElement;
 
   userData : User;
-  
+
   isAuth : boolean;
 
   template: HandlebarsTemplateDelegate;
 
   constructor(parent : HTMLElement) {
     this.parent = parent;
-    this.userData = localStorage.getItem('user');
+    this.userData = JSON.parse(localStorage.getItem('user'));
     this.isAuth = (this.userData !== null);
   }
 

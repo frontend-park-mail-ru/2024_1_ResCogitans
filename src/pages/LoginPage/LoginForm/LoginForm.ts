@@ -7,6 +7,7 @@ import { authorize } from '@api/user';
 import { validate } from '@utils/validation';
 import AuthorizationForm from '@components/Form/AuthorizationForm';
 import { loginErrors } from '../../../types/errors';
+import { UserAuthResponseData } from '@types/api';
 /**
 * Класс LoginForm представляет форму входа, которая может быть отрендерена в HTML.
 * @class
@@ -66,13 +67,11 @@ class LoginForm extends AuthorizationForm {
       };
       authorize('login', requestBody)
         .then((response) => {
-          const responseData = response.data;
+          const responseData = response.data as UserAuthResponseData;
           if (response.status === 200) {
-            const responseID = responseData.user?.id;
-            const responseUsername = responseData.user?.username;
-            if (responseID !== undefined && responseUsername !== undefined) {
-              authUser(responseUsername, responseID);
-            }
+            const responseID = responseData.user.id;
+            const responseUsername = responseData.user.username;
+            authUser(responseUsername, responseID);
             router.goBack();
           } else if (response.status === 400 || response.status === 500) {
             this.renderError(lowestInputDiv, loginErrors[response.status]);

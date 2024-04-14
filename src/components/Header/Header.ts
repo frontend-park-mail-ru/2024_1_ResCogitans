@@ -27,14 +27,16 @@ class Header extends Base {
   async render() {
     await this.preRender();
 
+    console.log(localStorage.getItem('user'));
+
     const logoGroup = document.getElementById('logo-group') as HTMLElement;
     const logo = new Logo(logoGroup);
     logo.render();
 
     const profileBlock = document.getElementById('button-group') as HTMLElement;
+    console.log(this.userData);
 
     if (this.userData !== null) {
-
       const username = this.userData.username;
       const userID = this.userData.userID;
       
@@ -49,8 +51,11 @@ class Header extends Base {
         router.go(urls.base);
       });
     } else {
-      console.log('what');
-      await new Button(profileBlock, { className: 'login-button', id: 'button-login', label: 'Войти', url : '/login' }).render();
+      await new Button(profileBlock, { className: 'login-button', id: 'button-login', label: 'Войти' }).render();
+      const loginButton = document.getElementById('button-login');
+      loginButton?.addEventListener('click', () => {
+        router.go('login');
+      });
     }
   }
 }

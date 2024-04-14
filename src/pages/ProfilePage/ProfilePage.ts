@@ -23,7 +23,7 @@ class ProfilePage extends Base {
  
     super(parent);
     this.form = new AuthorizationForm(parent);
-    this.userID = arguments[1][0];
+    this.userID = parseInt(arguments[1][0]);
 
     this.isOwn = (this.userID === this.userData.userID); // нужна отдельная глобальная сущность пользователя, которая не будет зависеть от localStorage!!!
   }
@@ -36,7 +36,9 @@ class ProfilePage extends Base {
       return;
     }
 
-    this.userdata = { id : profileData.data.id, username : profileData.data.username.split('@')[0], status : profileData.data.bio, avatarURL : profileData.data.avatar };
+    console.log(this.isOwn, this.userID, this.userData.userID);
+
+    this.userdata = { id : profileData.data.id, username : profileData.data.username, status : profileData.data.bio, avatarURL : profileData.data.avatar };
     
     await this.preRender();
     const header = document.getElementById('header') as HTMLElement;

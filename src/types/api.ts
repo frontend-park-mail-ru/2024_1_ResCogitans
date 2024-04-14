@@ -5,11 +5,11 @@ export interface UserAuthRequest {
 
 export interface User {
   username: string;
-  userID: number;
+  id: number;
 }
 
 export interface UserAuthResponseData {
-  user?: User;
+  user: User;
   code: number;
   error: string;
 }

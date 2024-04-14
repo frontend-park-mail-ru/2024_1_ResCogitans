@@ -176,8 +176,8 @@ class JourneyPage extends Base {
               this.IDs.map((sightID) => {
                 post(`trip/${this.tripID}/sight/add`, { sightID : sightID }).then(() => {
                 });
-                router.go(`journey/${this.tripID}`);
               });
+              router.go(`journey/${this.tripID}`);
             } else {
               router.go('login');
             }
