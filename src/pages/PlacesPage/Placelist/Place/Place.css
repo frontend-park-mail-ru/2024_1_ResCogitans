@@ -19,8 +19,8 @@
 }
 
 .card-content {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    height: 100%;
     padding: 5px 10px 10px 10px;
 }
 

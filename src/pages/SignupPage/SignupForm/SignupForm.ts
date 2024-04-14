@@ -1,10 +1,9 @@
 import AuthorizationForm from '@components/Form/AuthorizationForm';
 import Button from '@components/Button/Button';
-import urls from '@router/urls';
 import Logo from '@components/Logo/Logo';
 import { authorize } from '@api/user';
 import { router } from '@router/router';
-import { userHelper } from '@utils/localstorage';
+import { authUser } from '@utils/localstorage';
 import { validate } from '@utils/validation';
 import { signupErrors } from '../../../types/errors';
 
@@ -75,9 +74,12 @@ class SignupForm extends AuthorizationForm {
         .then((response) => {
           const responseData = response.data;
           if (response.status === 200) {
-            userHelper('set', responseData.user?.username.split('@')[0]);
-            localStorage.setItem('userID', responseData.user?.id);
-            router.go(urls.base);
+            const responseID = responseData.user?.id;
+            const responseUsername = responseData.user?.username;
+            if (responseID !== undefined && responseUsername !== undefined) {
+              authUser(responseUsername, responseID);
+            }
+            router.goBack();
           }
           if (response.status === 400 || response.status === 500) {
             this.renderError(lowestInput, signupErrors[responseData.error]);

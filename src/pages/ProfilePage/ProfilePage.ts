@@ -24,8 +24,8 @@ class ProfilePage extends Base {
     super(parent);
     this.form = new AuthorizationForm(parent);
     this.userID = arguments[1][0];
-    console.log(this.userID);
-    this.isOwn = (this.userID === localStorage.getItem('userID')); // нужна отдельная глобальная сущность пользователя, которая не будет зависеть от localStorage!!!
+
+    this.isOwn = (this.userID === this.userData.userID); // нужна отдельная глобальная сущность пользователя, которая не будет зависеть от localStorage!!!
   }
 
   async render() {
@@ -68,8 +68,8 @@ class ProfilePage extends Base {
     const inputs = document.querySelectorAll('input') as NodeListOf<HTMLInputElement>;
 
     const usernameField = inputs[0];
-    const passwordField = inputs[1];
-    const repeatPasswordField = inputs[2];
+    // const passwordField = inputs[1];
+    // const repeatPasswordField = inputs[2];
     const statusField = document.querySelector('textarea') as HTMLTextAreaElement;
 
     const imageInput = document.querySelector('#profile-edit-avatar') as HTMLInputElement;

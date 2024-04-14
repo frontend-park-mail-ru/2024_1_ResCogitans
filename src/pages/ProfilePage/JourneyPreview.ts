@@ -1,12 +1,12 @@
-import Base from "@components/Base/Base";
+import Base from '@components/Base/Base';
 
 class JourneyPreview extends Base {
 
-  data : JourneyPreviewData
+  data : JourneyPreviewData;
 
   constructor(parent : HTMLElement, data : JourneyPreviewData) {
-      super(parent);
-      this.data = data;
+    super(parent);
+    this.data = data;
   }
 }
 

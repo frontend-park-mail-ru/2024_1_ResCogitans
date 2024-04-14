@@ -17,13 +17,14 @@ class SightPage extends Base {
   }
   
   async renderReviews(response : unknown) {
-    const username = localStorage.getItem('username');
+    const username = this.userData?.userID;
     const reviewsDiv = document.querySelector('.sight-reviews') as HTMLDivElement;
+
     if (response.data.comments === null) {
       reviewsDiv.insertAdjacentHTML('beforeend', '<p>Оставьте отзыв первыми</p>');
     } else {
       response.data.comments.forEach((review) => {
-        review.username = review.username.split('@')[0];
+        review.username = review.username;
         new Review(reviewsDiv, this.id, review, (review.username === username)).render();
       });
     }  
@@ -60,16 +61,19 @@ class SightPage extends Base {
    
     submitButton?.addEventListener('click', (e : Event) => {
       e.preventDefault();
+
+      if (this.userData === null) {
+        router.go('login');
+      }
+
       const feedback = reviewForm.value;
-      const userID = parseInt(localStorage.getItem('userID'));
+      const userID = this.userData.userID;
       const rating = parseInt(rateForm.value);
       const requestBody = { userID, rating, feedback };
       post(`sight/${this.id}/create`, requestBody).then((responseCreateReview) => {
         if (responseCreateReview.status !== 200) {
           router.go('login');
-        } else {
-          window.location.reload();
-        }
+        } 
       });
     });
 
@@ -103,7 +107,7 @@ class SightPage extends Base {
       e.preventDefault();
       const commentID = document.querySelector('.staged-delete')?.id.split('-')[1];
       const feedbackField = editDialog.querySelector('#editTextArea') as HTMLTextAreaElement;
-      const userID = parseInt(localStorage.getItem('userID'));
+      const userID = this.userData.userID;
       const ratingField = editDialog.querySelector('#rate') as HTMLTextAreaElement;
       const feedback = feedbackField.value;
       const rating = parseInt(ratingField.value);

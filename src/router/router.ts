@@ -51,7 +51,7 @@ class Router {
   }
  
   clearContent() {
-    let content = document.getElementById('content');
+    let content = document.getElementById('content') as HTMLDivElement;
     if (!content) {
       content = document.createElement('div');
       content.id = 'content';
@@ -67,9 +67,17 @@ class Router {
     const PageConstructorFromRoutes = this.routes[path.split('/')[1]];
     const content = this.clearContent();
     const params = path.split('/').slice(2);
+    let isAuthorized : boolean;
+
+    const userData = localStorage.getItem('user');
+    if (userData !== null) {
+      isAuthorized = false;
+    } else {
+      isAuthorized = true;
+    }
 
     if (PageConstructorFromRoutes) {
-      const page = new PageConstructorFromRoutes(content, params);
+      const page = new PageConstructorFromRoutes(content, params, isAuthorized);
       page.render();
     } else {
       const PageConstructorNotFound = this.routes['404'];

@@ -3,15 +3,16 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const lightningcss = require('lightningcss');
 const browserslist = require('browserslist');
 const Dotenv = require('dotenv-webpack');
+const ESLintPlugin = require('eslint-webpack-plugin'); // Add this line
 
 module.exports = {
-  mode: 'development',
-  entry: './src/index.ts',
-  output: {
+ mode: 'development',
+ entry: './src/index.ts',
+ output: {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'public'),
-  },
-  module: {
+ },
+ module: {
     rules: [
       {
         test: /\.hbs/,
@@ -23,8 +24,8 @@ module.exports = {
         exclude: /node_modules/,
       },
     ],
-  },
-  resolve: {
+ },
+ resolve: {
     extensions: ['.hbs', '.ts', '.tsx', '.js'],
     alias: {
       '@router': path.resolve(__dirname, 'src/router'),
@@ -35,8 +36,8 @@ module.exports = {
       '@static': path.resolve(__dirname, 'static/'),
       '@api': path.resolve(__dirname, 'src/api'),
     },
-  },
-  optimization: {
+ },
+ optimization: {
     minimize: true,
     minimizer: [
       new CssMinimizerPlugin({
@@ -46,8 +47,11 @@ module.exports = {
         },
       }),
     ],
-  },
-  plugins: [
+ },
+ plugins: [
     new Dotenv(),
-  ],
+    new ESLintPlugin({
+      extensions: ['js', 'jsx', 'ts', 'tsx'],
+    }),
+ ],
 };

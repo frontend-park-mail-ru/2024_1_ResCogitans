@@ -4,8 +4,8 @@ export interface UserAuthRequest {
 }
 
 export interface User {
-  id: number;
   username: string;
+  userID: number;
 }
 
 export interface UserAuthResponseData {
@@ -51,4 +51,12 @@ export interface Sight {
   description: string,
   city: string,
   url: string
+}
+
+export interface JourneyResponse {
+  status: number;
+  data: {
+    journey : Journey;
+    sights: Sight[];
+  }
 }

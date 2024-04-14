@@ -1,4 +1,6 @@
 import { ENV_CONFIG } from '../../envConfig';
+import { router } from '@router/router';
+import urls from '@router/urls';
 
 /**
 * Функция для выполнения GET запроса к указанному URL.
@@ -23,6 +25,12 @@ export async function post(endpoint : string, body? : unknown): Promise<unknown>
     credentials: 'include',
     body: JSON.stringify(body),
   });
+
+  if (response.status === 401) {
+    router.go(urls.login);
+    throw new Error('Unauthorized');
+  }
+
   const responseData = await response.json();
   return { data: responseData, status: response.status };
 }

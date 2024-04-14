@@ -60,10 +60,7 @@
   .rating {
     margin-top: 20px;
     display: flex;
-    align-items: center;
-    position: relative;
-    width: fit-content;
-    align-self: flex-end;
+    align-self: self-end;
     & span {
       margin-right: 20px;
       font-size: 24px;
