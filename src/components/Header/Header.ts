@@ -27,14 +27,11 @@ class Header extends Base {
   async render() {
     await this.preRender();
 
-    console.log(localStorage.getItem('user'));
-
     const logoGroup = document.getElementById('logo-group') as HTMLElement;
     const logo = new Logo(logoGroup);
     logo.render();
 
     const profileBlock = document.getElementById('button-group') as HTMLElement;
-    console.log(this.userData);
 
     if (this.userData !== null) {
       const username = this.userData.username;

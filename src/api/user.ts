@@ -30,7 +30,6 @@ export async function imageUpload(endpoint : string, body? : FormData) {
     credentials: 'include',
     body: body,
   });
-  console.log(body);
   const responseData = await response.json();
  
   return { data: responseData, status: response.status };

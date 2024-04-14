@@ -33,7 +33,8 @@ class SightPage extends Base {
   async render() {
     const responseSight = await get(`sight/${this.id}`);
     this.sight = responseSight.data.sight;
-    if (responseSight.status !== 200) {
+    
+    if (responseSight.status === 404) {
       router.go('404');
       return;
     }
@@ -58,8 +59,6 @@ class SightPage extends Base {
       reviewsLabel.innerHTML += ` (${responseSight.data.comments.length})`;
     }
 
-    console.log(this.userData);
-   
     submitButton?.addEventListener('click', (e : Event) => {
       e.preventDefault();
 

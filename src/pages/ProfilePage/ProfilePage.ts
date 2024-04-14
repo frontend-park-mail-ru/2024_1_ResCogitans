@@ -32,7 +32,6 @@ class ProfilePage extends Base {
 
   async render() {
     const profileData = await get(`profile/${this.userID}`);
-    console.log(profileData);
 
     const authForm = new AuthorizationForm(this.parent);
     const avatar = profileData.data.avatar.replace(/.*\/public\//, '/public/');

@@ -45,7 +45,6 @@ class JourneyPage extends Base {
       this.tripID = arguments[1][0];
       this.type = 'view';
     }
-    console.log(this.type);
   }
 
   async addSightsToOptions() {
@@ -166,6 +165,7 @@ class JourneyPage extends Base {
         this.isOwn = true;
 
         if (journeyResponse.status === 200 && journeyResponse.data.sights !== null) {
+          journeyResponse.data.sights.map((sight) => this.IDs.push(sight.id));
           this.journey = journeyResponse.data.journey;
             
           await this.preRender();
@@ -212,10 +212,10 @@ class JourneyPage extends Base {
               const userID = this.userData.userID;          
               const nameInput = document.querySelector('input') as HTMLInputElement;
               const descriptionInput = document.querySelector('textarea') as HTMLTextAreaElement; 
-              const body = { userID : userID, name : nameInput.value, description : descriptionInput.value };
+              const body = { userID : userID, name : nameInput.value, description : descriptionInput.value, sightIDs : this.IDs };
 
               e.preventDefault();
-              post(`trip/${this.tripID}/sight/add`, { body : body, sightIDs : this.IDs }).then(() => {
+              post(`trip/${this.tripID}/sight/add`, body).then(() => {
                 this.type = 'view';
                 router.go(`journey/${this.tripID}`);
               });
