@@ -13,7 +13,3 @@ input:focus {
     scale: 105%;
     transition: all 0.25s ease-in-out;
 }
-
-.form-input {
-    margin-bottom: 10px;
-}

@@ -33,7 +33,13 @@ class ProfilePage extends Base {
     const profileData = await get(`profile/${this.userID}`);
 
     const authForm = new AuthorizationForm(this.parent);
-    const avatar = profileData.data.avatar.replace(/.*\/public\//, '/public/');
+    let avatar;
+    if (profileData.data.avatar === '') {
+      avatar = '/static/placeholder.jpg';
+    } else {
+      avatar = profileData.data.avatar.replace(/.*\/public\//, '/public/');
+    }
+
     this.userdata = { id : profileData.data.id, username : profileData.data.username, status : profileData.data.bio, avatar : avatar };
     
     await this.preRender();
