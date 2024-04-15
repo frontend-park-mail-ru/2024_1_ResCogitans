@@ -31,10 +31,8 @@ class AuthorizationForm extends Base {
 
   clearError(parent : HTMLElement) {
     const errorMessage = parent.querySelectorAll('.err-label')[0] as HTMLElement;
-    if (errorMessage !== undefined) {
-      errorMessage.innerHTML = '';
-      errorMessage.classList.remove('has-error');
-    }
+    errorMessage.innerHTML = '';
+    errorMessage.classList.remove('has-error');
   }
 
   enablePasswordVisibilityButtons() {

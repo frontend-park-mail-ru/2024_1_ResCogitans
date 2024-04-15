@@ -15,9 +15,7 @@ class ProfilePage extends Base {
 
   isOwn : boolean;
 
-  userID : string;
-
-  usernameURL : string;
+  userID : number;
 
   form : AuthorizationForm;
 

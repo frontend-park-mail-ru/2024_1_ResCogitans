@@ -32,17 +32,20 @@ class JourneyPage extends Base {
     this.isOwn = false;
     this.isAuthorized = arguments[2];
 
-    if (arguments[1].length > 2) {
+    const pathParams = arguments[1];
+    const journeyType = pathParams[0];
+
+    if (pathParams.length > 2) {
       router.go('404');
     }
 
-    if (arguments[1][0] === 'edit' || arguments[1][0] === 'new') {
-      this.type = arguments[1][0];
-      this.tripID = arguments[1][1];
+    if (journeyType === 'edit' || journeyType === 'new') {
+      this.type = journeyType;
+      this.tripID = pathParams[1];
       this.isEdit = true;
     } else {
       this.isEdit = false;
-      this.tripID = arguments[1][0];
+      this.tripID = pathParams[0];
       this.type = 'view';
     }
   }
