@@ -21,6 +21,7 @@ class Review extends Base {
     } else {
       this.reviewContent.avatar = this.reviewContent.avatar.replace(/.*\/public\//, '/public/');
     }
+  }
   
 
   async render() {
