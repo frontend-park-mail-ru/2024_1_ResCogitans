@@ -37,8 +37,6 @@ class JourneyPage extends Base {
     const pathParams = arguments[1];
     const journeyType = pathParams[1];
 
-    console.log(pathParams, journeyType);
-
     if (pathParams.length > 2) {
       router.go('404');
     }
@@ -177,7 +175,6 @@ class JourneyPage extends Base {
         
         const journeyResponse = await get(`trip/${this.tripID}`) as JourneyResponse;
         this.isOwn = (this.userData !== null && this.userData.userID === journeyResponse.data.journey.userID);
-        console.log(journeyResponse, this.userData.username === journeyResponse.data.journey.username);
 
         if (journeyResponse.status === 200 && journeyResponse.data.sights !== null) {
           journeyResponse.data.sights.map((sight) => this.IDs.push(sight.id));
