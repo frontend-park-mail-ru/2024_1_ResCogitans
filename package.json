@@ -43,7 +43,7 @@
   "husky": {
     "hooks": {
        "pre-commit": {
-        "*.{js,jsx,ts,tsx}": "eslint --fix"
+        "*.{js,jsx,ts,tsx}": "lint:fix"
        }
     }
    }
