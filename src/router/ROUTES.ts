@@ -9,9 +9,9 @@ export const ROUTES = {
   },
   sights : {
     view: (sightID?: string | number) => (sightID ? `/sights/${sightID}` : '/sights/:sightID'),
-    editComment: (sightID?: string | number, commentID?: string | number) => (sightID ? `/sight/${sightID}/edit/${commentID}` : '/sight/:sightID/edit/:commentID'),
-    deleteComment: (sightID?: string | number, commentID?: string | number) => (sightID ? `/sight/${sightID}/delete/${commentID}` : '/sight/:sightID/delete/:commentID'),
-    createComment: (sightID?: string | number) => (sightID ? `/sight/${sightID}/create` : '/sight/:sightID/create'),
+    editComment: (sightID?: string | number, commentID?: string | number) => (sightID ? `sight/${sightID}/edit/${commentID}` : 'sight/:sightID/edit/:commentID'),
+    deleteComment: (sightID?: string | number, commentID?: string | number) => (sightID ? `sight/${sightID}/delete/${commentID}` : 'sight/:sightID/delete/:commentID'),
+    createComment: (sightID?: string | number) => (sightID ? `sight/${sightID}/create` : 'sight/:sightID/create'),
   },
   profile: {
     view: (userID?: string | number) => (userID ? `/profile/${userID}` : '/profile/:userID'),
