@@ -7,7 +7,8 @@ import { get, post } from '@api/base';
 import { router } from '@router/router';
 import JourneyPreview from './JourneyPreview';
 import { imageUpload } from '@api/user';
-import { signupErrors } from '@types/errors';
+import { signupErrors } from '../../types/errors';
+import { ROUTES } from '@router/ROUTES';
 
 class ProfilePage extends Base {
 
@@ -25,7 +26,7 @@ class ProfilePage extends Base {
     this.form = new AuthorizationForm(parent);
     this.userID = parseInt(arguments[1][0]);
 
-    this.isOwn = (this.userID === this.userData.userID); // нужна отдельная глобальная сущность пользователя, которая не будет зависеть от localStorage!!!
+    this.isOwn = (this.userID === this.userData.userID); 
   }
 
   async render() {
@@ -80,26 +81,26 @@ class ProfilePage extends Base {
       const input = document.querySelectorAll('.input')[2] as HTMLInputElement;
 
       const profileRequestBody = { userID: this.userdata.id, username : usernameField.value, bio : statusField.value };
-      post(`profile/${this.userdata.id}/edit`, profileRequestBody).then((profileBioNickEditResponse) => {
+      post(ROUTES.profile.edit(this.userID), profileRequestBody).then((profileBioNickEditResponse) => {
         if (profileBioNickEditResponse.status !== 200) {
           authForm.renderError(input, signupErrors[profileBioNickEditResponse.data.error]);
         }
       });
 
-      post(`profile/${this.userdata.id}/reset_password`, { password : passwordField.value }).then((passwordResponse) => {
+      post(ROUTES.profile.reset_password(this.userID), { password : passwordField.value }).then((passwordResponse) => {
         if (passwordResponse.status === 401 && passwordField.value.length > 0) {
           authForm.renderError(input, signupErrors[passwordResponse.data.error]);
         }
       });
       
-      imageUpload(`profile/${this.userdata.id}/upload`, formData).then((imageUploadResponse) => {
+      imageUpload(ROUTES.profile.upload(this.userID), formData).then((imageUploadResponse) => {
         if (imageUploadResponse.status !== 200) {
           authForm.renderError(input, signupErrors[imageUploadResponse.data.error]);
         }
       });
 
       if (document.querySelectorAll('.has-error').length === 0) {
-        router.go(`profile/${this.userID}`);
+        router.go(ROUTES.profile.view(this.userID));
       }
     },
 

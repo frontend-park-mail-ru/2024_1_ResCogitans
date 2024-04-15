@@ -5,6 +5,8 @@ import Place from '@pages/PlacesPage/Placelist/Place/Place';
 import { get, post } from '@api/base';
 import { router } from '@router/router';
 import urls from '@router/urls';
+import { ROUTES } from '@router/ROUTES';
+
 import AuthorizationForm from '@components/Form/AuthorizationForm';
 
 class JourneyPage extends Base {
@@ -150,12 +152,12 @@ class JourneyPage extends Base {
           const descriptionInput = document.querySelector('textarea') as HTMLTextAreaElement; 
           const body = { userID : userID, name : nameInput.value, description : descriptionInput.value };
        
-          post('trip/create', body).then((response) => {
+          post(ROUTES.journey.create, body).then((response) => {
             if (response.status === 200) {
               this.tripID = response.data.id;
-              post(`trip/${this.tripID}/sight/add`, { sightIDs : this.IDs }).then(() => {
+              post(ROUTES.journey.editsight(this.tripID), { sightIDs : this.IDs }).then(() => {
                 this.type = 'view';
-                router.go(`journey/${this.tripID}`);
+                router.go(ROUTES.journey.view(this.tripID));
               });
             } else {
               if (response.status === 500) {
@@ -172,7 +174,7 @@ class JourneyPage extends Base {
       case 'edit':
         
         const journeyResponse = await get(`trip/${this.tripID}`) as JourneyResponse;
-        this.isOwn = (this.userData !== null && this.userData.username === journeyResponse.data.journey.username);
+        this.isOwn = (this.userData !== null && this.userData.userID === journeyResponse.data.journey.userID);
         console.log(journeyResponse, this.userData.username === journeyResponse.data.journey.username);
 
         if (journeyResponse.status === 200 && journeyResponse.data.sights !== null) {
@@ -208,7 +210,7 @@ class JourneyPage extends Base {
           });
 
           deleteModalButton?.addEventListener('click', () => {
-            post(`trip/${this.tripID}/delete`, {}).then(() => {
+            post(ROUTES.journey.delete(this.tripID), {}).then(() => {
               deleteDialog.close();
               router.go(urls.base);
             });
@@ -216,7 +218,7 @@ class JourneyPage extends Base {
   
           if (this.type === 'view') {
             editJourneyButton?.addEventListener('click', () => {
-              router.go(`journey/edit/${this.tripID}`);
+              router.go(ROUTES.journey.edit(this.tripID));
             });
           } else if (this.type === 'edit') {
             editForm.addEventListener('submit', (e : Event) => {
@@ -235,13 +237,13 @@ class JourneyPage extends Base {
               const descriptionInput = document.querySelector('textarea') as HTMLTextAreaElement; 
               const body = { userID : userID, name : nameInput.value, description : descriptionInput.value, sightIDs : this.IDs };
 
-              post(`trip/${this.tripID}/sight/add`, body).then((createJourneyResponse) => {
+              post(ROUTES.journey.editsight(this.tripID), body).then((createJourneyResponse) => {
                 if (createJourneyResponse.status === 500) {
                   new AuthorizationForm(this.parent).renderError(form, 'Поездка с таким именем уже есть');
                   return;
                 }
                 this.type = 'view';
-                router.go(`journey/${this.tripID}`);
+                router.go(ROUTES.journey.view(this.tripID));
               });
             });
           }

@@ -7,6 +7,7 @@ import { post, get } from '@api/base';
 import { router } from '@router/router';
 import Button from '@components/Button/Button';
 import AuthorizationForm from '@components/Form/AuthorizationForm';
+import { ROUTES } from '@router/ROUTES';
 
 class SightPage extends Base {
   id : number;
@@ -82,9 +83,9 @@ class SightPage extends Base {
       const userID = this.userData.userID;
       const rating = parseInt(rateForm.value);
       const requestBody = { userID, rating, feedback };
-      post(`sight/${this.id}/create`, requestBody).then((responseCreateReview) => {
+      post(ROUTES.sights.createComment(this.id), requestBody).then((responseCreateReview) => {
         if (responseCreateReview.status === 200) {
-          router.go(`sights/${this.id}`);
+          router.go(ROUTES.sights.view(this.id));
         }
       });
     });
@@ -106,12 +107,12 @@ class SightPage extends Base {
     deleteModalButton?.addEventListener('click', (e : Event) => {
       e.preventDefault();
       const commentID = document.querySelector('.staged-delete')?.id.split('-')[1];
-      post(`sight/${this.id}/delete/${commentID}`, {}).then((responseDeleteReview) => {
+      post(ROUTES.sights.deleteComment(this.id, commentID), {}).then((responseDeleteReview) => {
         if (responseDeleteReview.status === 401) {
           router.go('login');
         } else {
           deleteDialog.close();
-          router.go(`sights/${this.id}`);
+          router.go(ROUTES.sights.view(this.id));
         }
       });
     });
@@ -126,7 +127,7 @@ class SightPage extends Base {
       const rating = parseInt(ratingField.value);
       const body = { rating : rating, feedback : feedback, userID : userID };
 
-      post(`sight/${this.id}/edit/${commentID}`, body).then((responseDeleteReview) => {
+      post(ROUTES.sights.editComment(this.id, commentID), body).then((responseDeleteReview) => {
         if (feedbackField.value.length < 5) {
           new AuthorizationForm(this.parent).renderError(editDialog, 'Отзыв не может быть короче 5 символов');
           return;
@@ -135,7 +136,7 @@ class SightPage extends Base {
           router.go('login');
         } else {
           deleteDialog.close();
-          router.go(`sights/${this.id}`);
+          router.go(ROUTES.sights.view(this.id));
         }
       });
     });

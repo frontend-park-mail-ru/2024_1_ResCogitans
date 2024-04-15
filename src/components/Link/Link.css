@@ -25,8 +25,8 @@ ol a {
 .err-label {
     color: transparent;
     display: block;
-    height: 24px;
-    font-size: 12px;
+    height: 20px;
+    font-size: 14px;
     position: relative;
     margin-bottom: 10px;
 }
