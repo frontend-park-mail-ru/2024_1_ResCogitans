@@ -2,7 +2,7 @@ import Button from '@components/Button/Button';
 import urls from '@router/urls';
 import Logo from '@components/Logo/Logo';
 import  { router } from '@router/router';
-import { authUser } from '@utils/localstorage';
+import { addUserToLocalStorage } from '@utils/localstorage';
 import { authorize } from '@api/user';
 import { validate } from '@utils/validation';
 import AuthorizationForm from '@components/Form/AuthorizationForm';
@@ -75,7 +75,7 @@ class LoginForm extends AuthorizationForm {
             }
             const responseID = responseData.user.id;
             const responseUsername = responseData.user.username;
-            authUser(responseUsername, responseID);
+            addUserToLocalStorage(responseUsername, responseID);
             router.goBack();
           } else if (response.status === 400 || response.status === 500) {
             this.renderError(lowestInputDiv, loginErrors[response.status]);

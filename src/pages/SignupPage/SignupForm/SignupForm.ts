@@ -3,7 +3,7 @@ import Button from '@components/Button/Button';
 import Logo from '@components/Logo/Logo';
 import { authorize } from '@api/user';
 import { router } from '@router/router';
-import { authUser } from '@utils/localstorage';
+import { addUserToLocalStorage } from '@utils/localstorage';
 import { validate } from '@utils/validation';
 import { signupErrors } from '../../../types/errors';
 import urls from '@router/urls';
@@ -78,7 +78,7 @@ class SignupForm extends AuthorizationForm {
             const responseID = responseData.user?.id;
             const responseUsername = responseData.user?.username;
             if (responseID !== undefined && responseUsername !== undefined) {
-              authUser(responseUsername, responseID);
+              addUserToLocalStorage(responseUsername, responseID);
             }
             router.go(urls.base);
           }

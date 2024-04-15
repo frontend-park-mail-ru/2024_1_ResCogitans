@@ -1,4 +1,4 @@
-export function authUser(username: string, id : number) {
+export function addUserToLocalStorage(username: string, id : number) {
   const userData = { username: username, userID : id };
   if (localStorage.getItem('user') !== undefined) {
     localStorage.clear();
@@ -6,4 +6,4 @@ export function authUser(username: string, id : number) {
   localStorage.setItem('user', JSON.stringify(userData));
 }
 
-export default authUser;
+export default addUserToLocalStorage;
