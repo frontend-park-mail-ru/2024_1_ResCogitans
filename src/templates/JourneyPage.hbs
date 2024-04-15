@@ -23,8 +23,10 @@
       </form>
       {{else}}
       <p>{{this.journey.description}}</p>
+      {{#if this.isOwn}}
       <button id="button-edit-journey" class="button-primary" type="submit">Изменить</button>
       <button id="button-delete-journey" class="button-danger">Удалить</button>
+      {{/if}}
       {{/if}}
    </div>
 </div>

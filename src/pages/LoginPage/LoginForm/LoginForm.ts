@@ -69,6 +69,10 @@ class LoginForm extends AuthorizationForm {
         .then((response) => {
           const responseData = response.data as UserAuthResponseData;
           if (response.status === 200) {
+            if (responseData.user.id === 0) {
+              this.renderError(lowestInputDiv, loginErrors[400]);
+              return;
+            }
             const responseID = responseData.user.id;
             const responseUsername = responseData.user.username;
             authUser(responseUsername, responseID);

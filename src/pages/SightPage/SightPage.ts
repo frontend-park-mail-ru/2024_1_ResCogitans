@@ -5,6 +5,8 @@ import Stars from '@components/Stars/Stars';
 import Review from '@components/Review/Review';
 import { post, get } from '@api/base';
 import { router } from '@router/router';
+import Button from '@components/Button/Button';
+import AuthorizationForm from '@components/Form/AuthorizationForm';
 
 class SightPage extends Base {
   id : number;
@@ -18,12 +20,22 @@ class SightPage extends Base {
   
   async renderReviews(response : unknown) {
     const reviewsDiv = document.querySelector('.sight-reviews') as HTMLDivElement;
+    const userReviewDiv = document.querySelector('#user-review') as HTMLDivElement;
 
     if (response.data.comments === null) {
       reviewsDiv.insertAdjacentHTML('beforeend', '<p>Оставьте отзыв первыми</p>');
+      if (this.isAuth === false) {
+        console.log(this.isAuth, this.userData);
+        userReviewDiv.remove();
+        new Button(reviewsDiv, { className : 'button-primary', id : 'button-login-redirect', label : 'Войти', url : '/login' }).render();
+      }
     } else {
       response.data.comments.forEach((review) => {
         review.username = review.username;
+        if (review.userID === this.userData.userID) {
+          console.log(this.isAuth, this.userData);
+          userReviewDiv.remove();
+        }
         new Review(reviewsDiv, this.id, review, (review.userID === this.userData.userID)).render();
       });
     }  
@@ -71,11 +83,9 @@ class SightPage extends Base {
       const rating = parseInt(rateForm.value);
       const requestBody = { userID, rating, feedback };
       post(`sight/${this.id}/create`, requestBody).then((responseCreateReview) => {
-        if (responseCreateReview.status !== 200) {
-          router.go('login');
-        } else {
+        if (responseCreateReview.status === 200) {
           router.go(`sights/${this.id}`);
-        } 
+        }
       });
     });
 
@@ -115,7 +125,12 @@ class SightPage extends Base {
       const feedback = feedbackField.value;
       const rating = parseInt(ratingField.value);
       const body = { rating : rating, feedback : feedback, userID : userID };
+
       post(`sight/${this.id}/edit/${commentID}`, body).then((responseDeleteReview) => {
+        if (feedbackField.value.length < 5) {
+          new AuthorizationForm(this.parent).renderError(editDialog, 'Отзыв не может быть короче 5 символов');
+          return;
+        }
         if (responseDeleteReview.status === 401) {
           router.go('login');
         } else {

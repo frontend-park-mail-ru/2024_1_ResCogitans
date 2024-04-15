@@ -15,6 +15,9 @@ class Review extends Base {
     this.placeID = placeID;
     this.reviewContent = reviewContent;
     this.isOwn = isOwn;
+    if (!this.reviewContent.avatar) {
+      this.reviewContent.avatar = '/static/placeholder.jpg';
+    }
   }
 
   async render() {

@@ -22,10 +22,10 @@ export interface WithResponse<T> {
 export interface ReviewContent {
   id : number;
   placename: string;
+  avatar: string;
   username : string;
   rating : number;
   content : string;
-  notprofile: boolean;
 }
 
 export interface UserProfile {

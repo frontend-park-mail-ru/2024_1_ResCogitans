@@ -40,7 +40,11 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
-  "lint-staged": {
-    "*.{js,jsx,ts,tsx}": "eslint --fix"
-  }
+  "husky": {
+    "hooks": {
+       "pre-commit": {
+        "*.{js,jsx,ts,tsx}": "eslint --fix"
+       }
+    }
+   }
 }
