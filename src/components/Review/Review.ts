@@ -15,10 +15,13 @@ class Review extends Base {
     this.placeID = placeID;
     this.reviewContent = reviewContent;
     this.isOwn = isOwn;
+    
     if (!this.reviewContent.avatar) {
       this.reviewContent.avatar = '/static/placeholder.jpg';
+    } else {
+      this.reviewContent.avatar = this.reviewContent.avatar.replace(/.*\/public\//, '/public/');
     }
-  }
+  
 
   async render() {
     await this.preRender();

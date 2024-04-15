@@ -4,11 +4,12 @@ export const ROUTES = {
     edit : (journeyId?: string | number) => (journeyId ? `/journey/${journeyId}/edit` : '/journey/:journeyId/edit'),
     view : (journeyId?: string | number) => (journeyId ? `/journey/${journeyId}` : '/journey/:journeyId'),
     create: 'trip/create',
-    editsight: (journeyId?: string | number) => (journeyId ? `trip/${journeyId}/sight/add` : '/trip/:tripID/sight/add'),
-    delete: (journeyId?: string | number) => (journeyId ? `trip/${journeyId}/delete` : '/trip/:journeyId/delete'),
+    editsight: (journeyId?: string | number) => (journeyId ? `trip/${journeyId}/sight/add` : 'trip/:tripID/sight/add'),
+    delete: (journeyId?: string | number) => (journeyId ? `trip/${journeyId}/delete` : 'trip/:journeyId/delete'),
   },
   sights : {
     view: (sightID?: string | number) => (sightID ? `/sights/${sightID}` : '/sights/:sightID'),
+    
     editComment: (sightID?: string | number, commentID?: string | number) => (sightID ? `sight/${sightID}/edit/${commentID}` : 'sight/:sightID/edit/:commentID'),
     deleteComment: (sightID?: string | number, commentID?: string | number) => (sightID ? `sight/${sightID}/delete/${commentID}` : 'sight/:sightID/delete/:commentID'),
     createComment: (sightID?: string | number) => (sightID ? `sight/${sightID}/create` : 'sight/:sightID/create'),
