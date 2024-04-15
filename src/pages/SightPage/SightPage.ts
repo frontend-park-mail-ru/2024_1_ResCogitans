@@ -25,6 +25,7 @@ class SightPage extends Base {
 
     if (response.data.comments === null) {
       reviewsDiv.insertAdjacentHTML('beforeend', '<p>Оставьте отзыв первыми</p>');
+
       if (this.isAuth === false) {
         userReviewDiv.remove();
         new Button(reviewsDiv, { className : 'button-primary', id : 'button-login-redirect', label : 'Войти', url : '/login' }).render();
@@ -32,10 +33,10 @@ class SightPage extends Base {
     } else {
       response.data.comments.forEach((review) => {
         review.username = review.username;
-        if (review.userID === this.userData.userID) {
+        if (this.userData === null || review.userID === this.userData.userID) {
           userReviewDiv.remove();
         }
-        new Review(reviewsDiv, this.id, review, (review.userID === this.userData.userID)).render();
+        new Review(reviewsDiv, this.id, review, (this.userData && review.userID === this.userData.userID)).render();
       });
     }  
   }
