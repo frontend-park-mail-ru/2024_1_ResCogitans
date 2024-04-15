@@ -1,4 +1,4 @@
-input {
+input[type="text"], input[type="password"], input[type="email"] {
     text-align: center;
     border-radius: 20px;
     border: 2px solid var(--main-text-color);
@@ -12,8 +12,4 @@ input:focus {
     outline: none;
     scale: 105%;
     transition: all 0.25s ease-in-out;
-}
-
-.form-input {
-    margin-bottom: 10px;
 }

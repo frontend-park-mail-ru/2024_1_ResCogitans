@@ -10,14 +10,12 @@ class AuthorizationForm extends Base {
     }
   }
 
-  
-
   email = document.getElementById('email') as HTMLInputElement;
 
   password = document.getElementById('password') as HTMLInputElement;
-
+  
   enableSubmitButton = (() => {
-    const submitButton : HTMLButtonElement | null = document.getElementById('login-button') as HTMLButtonElement;
+    const submitButton : HTMLButtonElement | null = document.getElementById('button-submit') as HTMLButtonElement;
     const errorMessages : NodeListOf<HTMLElement> = document.querySelectorAll('.has-error');
     const forms : NodeListOf<HTMLInputElement> = document.querySelectorAll('input');
     let areEmptyForms : boolean = false;
@@ -39,7 +37,7 @@ class AuthorizationForm extends Base {
 
   enablePasswordVisibilityButtons() {
     document.querySelectorAll('.input-button').forEach((input) => {
-      input.querySelector('button')?.addEventListener('click', (e) => {
+      input.querySelector('button')?.addEventListener('click', (e : Event) => {
         e.preventDefault();
         this.togglePasswordVisibility(input as HTMLElement);
       });

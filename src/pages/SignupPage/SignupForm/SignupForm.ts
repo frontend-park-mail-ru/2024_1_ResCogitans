@@ -1,12 +1,12 @@
 import AuthorizationForm from '@components/Form/AuthorizationForm';
 import Button from '@components/Button/Button';
-import urls from '@router/urls';
 import Logo from '@components/Logo/Logo';
 import { authorize } from '@api/user';
 import { router } from '@router/router';
-import { userHelper } from '@utils/localstorage';
+import { addUserToLocalStorage } from '@utils/localstorage';
 import { validate } from '@utils/validation';
 import { signupErrors } from '../../../types/errors';
+import urls from '@router/urls';
 
 /**
 * Класс SignupForm представляет форму регистрации, которая может быть отрендерена в HTML.
@@ -18,24 +18,21 @@ class SignupForm extends AuthorizationForm {
   */
   async render() {
     await this.preRender();
-
     const logoGroup = document.getElementById('logo-group') as HTMLDivElement;
     await new Logo(logoGroup).render();
 
     this.enablePasswordVisibilityButtons();
 
     const registrationForm = document.getElementById('registration-form') as HTMLDivElement;
-    await new Button(registrationForm, { id: 'login-button', label: 'Зарегистрироваться', type: 'submit' }).render();
-    const submitButton = document.getElementById('login-button') as HTMLButtonElement;
+    await new Button(registrationForm, { id: 'button-submit', label: 'Зарегистрироваться', type: 'submit' }).render();
+    const submitButton = document.getElementById('button-submit') as HTMLButtonElement;
     submitButton.disabled = true;
 
     const email = document.getElementById('email') as HTMLInputElement;
     const password = document.getElementById('password') as HTMLInputElement;
     const repeatPassword = document.getElementById('password-repeat') as HTMLInputElement;
-
-    const form = document.querySelector('form') as HTMLFormElement;
-
-    form.addEventListener('input', (e: Event) => {
+ 
+    registrationForm.addEventListener('input', (e: Event) => {
       const input = e.target as HTMLInputElement; 
       const parent = input.parentElement as HTMLElement;
       validate( input.value, input.type )
@@ -47,20 +44,42 @@ class SignupForm extends AuthorizationForm {
     },
     );
 
-    registrationForm.addEventListener('submit', (e) => {
+    registrationForm.addEventListener('click', () => {
+      const elementsWithError = document.querySelectorAll('.has-error');
+      elementsWithError.forEach(element => {
+        element.classList.remove('has-error');
+      });
+    }); 
+
+    registrationForm.addEventListener('submit', (e : Event) => {
       e.preventDefault();
 
       const requestBody = {
         username: email?.value,
         password: password?.value,
+        username: email?.value,
+        password: password?.value,
       };
 
+
       const lowestInput = repeatPassword.parentElement as HTMLDivElement;
+      
+      if (password.value !== repeatPassword.value) {
+        this.renderError(lowestInput, 'Пароли не совпадают');
+        return;
+      } else {
+        this.clearError(lowestInput);
+      }
+
       authorize('signup', requestBody)
         .then((response) => {
           const responseData = response.data;
           if (response.status === 200) {
-            userHelper('set', responseData.username);
+            const responseID = responseData.user?.id;
+            const responseUsername = responseData.user?.username;
+            if (responseID !== undefined && responseUsername !== undefined) {
+              addUserToLocalStorage(responseUsername, responseID);
+            }
             router.go(urls.base);
           }
           if (response.status === 400 || response.status === 500) {

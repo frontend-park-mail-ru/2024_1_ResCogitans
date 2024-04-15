@@ -17,9 +17,7 @@ export async function validate( inputText : string, type : string ): Promise<voi
 
       case 'password':
       case 'text':
-        if (inputText === '') {
-          reject(new Error('Введите пароль'));
-        } else if (!passwordRegexp.test(inputText) || emojiRegexp.test(inputText)) {
+        if (!passwordRegexp.test(inputText) || emojiRegexp.test(inputText)) {
           reject(new Error('Пароль должен содержать 8-32 символа, включая специальные символы, заглавную букву и цифры'));
         } else {
           resolve();

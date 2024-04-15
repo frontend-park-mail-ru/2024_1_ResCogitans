@@ -1,20 +1,21 @@
 import Place from './Place/Place';
-import get from '@api/base';
+import { get } from '@api/base';
 import Base from '@components/Base/Base';
 import { Sight } from 'src/types/api';
 
 /**
+ * 
  * 
 * Класс Placelist представляет список мест, который может быть отрендерен в HTML.
 * @class
 */
 class Placelist extends Base {
 
-  async renderPlaces(places : Array<Sight>) {
+  async renderPlaces(sights: Sight[]) {
     const placelist = document.getElementById('list-places') as HTMLDivElement;
-    console.log(places);
-    places.map((data) => new Place(placelist, data).render());
+    sights.forEach((data) => new Place(placelist, data).render());
   }
+    
     
 
   /**
@@ -24,7 +25,7 @@ class Placelist extends Base {
     await this.preRender();
 
     get('sights')
-      .then((responsePlaces) => this.renderPlaces(responsePlaces));
+      .then((response) => this.renderPlaces(response.data.sights));
   }
 }
 

@@ -12,10 +12,25 @@ export async function authorize(endpoint : string, body? : UserAuthRequest): Pro
   const userAuthResponse: WithResponse<UserAuthResponseData> = {
     status: response.status,
     data: {
-      username: responseData.username,
+      user: {
+        id: responseData.id,
+        username: responseData.username,
+      },
       code: responseData.code,
       error: responseData.error,
     },
   };
   return userAuthResponse;
+}
+
+
+export async function imageUpload(endpoint : string, body? : FormData) {
+  const response = await fetch(`${ENV_CONFIG.API_URL}/${endpoint}`, {
+    method: 'POST',
+    credentials: 'include',
+    body: body,
+  });
+  const responseData = await response.json();
+ 
+  return { data: responseData, status: response.status };
 }

@@ -3,8 +3,13 @@ export interface UserAuthRequest {
   password: string;
 }
 
+export interface User {
+  username: string;
+  id: number;
+}
+
 export interface UserAuthResponseData {
-  username?: string;
+  user: User;
   code: number;
   error: string;
 }
@@ -14,6 +19,31 @@ export interface WithResponse<T> {
   data: T;
 }
 
+export interface ReviewContent {
+  id : number;
+  placename: string;
+  avatar: string;
+  username : string;
+  rating : number;
+  content : string;
+}
+
+export interface UserProfile {
+  id: number;
+  username : string;
+  status: string;
+  avatarURL : string;
+}
+
+export interface Journey {
+  tripID : number,
+  userID : number,
+  username : string,
+  name : string;
+  description : string;
+  sights : Sight[];
+}
+
 export interface Sight {
   id: number,
   rating: number,
@@ -21,4 +51,12 @@ export interface Sight {
   description: string,
   city: string,
   url: string
+}
+
+export interface JourneyResponse {
+  status: number;
+  data: {
+    journey : Journey;
+    sights: Sight[];
+  }
 }

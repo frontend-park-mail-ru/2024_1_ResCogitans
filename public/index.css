@@ -2,14 +2,21 @@
 @import '../src/components/Header/Header.css';
 @import '../src/components/Input/Input.css';
 @import '../src/components/MainSearch/MainSearch.css';
+@import '../src/components/Form/Form.css';
+@import '../src/components/Stars/Stars.css';
+
 @import '../src/pages/PlacesPage/Placelist/Placelist.css';
 @import '../src/pages/PlacesPage/PlacesPage.css';
+@import '../src/pages/ProfilePage/ProfilePage.css';
 @import '../src/pages/NotFoundPage/NotFoundPage.css';
-@import '../src/components/Form/Form.css';
+@import '../src/pages/SightPage/SightPage.css';
+@import '../src/pages/JourneyPage/JourneyPage.css';
+
+
 
 @font-face {
     font-family: 'Roboto';
-    src: url('../src/assets/Roboto-Medium.ttf');
+    src: url('../src/assets/Roboto-Regular.ttf');
 }
 
 :root {
@@ -17,6 +24,7 @@
     --primary-color: #8fc4b2;
     --primary-color-lighter: #9cd7c3;
     --secondary-color: #d9d9d9;
+    --size: 3px;
 }
 
 html, body {

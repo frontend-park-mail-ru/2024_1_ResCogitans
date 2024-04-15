@@ -1,14 +1,9 @@
 <div class="card" id="card-{{data.id}}">
-    <img src="{{data.url}}">
+    <a href="/sights/{{data.id}}"><img src="/{{data.url}}"></a>
     <div class="card-content">
         <p class="card-name">{{data.name}}</p>
         <p class="card-description">{{data.description}}</p>
-        <div class="card-rating">
-            <span class="star"></span>
-            <span class="star"></span>
-            <span class="star"></span>
-            <span class="star"></span>
-            <span class="star"></span>
+        <div class="rating">
         </div>
     </div>
 </div>

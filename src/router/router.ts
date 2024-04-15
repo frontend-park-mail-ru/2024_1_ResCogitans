@@ -3,59 +3,55 @@ import LoginPage from '@pages/LoginPage/LoginPage';
 import PlacesPage from '@pages/PlacesPage/PlacesPage';
 import SignupPage from '@pages/SignupPage/SignupPage';
 import NotFoundPage from '@pages/NotFoundPage/NotFoundPage';
+import ProfilePage from '@pages/ProfilePage/ProfilePage';
+import SightPage from '@pages/SightPage/SightPage';
+import JourneyPage from '@pages/JourneyPage/JourneyPage';
 
 const routesList = {
   [urls.base]: PlacesPage,
   [urls.signup]: SignupPage,
   [urls.login]: LoginPage,
   [urls.notfound]: NotFoundPage,
+  [urls.profile]: ProfilePage,
+  [urls.sight]: SightPage,
+  [urls.journey]: JourneyPage,
 };
 
 interface Page {
   render: () => void;
 }
  
- type Routes = Record<string, new (content: HTMLElement) => Page>;
+type Routes = Record<string, new (content: HTMLElement, ...args : any[]) => Page>;
 
-/**
-* Класс Router управляет навигацией между страницами приложения.
-* @class
-*/
 class Router {
-
-  routes : Routes;
-
-  /**
-  * Создает новый экземпляр маршрутизатора.
-  * @constructor
-  */
+  routes: Routes;
+ 
   constructor(routes: Routes) {
     this.routes = routes;
     window.addEventListener('popstate', () => this.changeLocation());
   }
-
-  /**
-  * Добавляет новый маршрут в маршрутизатор.
-  * @param {string} path - Путь маршрута.
-  * @param {Object} page - Объект страницы, связанный с маршрутом.
-  * @returns {Router} Ссылку на текущий экземпляр маршрутизатора.
-  */
-  route(path: string, PageConstructor: new (content: HTMLElement) => Page) {
+ 
+  route(path: string, PageConstructor: new (content: HTMLElement, param?: string) => Page) {
     this.routes[path] = PageConstructor;
     return this;
   }
-
-  /**
-  * Перенаправляет пользователя на указанный путь и обновляет историю браузера.
-  * @param {string} path - Путь для перенаправления.
-  */
-  go(path : string) {
-    window.history.pushState({}, '', path);
+ 
+  go(path: string, params?: string) {
+    if (!path.startsWith('/')) {
+      path = '/' + path;
+    }
+    if (window.location.pathname !== path) {
+      window.history.pushState({ params }, '', path);
+    }
     this.changeLocation();
   }
-
+ 
+  goBack() {
+    window.history.back();
+  }
+ 
   clearContent() {
-    let content = document.getElementById('content');
+    let content = document.getElementById('content') as HTMLDivElement;
     if (!content) {
       content = document.createElement('div');
       content.id = 'content';
@@ -65,23 +61,33 @@ class Router {
     content.innerHTML = '';
     return content;
   }
-
+ 
   changeLocation() {
-    const path = window.location.pathname;
-    const PageConstructorFromRoutes = this.routes[path];
+    let path = window.location.pathname;
+    const PageConstructorFromRoutes = this.routes[path.split('/')[1]];
     const content = this.clearContent();
+    const params = path.split('/').slice(2);
+    let isAuthorized : boolean;
+
+    const userData = localStorage.getItem('user');
+    if (userData !== null) {
+      isAuthorized = false;
+    } else {
+      isAuthorized = true;
+    }
 
     if (PageConstructorFromRoutes) {
-      const page = new PageConstructorFromRoutes(content);
+      const page = new PageConstructorFromRoutes(content, params, isAuthorized);
       page.render();
     } else {
-      const PageConstructorNotFound = this.routes['/404'];
+      const PageConstructorNotFound = this.routes['404'];
       if (PageConstructorNotFound) {
         new PageConstructorNotFound(content).render();
       }
     }
   }
 }
+ 
 
 const router = new Router(routesList);
 export { router };

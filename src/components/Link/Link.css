@@ -1,9 +1,18 @@
 .search-link {
     border-bottom: 3px solid white;
 }
+
+ol a {
+    text-decoration: none;
+}
+
 .search-link a:link, a:visited {
     color: var(--main-text-color);
     text-decoration: none;
+}
+
+.input label {
+    margin-right: 15px;
 }
 
 .search-link:hover {
@@ -15,11 +24,10 @@
 
 .err-label {
     color: transparent;
-    display: block;
     height: 24px;
     font-size: 12px;
     position: relative;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 .has-error {
