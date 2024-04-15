@@ -55,10 +55,7 @@ class ProfilePage extends Base {
     passwordInputs.forEach((input : HTMLInputElement) => input.addEventListener('input', () => {
       const parent = input.parentElement as HTMLElement;
       validate( input.value, input.type )
-        .catch((error) => { this.form.renderError(parent, error.message); })
-        .then(() => {
-          this.form.enableSubmitButton();
-        });
+        .catch((error) => { this.form.renderError(parent, error.message); });
       this.form.clearError(parent);
     },
     ));
@@ -80,20 +77,33 @@ class ProfilePage extends Base {
 
     submitButton.addEventListener('click', (e : Event) => {
       e.preventDefault();
+      const input = document.querySelectorAll('.input')[2] as HTMLInputElement;
+
       const profileRequestBody = { userID: this.userdata.id, username : usernameField.value, bio : statusField.value };
-      post(`profile/${this.userdata.id}/edit`, profileRequestBody).then(() => {
-        post(`profile/${this.userdata.id}/reset_password`, { password : passwordField.value }).then((passwordResponse) => {
-          if (passwordResponse.status === 401) {
-            authForm.renderError(document.querySelectorAll('.input')[2], signupErrors[passwordResponse.data.error]);
-          }
-          imageUpload(`profile/${this.userdata.id}/upload`, formData).then((response) => {
-            if (response.status === 200) {
-              router.go(`profile/${this.userdata.id}`);
-            }
-          });
-        });
+      post(`profile/${this.userdata.id}/edit`, profileRequestBody).then((profileBioNickEditResponse) => {
+        if (profileBioNickEditResponse.status !== 200) {
+          authForm.renderError(input, signupErrors[profileBioNickEditResponse.data.error]);
+        }
       });
-    });
+
+      post(`profile/${this.userdata.id}/reset_password`, { password : passwordField.value }).then((passwordResponse) => {
+        if (passwordResponse.status === 401 && passwordField.value.length > 0) {
+          authForm.renderError(input, signupErrors[passwordResponse.data.error]);
+        }
+      });
+      
+      imageUpload(`profile/${this.userdata.id}/upload`, formData).then((imageUploadResponse) => {
+        if (imageUploadResponse.status !== 200) {
+          authForm.renderError(input, signupErrors[imageUploadResponse.data.error]);
+        }
+      });
+
+      if (document.querySelectorAll('.has-error').length === 0) {
+        router.go(`profile/${this.userID}`);
+      }
+    },
+
+    );
 
     const journeyList = await get(`${this.userdata.id}/trips`);
     if (journeyList.status === 200 && journeyList.data.journeys !== null) {
