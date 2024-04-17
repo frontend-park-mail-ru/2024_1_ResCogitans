@@ -1,6 +1,6 @@
 import Base from '@components/Base/Base';
 import Header from '@components/Header/Header';
-import { Sight } from 'src/types/api';
+import { Sight, SightResponse, ReviewContent } from 'src/types/api';
 import Stars from '@components/Stars/Stars';
 import Review from '@components/Review/Review';
 import { post, get } from '@api/base';
@@ -19,11 +19,11 @@ class SightPage extends Base {
     this.id = parseInt(window.location.pathname.split('/')[2], 10);
   }
   
-  async renderReviews(response : unknown) {
+  async renderReviews(response : ReviewContent[]) {
     const reviewsDiv = document.querySelector('.sight-reviews') as HTMLDivElement;
     const userReviewDiv = document.querySelector('#user-review') as HTMLDivElement;
 
-    if (response.data.comments === null) {
+    if (response === null) {
       reviewsDiv.insertAdjacentHTML('beforeend', '<p>Оставьте отзыв первыми</p>');
 
       if (this.isAuth === false) {
@@ -31,7 +31,7 @@ class SightPage extends Base {
         new Button(reviewsDiv, { className : 'button-primary', id : 'button-login-redirect', label : 'Войти', url : '/login' }).render();
       }
     } else {
-      response.data.comments.forEach((review) => {
+      response.forEach((review) => {
         review.username = review.username;
         if (this.userData === null || review.userID === this.userData.userID) {
           userReviewDiv.remove();
@@ -43,9 +43,8 @@ class SightPage extends Base {
 
 
   async render() {
-    const responseSight = await get(`sight/${this.id}`);
+    const responseSight = await get(`sight/${this.id}`) as SightResponse;
     this.sight = responseSight.data.sight;
-    
     if (responseSight.status === 404) {
       router.go('404');
       return;
@@ -64,7 +63,7 @@ class SightPage extends Base {
     const reviewForm = document.querySelector('.review-textarea') as HTMLTextAreaElement;
     const rateForm = document.getElementById('rate') as HTMLInputElement;
 
-    await this.renderReviews(responseSight);
+    await this.renderReviews(responseSight.data.comments);
 
     const reviewsLabel = document.querySelector('#reviews-label') as HTMLHeadingElement;
     if (responseSight.data.comments !== null) {

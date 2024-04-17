@@ -1,6 +1,6 @@
 import Base from '@components/Base/Base';
 import Header from '@components/Header/Header';
-import { Journey, Sight, JourneyResponse } from 'src/types/api';
+import { Journey, Sight, JourneyResponse, WithResponse } from 'src/types/api';
 import Place from '@pages/PlacesPage/Placelist/Place/Place';
 import { get, post } from '@api/base';
 import { router } from '@router/router';
@@ -55,9 +55,9 @@ class JourneyPage extends Base {
   async addSightsToOptions() {
     if (this.isEdit === false) {
       return;
-    }  
+    }
     const placelist = document.querySelector('#list-places') as HTMLDivElement;
-    const sightResponse = await get('sights');
+    const sightResponse = await get('sights') as WithResponse<{ sights: Sight[] }>;
 
     sightResponse.data.sights.sort((a : Sight, b : Sight) => {
       const A = a.name.toUpperCase();

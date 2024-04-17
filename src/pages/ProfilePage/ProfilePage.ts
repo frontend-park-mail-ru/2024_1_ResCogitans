@@ -1,6 +1,6 @@
 import Base from '@components/Base/Base';
 import Header from '@components/Header/Header';
-import { UserProfile } from 'src/types/api';
+import { UserProfile, WithResponse, Journey } from 'src/types/api';
 import { validate } from '@utils/validation';
 import AuthorizationForm from '@components/Form/AuthorizationForm';
 import { get, post } from '@api/base';
@@ -24,14 +24,16 @@ class ProfilePage extends Base {
  
     super(parent);
     this.form = new AuthorizationForm(parent);
+    this.userdata = {} as UserProfile;
     this.userID = parseInt(arguments[1][0]);
 
     this.isOwn = (this.userID === this.userData.userID); 
   }
 
   async render() {
-    const profileData = await get(`profile/${this.userID}`);
-
+    const profileData = await get(`profile/${this.userID}`) as WithResponse<UserProfile>;
+    
+    console.log(profileData);
     const authForm = new AuthorizationForm(this.parent);
     let avatar;
     if (profileData.data.avatar === '') {
@@ -40,7 +42,13 @@ class ProfilePage extends Base {
       avatar = profileData.data.avatar.replace(/.*\/public\//, '/public/');
     }
 
-    this.userdata = { id : profileData.data.id, username : profileData.data.username, status : profileData.data.bio, avatar : avatar };
+    this.userdata = {
+      id: profileData.data.id,
+      username: profileData.data.username,
+      bio: profileData.data.bio,
+      avatar: avatar,
+      error: '',
+    };
     
     await this.preRender();
     const header = document.getElementById('header') as HTMLElement;
@@ -82,29 +90,30 @@ class ProfilePage extends Base {
       }
     });
 
-    submitButton.addEventListener('click', (e : Event) => {
+    submitButton.addEventListener('click', async (e : Event) => {
       e.preventDefault();
       const input = document.querySelectorAll('.input')[2] as HTMLInputElement;
 
-      const profileRequestBody = { userID: this.userdata.id, username : usernameField.value, bio : statusField.value };
-      post(ROUTES.profile.edit(this.userID), profileRequestBody).then((profileBioNickEditResponse) => {
-        if (profileBioNickEditResponse.status !== 200) {
-          authForm.renderError(input, signupErrors[profileBioNickEditResponse.data.error]);
-        }
-      });
+      const profileRequestBody = {
+        userID: this.userdata.id,
+        username: usernameField.value,
+        bio: statusField.value,
+      };
+      const profileBioNickEditResponse = await post(ROUTES.profile.edit(this.userID), profileRequestBody) as WithResponse<UserProfile>;
+      if (profileBioNickEditResponse.status !== 200) {
+        authForm.renderError(input, signupErrors[profileBioNickEditResponse.data.error]);
+      }
 
-      post(ROUTES.profile.reset_password(this.userID), { password : passwordField.value }).then((passwordResponse) => {
-        if (passwordResponse.status === 401 && passwordField.value.length > 0) {
-          authForm.renderError(input, signupErrors[passwordResponse.data.error]);
-        }
-      });
+      const passwordResponse = await post(ROUTES.profile.reset_password(this.userID), { password: passwordField.value }) as WithResponse<UserProfile>;
+      if (passwordResponse.status === 401 && passwordField.value.length > 0) {
+        authForm.renderError(input, signupErrors[passwordResponse.data.error]);
+      }
       
-      imageUpload(ROUTES.profile.upload(this.userID), formData).then((imageUploadResponse) => {
-        if (imageUploadResponse.status !== 200) {
-          authForm.renderError(input, signupErrors[imageUploadResponse.data.error]);
-        }
-      });
-
+      const imageUploadResponse = await imageUpload(ROUTES.profile.upload(this.userID), formData) as WithResponse<UserProfile>;
+      if (imageUploadResponse.status !== 200) {
+        authForm.renderError(input, signupErrors[imageUploadResponse.data.error]);
+      }
+    
       if (document.querySelectorAll('.has-error').length === 0) {
         router.go(ROUTES.profile.view(this.userID));
       }
@@ -112,7 +121,7 @@ class ProfilePage extends Base {
 
     );
 
-    const journeyList = await get(`${this.userdata.id}/trips`);
+    const journeyList = await get(`${this.userdata.id}/trips`) as WithResponse<{ journeys: Journey[] }>;
     if (journeyList.status === 200 && journeyList.data.journeys !== null) {
       const journeyDiv = document.querySelector('.profile-journeys ol') as HTMLDivElement;
       journeyDiv.innerHTML = '';
