@@ -1,8 +1,10 @@
 import Base from '@components/Base/Base';
 import Header from '@components/Header/Header';
-import { Journey, Sight, JourneyResponse, WithResponse } from 'src/types/api';
+import { Journey, Sight } from 'src/types/api';
 import Place from '@pages/PlacesPage/Placelist/Place/Place';
-import { get, post } from '@api/base';
+import { post } from '@api/base';
+import { getTrip } from '@api/journey';
+import { getSights } from '@api/sight';
 import { router } from '@router/router';
 import urls from '@router/urls';
 import { ROUTES } from '@router/ROUTES';
@@ -57,7 +59,7 @@ class JourneyPage extends Base {
       return;
     }
     const placelist = document.querySelector('#list-places') as HTMLDivElement;
-    const sightResponse = await get('sights') as WithResponse<{ sights: Sight[] }>;
+    const sightResponse = await getSights();
 
     sightResponse.data.sights.sort((a : Sight, b : Sight) => {
       const A = a.name.toUpperCase();
@@ -173,7 +175,7 @@ class JourneyPage extends Base {
       case 'view':
       case 'edit':
         
-        const journeyResponse = await get(`trip/${this.tripID}`) as JourneyResponse;
+        const journeyResponse = await getTrip(this.tripID);
         this.isOwn = (this.userData !== null && this.userData.userID === journeyResponse.data.journey.userID);
 
         if (journeyResponse.status === 200 && journeyResponse.data.sights !== null) {

@@ -1,9 +1,10 @@
 import Base from '@components/Base/Base';
 import Header from '@components/Header/Header';
-import { Sight, SightResponse, ReviewContent } from 'src/types/api';
+import { Sight, ReviewContent } from 'src/types/api';
 import Stars from '@components/Stars/Stars';
 import Review from '@components/Review/Review';
-import { post, get } from '@api/base';
+import { post } from '@api/base';
+import { getSight } from '@api/sight';
 import { router } from '@router/router';
 import Button from '@components/Button/Button';
 import AuthorizationForm from '@components/Form/AuthorizationForm';
@@ -43,7 +44,7 @@ class SightPage extends Base {
 
 
   async render() {
-    const responseSight = await get(`sight/${this.id}`) as SightResponse;
+    const responseSight = await getSight(this.id);
     this.sight = responseSight.data.sight;
     if (responseSight.status === 404) {
       router.go('404');

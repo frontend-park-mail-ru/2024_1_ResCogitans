@@ -55,14 +55,6 @@ export interface Sight {
   url: string,
 }
 
-export interface JourneyResponse {
-  status: number,
-  data: {
-    journey : Journey,
-    sights: Sight[],
-  }
-}
-
 export interface SightResponse {
   status: number,
   data: {
@@ -71,3 +63,6 @@ export interface SightResponse {
   }
 }
 
+export interface Sights {
+  sights: Sight[],
+}

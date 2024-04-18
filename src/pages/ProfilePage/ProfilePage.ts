@@ -1,9 +1,10 @@
 import Base from '@components/Base/Base';
 import Header from '@components/Header/Header';
-import { UserProfile, WithResponse, Journey } from 'src/types/api';
+import { UserProfile, WithResponse } from 'src/types/api';
+import { getUserTrips } from '@api/journey';
 import { validate } from '@utils/validation';
 import AuthorizationForm from '@components/Form/AuthorizationForm';
-import { get, post } from '@api/base';
+import { getUserProfile, editProfile, resetPassword } from '@api/user';
 import { router } from '@router/router';
 import JourneyPreview from './JourneyPreview';
 import { imageUpload } from '@api/user';
@@ -31,9 +32,8 @@ class ProfilePage extends Base {
   }
 
   async render() {
-    const profileData = await get(`profile/${this.userID}`) as WithResponse<UserProfile>;
+    const profileData = await getUserProfile(this.userID);
     
-    console.log(profileData);
     const authForm = new AuthorizationForm(this.parent);
     let avatar;
     if (profileData.data.avatar === '') {
@@ -94,17 +94,12 @@ class ProfilePage extends Base {
       e.preventDefault();
       const input = document.querySelectorAll('.input')[2] as HTMLInputElement;
 
-      const profileRequestBody = {
-        userID: this.userdata.id,
-        username: usernameField.value,
-        bio: statusField.value,
-      };
-      const profileBioNickEditResponse = await post(ROUTES.profile.edit(this.userID), profileRequestBody) as WithResponse<UserProfile>;
+      const profileBioNickEditResponse = await editProfile(this.userID, usernameField.value, statusField.value);
       if (profileBioNickEditResponse.status !== 200) {
         authForm.renderError(input, signupErrors[profileBioNickEditResponse.data.error]);
       }
 
-      const passwordResponse = await post(ROUTES.profile.reset_password(this.userID), { password: passwordField.value }) as WithResponse<UserProfile>;
+      const passwordResponse = await resetPassword(this.userID, passwordField.value);
       if (passwordResponse.status === 401 && passwordField.value.length > 0) {
         authForm.renderError(input, signupErrors[passwordResponse.data.error]);
       }
@@ -121,7 +116,7 @@ class ProfilePage extends Base {
 
     );
 
-    const journeyList = await get(`${this.userdata.id}/trips`) as WithResponse<{ journeys: Journey[] }>;
+    const journeyList = await getUserTrips(this.userdata.id);
     if (journeyList.status === 200 && journeyList.data.journeys !== null) {
       const journeyDiv = document.querySelector('.profile-journeys ol') as HTMLDivElement;
       journeyDiv.innerHTML = '';
