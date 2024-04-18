@@ -34,9 +34,16 @@ class Review extends Base {
 
     const editReviewButton = document.querySelector(`#review-${this.reviewContent.id} .button-edit-review`);
     editReviewButton?.addEventListener('click', () => {
+      const editTextArea = document.querySelector('#editTextArea') as HTMLTextAreaElement;
+      editTextArea.value = this.reviewContent.feedback;
+
+      const editRatingInput = document.querySelector('#rate') as HTMLInputElement;
+      editRatingInput.value = this.reviewContent.rating.toString();
+  
       document.querySelector(`#review-${this.reviewContent.id}`)?.classList.add('staged-delete');
       editDialog.showModal();
     });
+  
 
     const deleteDialog = document.querySelector('.delete-dialog') as HTMLDialogElement;
 

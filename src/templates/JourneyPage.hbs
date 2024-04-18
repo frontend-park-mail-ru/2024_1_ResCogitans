@@ -10,13 +10,13 @@
          <div class="input">
             <label for="journey-name">Название</label>
             <input id="journey-name" class="form-input" maxlength="32" type="text" required
-               placeholder="{{this.journey.name}}"></input>
+               value="{{this.journey.name}}"></input>
             <label class="err-label"></label>
          </div>
          <div class="input">
             <label for="journey-description">Описание</label>
-            <textarea id="journey-description" class="form-input" type="text" required
-               placeholder="{{this.journey.description}}"></textarea>
+               <textarea id="journey-description" class="form-input" type="text" required>
+                  {{this.journey.description}}</textarea>
          </div>
          <label class="err-label"></label>
          <button id="button-submit" class="button-primary" type="submit">Изменить</button>
