@@ -36,7 +36,9 @@
             <textarea class="review-textarea" type="text" required rows="8"
                placeholder="Оставьте отзыв об этом месте..."></textarea>
             <label for="rate">Оценка</label>
-            <input id="rate" type="number" min="1" max="5" value="5">
+            <div class="rating">
+               <div id="stars-container"></div>
+            </div>
             <label class="err-label"></label>
          </div>
          <button id="review-submit" type="submit" class="button-primary">Отправить</button>
@@ -57,7 +59,9 @@
       <label>Отредактируйте отзыв</label>
       <form>
          <textarea id="editTextArea" rows="8"></textarea>
-         <input id="rate" type="number" min="1" max="5" value="5">
+         <div class="rating">
+            <div id="edit-stars-container"></div>
+         </div>
          <label class="err-label"></label>
          <menu>
             <button class="button-danger" type="submit">Изменить</button>

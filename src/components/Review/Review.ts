@@ -37,8 +37,8 @@ class Review extends Base {
       const editTextArea = document.querySelector('#editTextArea') as HTMLTextAreaElement;
       editTextArea.value = this.reviewContent.feedback;
 
-      const editRatingInput = document.querySelector('#rate') as HTMLInputElement;
-      editRatingInput.value = this.reviewContent.rating.toString();
+      const editStarsContainer = document.querySelector('.edit-dialog #edit-stars-container') as HTMLElement;
+      new Stars(editStarsContainer, this.reviewContent.rating, true).render();
   
       document.querySelector(`#review-${this.reviewContent.id}`)?.classList.add('staged-delete');
       editDialog.showModal();

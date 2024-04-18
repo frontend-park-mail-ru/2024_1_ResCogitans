@@ -62,8 +62,10 @@ class SightPage extends Base {
   
     const submitButton = document.getElementById('review-submit') as HTMLButtonElement;
     const reviewForm = document.querySelector('.review-textarea') as HTMLTextAreaElement;
-    const rateForm = document.getElementById('rate') as HTMLInputElement;
-
+    const starsContainer = document.getElementById('stars-container') as HTMLElement;
+    const stars = new Stars(starsContainer, 5, true);
+    stars.render();
+  
     await this.renderReviews(responseSight);
 
     const reviewsLabel = document.querySelector('#reviews-label') as HTMLHeadingElement;
@@ -80,7 +82,7 @@ class SightPage extends Base {
 
       const feedback = reviewForm.value;
       const userID = this.userData.userID;
-      const rating = parseInt(rateForm.value);
+      const rating = stars.rating;
       const requestBody = { userID, rating, feedback };
       post(ROUTES.sights.createComment(this.id), requestBody).then((responseCreateReview) => {
         if (responseCreateReview.status === 200) {
@@ -121,9 +123,12 @@ class SightPage extends Base {
       const commentID = document.querySelector('.staged-delete')?.id.split('-')[1];
       const feedbackField = editDialog.querySelector('#editTextArea') as HTMLTextAreaElement;
       const userID = this.userData.userID;
-      const ratingField = editDialog.querySelector('#rate') as HTMLTextAreaElement;
       const feedback = feedbackField.value;
-      const rating = parseInt(ratingField.value);
+      const editStarsContainer = editDialog.querySelector('#edit-stars-container') as HTMLElement;
+      const editStars = new Stars(editStarsContainer, 5, true); // тут проблема (не получается отловить рейтинг из модалки)
+      editStars.render();
+      const rating = editStars.rating;
+    
       const body = { rating : rating, feedback : feedback, userID : userID };
 
       post(ROUTES.sights.editComment(this.id, commentID), body).then((responseDeleteReview) => {
