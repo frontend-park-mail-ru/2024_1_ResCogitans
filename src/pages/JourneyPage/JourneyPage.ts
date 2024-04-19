@@ -208,6 +208,12 @@ class JourneyPage extends Base {
             deleteDialog.showModal();
           });
 
+          const cancelButton = document.querySelector('.cancel') as HTMLButtonElement;
+
+          cancelButton.addEventListener('click', () => {
+            deleteDialog.close();
+          });
+
           deleteModalButton?.addEventListener('click', () => {
             post(ROUTES.journey.delete(this.tripID), {}).then(() => {
               deleteDialog.close();
