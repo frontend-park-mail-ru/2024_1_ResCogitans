@@ -23,11 +23,13 @@ ol a {
 }
 
 .err-label {
+    display: block;
     color: transparent;
-    height: 24px;
-    font-size: 12px;
-    position: relative;
-    margin-bottom: 15px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    min-height: 12px;
+    max-height: auto;
 }
 
 .has-error {

@@ -29,7 +29,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.h3-no-margin {
+.no-margin {
     margin-top: 0px;
     margin-bottom: 5px;
 }

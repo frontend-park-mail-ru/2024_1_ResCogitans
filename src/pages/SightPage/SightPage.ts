@@ -13,10 +13,13 @@ class SightPage extends Base {
   id : number;
 
   sight : Sight;
+
+  formErrorHandler : AuthorizationForm;
  
   constructor(parent : HTMLElement) {
     super(parent);
     this.id = parseInt(window.location.pathname.split('/')[2], 10);
+    this.formErrorHandler = new AuthorizationForm(parent);
   }
   
   async renderReviews(response : unknown) {
@@ -61,7 +64,8 @@ class SightPage extends Base {
     await new Stars(ratingDiv, this.sight.rating).render(); 
   
     const submitButton = document.getElementById('review-submit') as HTMLButtonElement;
-    const reviewForm = document.querySelector('.review-textarea') as HTMLTextAreaElement;
+    const reviewForm = document.querySelector('#review-form') as HTMLFormElement;
+    const reviewFormTextArea = reviewForm.querySelector('.review-textarea') as HTMLTextAreaElement;
     const starsContainer = document.getElementById('stars-container') as HTMLElement;
     const stars = new Stars(starsContainer, 5, true);
     stars.render();
@@ -73,24 +77,6 @@ class SightPage extends Base {
       reviewsLabel.innerHTML += ` (${responseSight.data.comments.length})`;
     }
 
-    submitButton?.addEventListener('click', (e : Event) => {
-      e.preventDefault();
-
-      if (this.userData === null) {
-        router.go('login');
-      }
-
-      const feedback = reviewForm.value;
-      const userID = this.userData.userID;
-      const rating = stars.rating;
-      const requestBody = { userID, rating, feedback };
-      post(ROUTES.sights.createComment(this.id), requestBody).then((responseCreateReview) => {
-        if (responseCreateReview.status === 200) {
-          router.go(ROUTES.sights.view(this.id));
-        }
-      });
-    });
-
     const cancelButtons = document.querySelectorAll('.cancel') as NodeListOf<HTMLButtonElement>;
 
     const deleteDialog = document.querySelector('.delete-dialog') as HTMLDialogElement;
@@ -98,6 +84,32 @@ class SightPage extends Base {
 
     const deleteModalButton = deleteDialog.querySelector('.button-danger') as HTMLButtonElement;
     const editModalButton = editDialog.querySelector('.button-danger') as HTMLButtonElement;
+
+    submitButton?.addEventListener('click', (e : Event) => {
+      e.preventDefault();
+
+      if (this.userData === null) {
+        router.go('login');
+      }
+
+      const feedback = reviewFormTextArea.value;
+      const userID = this.userData.userID;
+      const rating = stars.rating;
+      const requestBody = { userID, rating, feedback };
+
+      if (feedback.length < 5) {
+        console.log('fdff');
+        this.formErrorHandler.renderError(reviewForm, 'Отзыв не может быть короче 5 символов');
+        return;
+      } else {
+        this.formErrorHandler.clearError(editDialog);
+        post(ROUTES.sights.createComment(this.id), requestBody).then((responseCreateReview) => {
+          if (responseCreateReview.status === 200) {
+            router.go(ROUTES.sights.view(this.id));
+          }
+        });
+      }
+    });
    
     cancelButtons.forEach((button : HTMLButtonElement) => button.addEventListener('click', function () {
       document.querySelector('.staged-delete')?.classList.remove('staged-delete');
@@ -131,18 +143,19 @@ class SightPage extends Base {
     
       const body = { rating : rating, feedback : feedback, userID : userID };
 
-      post(ROUTES.sights.editComment(this.id, commentID), body).then((responseDeleteReview) => {
-        if (feedbackField.value.length < 5) {
-          new AuthorizationForm(this.parent).renderError(editDialog, 'Отзыв не может быть короче 5 символов');
-          return;
-        }
-        if (responseDeleteReview.status === 401) {
-          router.go('login');
-        } else {
-          deleteDialog.close();
-          router.go(ROUTES.sights.view(this.id));
-        }
-      });
+      if (feedbackField.value.length < 5) {
+        this.formErrorHandler.renderError(editDialog, 'Отзыв не может быть короче 5 символов');
+        return;
+      } else {
+        post(ROUTES.sights.editComment(this.id, commentID), body).then((responseDeleteReview) => {
+          if (responseDeleteReview.status === 401) {
+            router.go('login');
+          } else {
+            deleteDialog.close();
+            router.go(ROUTES.sights.view(this.id));
+          }
+        });
+      }
     });
   }   
 }
