@@ -21,6 +21,15 @@ class SightPage extends Base {
     this.id = parseInt(window.location.pathname.split('/')[2], 10);
     this.formErrorHandler = new AuthorizationForm(parent);
   }
+
+  validateFeedback(field : HTMLTextAreaElement, parent : HTMLElement) : boolean {
+    
+    if (field.value.length < 5) {
+      this.formErrorHandler.renderError(parent, 'Отзыв не может быть короче 5 символов');
+      return false;
+    }
+    return true;
+  }
   
   async renderReviews(response : unknown) {
     const reviewsDiv = document.querySelector('.sight-reviews') as HTMLDivElement;
@@ -95,13 +104,12 @@ class SightPage extends Base {
         router.go('login');
       }
 
-      const feedback = reviewFormTextArea.value;
+      const feedback = reviewFormTextArea;
       const userID = this.userData.userID;
       const rating = stars.rating;
-      const requestBody = { userID, rating, feedback };
+      const requestBody = { userID, rating, feedback : feedback.value };
 
-      if (feedback.length < 5) {
-        this.formErrorHandler.renderError(reviewForm, 'Отзыв не может быть короче 5 символов');
+      if (!this.validateFeedback(feedback, reviewForm)) {
         return;
       } else {
         this.formErrorHandler.clearError(editDialog);
@@ -150,15 +158,15 @@ class SightPage extends Base {
 
       const body = { rating : rating, feedback : feedback, userID : userID };
 
-      if (feedbackField.value.length < 5) {
-        this.formErrorHandler.renderError(editDialog, 'Отзыв не может быть короче 5 символов');
+      if (!this.validateFeedback(feedbackField, editDialog)) {
         return;
       } else {
+        this.formErrorHandler.clearError(editDialog);
         post(ROUTES.sights.editComment(this.id, commentID), body).then((responseDeleteReview) => {
           if (responseDeleteReview.status === 401) {
             router.go('login');
           } else {
-            deleteDialog.close();
+            editDialog.close();
             router.go(ROUTES.sights.view(this.id));
           }
         });
