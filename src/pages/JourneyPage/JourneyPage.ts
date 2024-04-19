@@ -27,31 +27,53 @@ class JourneyPage extends Base {
 
   isAuthorized : boolean;
 
-  constructor(parent : HTMLElement) {
-
+  constructor(parent, pathParams, isAuthorized) {
     super(parent);
     this.IDs = [];
     this.isOwn = false;
-    this.isAuthorized = arguments[2];
-
-    const pathParams = arguments[1];
+    this.isAuthorized = isAuthorized;
+   
     const journeyType = pathParams[1];
-
+   
     if (pathParams.length > 2) {
       router.go('404');
     }
+   
+    this.isEdit = journeyType === 'edit' || pathParams[0] === 'new';
+    this.type = this.isEdit ? journeyType : 'view';
+    this.tripID = pathParams[0];
 
-    if (journeyType === 'edit' || pathParams[0] === 'new') {
-      this.type = journeyType === 'edit' ? this.type = 'edit' : this.type = 'new';
-      this.tripID = pathParams[0];
-      this.isEdit = true;
-    } else {
-      this.isEdit = false;
-      this.tripID = pathParams[0];
-      this.type = 'view';
+    console.log(journeyType, this.type, this.isEdit, pathParams);
+
+    if (!this.type) {
+      this.type = 'new';
     }
   }
 
+  deleteButtonAdd(id : string) {
+    const deleteButton = document.createElement('button');
+    deleteButton.classList.add('button', 'button-primary', 'top-right');
+    deleteButton.textContent = 'X';
+
+    deleteButton.addEventListener('click', () => {
+      this.removeCard(id);
+    });
+
+    const currentCard = document.querySelector(`#card-${id}`) as HTMLDivElement;
+    currentCard.appendChild(deleteButton);
+  }
+
+  removeCard(id : string) {
+    if (id !== undefined) {
+      const sightCard = document.getElementById(`card-${id}`) as HTMLDivElement || null;
+      if (sightCard !== null) {
+        sightCard.remove();
+        this.IDs = this.IDs.filter(item => item !== parseInt(id));
+        return;
+      }
+    } 
+  }
+   
   async addSightsToOptions() {
     if (this.isEdit === false) {
       return;
@@ -85,19 +107,16 @@ class JourneyPage extends Base {
         return;
       }
       const selectedOption = sightSelect.options[sightSelect.selectedIndex];
-      if (selectedOption !== undefined) {
-        const sightCard = document.getElementById(`card-${selectedOption.value}`) as HTMLDivElement || null;
-        if (sightCard !== null) {
-          sightCard.remove();
-          this.IDs = this.IDs.filter(item => item !== parseInt(selectedOption.value));
-          return;
-        }
-      } 
-        
+      this.removeCard(selectedOption.value);
+     
       const sightSelected = sights.find(entry => entry.id === parseInt(selectedOption.value));
       if (sightSelected) {
         this.IDs.push(parseInt(selectedOption.value));
-        new Place(placelist, sightSelected).render();
+        new Place(placelist, sightSelected).render().then(() => {
+          if (this.type === 'edit' || this.type === 'new') {
+            this.deleteButtonAdd(String(selectedOption.value));
+          }
+        });
       }
     });
   }
@@ -194,7 +213,13 @@ class JourneyPage extends Base {
           this.addSightsToOptions();
 
           const placelist = document.querySelector('#list-places') as HTMLDivElement;
-          journeyResponse.data.sights.forEach((sight) =>  new Place(placelist, sight).render());
+          journeyResponse.data.sights.forEach((sight) =>  {
+            new Place(placelist, sight).render().then(() => {
+              if (this.type === 'edit' || this.type === 'new') {
+                this.deleteButtonAdd(String(sight.id));
+              }
+            });
+          });
   
           const editForm = document.querySelector('form') as HTMLFormElement;
           const editJourneyButton = document.getElementById('button-edit-journey');

@@ -35,8 +35,8 @@
     "webpack-cli": "^5.1.4"
   },
   "scripts": {
-    "start": "webpack --mode development && node server.js",
-    "build": "webpack --mode production && node server.js",
+    "start": "webpack --mode development && node server.js && eslint . --fix",
+    "build": "webpack --mode production && node server.js && eslint . --fix",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
