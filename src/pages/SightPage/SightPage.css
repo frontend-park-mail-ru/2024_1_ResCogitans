@@ -53,7 +53,6 @@ textarea {
 
 dialog {
     border: 3px solid var(--primary-color);
-    min-width: 400px;
     border-radius: 20px;
 }
 
