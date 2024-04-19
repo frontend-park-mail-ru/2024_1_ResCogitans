@@ -72,21 +72,38 @@ class ProfilePage extends Base {
     const imageInput = document.querySelector('#profile-edit-avatar') as HTMLInputElement;
     let formData : FormData;
 
+    let lowestInput = document.querySelectorAll('.input')[2] as HTMLInputElement;
+
     imageInput.addEventListener('change', () => {
-      if (imageInput.files) {
+      if (imageInput.files && imageInput.files.length > 0) {
+        const file = imageInput.files[0];
+        const fileType = file.type;
+        const validImageTypes = ['image/gif', 'image/jpeg', 'image/png', 'image/webp'];
+     
+        if (!validImageTypes.includes(fileType)) {
+          authForm.renderError(lowestInput, 'Выберите аватарку допустимых форматов: jpeg, png, webp, gif');
+          return;
+        } else {
+          authForm.clearError(lowestInput);
+        }
+     
         formData = new FormData();
-        formData.append('file', imageInput.files[0]);
+        formData.append('file', file);
       }
     });
+     
 
     submitButton.addEventListener('click', (e : Event) => {
       e.preventDefault();
-      const input = document.querySelectorAll('.input')[2] as HTMLInputElement;
+
+      if (document.querySelectorAll('.has-error').length !== 0) {
+        return;
+      }
 
       if (formData) {
         imageUpload(ROUTES.profile.upload(this.userID), formData).then((imageUploadResponse) => {
           if (imageUploadResponse.status !== 200) {
-            authForm.renderError(input, signupErrors[imageUploadResponse.data.error]);
+            authForm.renderError(lowestInput, signupErrors[imageUploadResponse.data.error]);
           }
         });
       }
@@ -95,7 +112,7 @@ class ProfilePage extends Base {
 
       post(ROUTES.profile.edit(this.userID), profileRequestBody).then((profileBioNickEditResponse) => {
         if (profileBioNickEditResponse.status !== 200) {
-          authForm.renderError(input, signupErrors[profileBioNickEditResponse.data.error]);
+          authForm.renderError(lowestInput, signupErrors[profileBioNickEditResponse.data.error]);
         } else {
           profileBlock.innerHTML = '';
           const templateData = { id : profileBioNickEditResponse.data.id, 
@@ -110,7 +127,7 @@ class ProfilePage extends Base {
       if (passwordField.value.length > 0 && passwordField.value === repeatPasswordField.value) {
         post(ROUTES.profile.reset_password(this.userID), { password : passwordField.value }).then((passwordResponse) => {
           if (passwordResponse.status === 401) {
-            authForm.renderError(input, signupErrors[passwordResponse.data.error]);
+            authForm.renderError(lowestInput, signupErrors[passwordResponse.data.error]);
           } 
         });
       }
