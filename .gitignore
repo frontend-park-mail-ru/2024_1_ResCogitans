@@ -10,6 +10,8 @@
 #images
 # *.jpg
 
+/public/avatars
+
 #сertificates test
 *.pem
 
