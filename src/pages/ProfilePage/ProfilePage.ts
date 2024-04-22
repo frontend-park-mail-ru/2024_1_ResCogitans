@@ -46,7 +46,7 @@ class ProfilePage extends Base {
       const authForm = new AuthorizationForm();
     
   
-      const profileTemplateData = { id : profileData.data.id, username : profileData.data.username, status : profileData.data.bio, avatar : profileData.data.avatar };
+      const profileTemplateData = { userID : profileData.data.id, username : profileData.data.username, status : profileData.data.bio, avatar : profileData.data.avatar };
       
       
       const header = document.getElementById('header') as HTMLElement;
@@ -129,7 +129,7 @@ class ProfilePage extends Base {
             authForm.renderError(lowestInput, signupErrors[profileBioNickEditResponse.data.error]);
           } else {
             profileBlock.innerHTML = '';
-            const templateData = { id : profileBioNickEditResponse.data.id, 
+            const templateData = { userID : profileBioNickEditResponse.data.id, 
               username : profileBioNickEditResponse.data.username, 
               status : profileBioNickEditResponse.data.bio, 
               avatar : profileBioNickEditResponse.data.avatar };

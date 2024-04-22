@@ -13,6 +13,8 @@ class ProfileBlock extends Base {
 
     this.profileData = profileData;
     this.isOwn = (!this.userData) ? false : (this.profileData.userID === this.userData.userID); 
+    console.log(this.profileData.userID, this.userData.userID);
+    console.log(this.isOwn);
 
     if (profileData.avatar === '') {
       this.profileData.avatar = '/static/placeholder.jpg';
