@@ -8,6 +8,7 @@ import { imageUpload } from '@api/user';
 import { signupErrors } from '../../types/errors';
 import { ROUTES } from '@router/ROUTES';
 import ProfileBlock from './ProfileBlock';
+import { router } from '@router/router';
 
 class ProfilePage extends Base {
 
@@ -23,11 +24,23 @@ class ProfilePage extends Base {
     this.form = new AuthorizationForm(parent);
     this.userID = parseInt(arguments[1][0]);
 
-    this.isOwn = (this.userID === this.userData.userID); 
+   
+    this.isOwn = (!this.userData) ? false : (this.userID === this.userData.userID); 
   }
 
   async render() {
+
+    if (!this.userID) {
+      router.go('404');
+      return;
+    }
+
     const profileData = await get(`profile/${this.userID}`);
+    
+    if (profileData.data.id === 0) {
+      router.go('404');
+      return;
+    }
 
     const authForm = new AuthorizationForm(this.parent);
   
@@ -140,8 +153,9 @@ class ProfilePage extends Base {
     );
 
     const journeyList = await get(`${this.userID}/trips`);
+    const journeyDiv = document.querySelector('.profile-journeys') as HTMLDivElement;
+
     if (journeyList.status === 200 && journeyList.data.journeys !== null) {
-      const journeyDiv = document.querySelector('.profile-journeys') as HTMLDivElement;
       journeyDiv.innerHTML = '';
       journeyList.data.journeys.forEach((journey) => new JourneyPreview(journeyDiv, journey).render());
     }

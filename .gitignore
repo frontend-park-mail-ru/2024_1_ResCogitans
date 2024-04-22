@@ -10,5 +10,8 @@
 #images
 # *.jpg
 
+#сertificates test
+*.pem
+
 .env
 .husky

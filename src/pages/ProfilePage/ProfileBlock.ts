@@ -8,8 +8,9 @@ class ProfileBlock extends Base {
 
   constructor(parent : HTMLElement, profileData : unknown) {
     super(parent);
+
     this.profileData = profileData;
-    this.isOwn = (this.userData.userID === profileData.id);
+    this.isOwn = (!this.userData) ? false : (this.profileData.userID === this.userData.userID); 
 
     if (profileData.avatar === '') {
       this.profileData.avatar = '/static/placeholder.jpg';

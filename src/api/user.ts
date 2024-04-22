@@ -2,7 +2,7 @@ import { WithResponse, UserAuthRequest, UserAuthResponseData } from 'src/types/a
 import { ENV_CONFIG } from '../../envConfig';
 
 export async function authorize(endpoint : string, body? : UserAuthRequest): Promise<WithResponse<UserAuthResponseData>> {
-  const response = await fetch(`${ENV_CONFIG.API_URL}/${endpoint}`, {
+  const response = await fetch(`${ENV_CONFIG.API_URL}/api/${endpoint}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
@@ -25,7 +25,7 @@ export async function authorize(endpoint : string, body? : UserAuthRequest): Pro
 
 
 export async function imageUpload(endpoint : string, body? : FormData) {
-  const response = await fetch(`${ENV_CONFIG.API_URL}/${endpoint}`, {
+  const response = await fetch(`${ENV_CONFIG.API_URL}/api/${endpoint}`, {
     method: 'POST',
     credentials: 'include',
     body: body,

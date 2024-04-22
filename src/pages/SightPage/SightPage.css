@@ -45,10 +45,9 @@ textarea {
 
 .review-buttons {
     display: flex;
-}
-
-.review-buttons button {
-    margin: 20px;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-end;
 }
 
 dialog {

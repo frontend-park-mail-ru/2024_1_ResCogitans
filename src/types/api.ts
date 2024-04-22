@@ -21,6 +21,7 @@ export interface WithResponse<T> {
 
 export interface ReviewContent {
   id : number;
+  userID: number;
   placename: string;
   avatar: string;
   username : string;
