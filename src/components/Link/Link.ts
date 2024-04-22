@@ -1,4 +1,5 @@
 import Base from '@components/Base/Base';
+import template from '@templates/Link.hbs';
 
 /**
 * Класс Link. Представляет ссылку, которая может быть отрендерена в HTML.
@@ -32,7 +33,7 @@ class Link extends Base {
     label? : string, 
     url? : string, 
     src? : string })  {
-    super(parent);
+    super(parent, template);
     this.label = label;
     this.url = url;
     this.className = className;

@@ -1,17 +1,19 @@
 import Base from '@components/Base/Base';
 
-class Stars extends Base {
+class Stars {
   rating: number;
+
+  parent : HTMLElement;
 
   isEditable: boolean;
 
   constructor(parent : HTMLElement, rating : number, isEditable: boolean = false) {
-    super(parent);
+    this.parent = parent;
     this.rating = rating;
     this.isEditable = isEditable;
   }
 
-  async render() {
+  render() {
     for (let i = 0; i < 5; i++) {
       const star = document.createElement('div');
       star.classList.add('star');

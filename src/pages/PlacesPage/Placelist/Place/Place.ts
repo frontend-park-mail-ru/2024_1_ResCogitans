@@ -1,6 +1,8 @@
 import Base from '@components/Base/Base';
 import { Sight } from 'src/types/api';
 import Stars from '@components/Stars/Stars';
+import template from '@templates/Place.hbs';
+
 
 /**
 * Класс Place представляет место, которое может быть отрендерено в HTML.
@@ -17,14 +19,15 @@ class Place extends Base {
   * @param {Object} data - Объект с данными места.
   */
   constructor(parent : HTMLElement, data : Sight) {
-    super(parent);
+    super(parent, template);
     this.data = data;
   }
 
-  async render() {
-    await this.preRender();
+  render() {
+    this.preRender();
+    
     const stars = document.querySelector(`#card-${this.data.id} .rating`) as HTMLDivElement;
-    await new Stars(stars, this.data.rating).render();
+    new Stars(stars, this.data.rating).render();
   }
 }
 

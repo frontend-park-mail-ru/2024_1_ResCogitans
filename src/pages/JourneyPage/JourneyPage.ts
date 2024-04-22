@@ -6,6 +6,8 @@ import { get, post } from '@api/base';
 import { router } from '@router/router';
 import urls from '@router/urls';
 import { ROUTES } from '@router/ROUTES';
+import template from '@templates/JourneyPage.hbs';
+
 
 import AuthorizationForm from '@components/Form/AuthorizationForm';
 
@@ -28,7 +30,7 @@ class JourneyPage extends Base {
   isAuthorized : boolean;
 
   constructor(parent, pathParams, isAuthorized) {
-    super(parent);
+    super(parent, template);
     this.IDs = [];
     this.isOwn = false;
     this.isAuthorized = isAuthorized;
@@ -43,7 +45,6 @@ class JourneyPage extends Base {
     this.type = this.isEdit ? journeyType : 'view';
     this.tripID = pathParams[0];
 
-    console.log(journeyType, this.type, this.isEdit, pathParams);
 
     if (!this.type) {
       this.type = 'new';
@@ -74,55 +75,55 @@ class JourneyPage extends Base {
     } 
   }
    
-  async addSightsToOptions() {
+  addSightsToOptions() {
     if (this.isEdit === false) {
       return;
     }  
     const placelist = document.querySelector('#list-places') as HTMLDivElement;
-    const sightResponse = await get('sights');
-
-    sightResponse.data.sights.sort((a : Sight, b : Sight) => {
-      const A = a.name.toUpperCase();
-      const B = b.name.toUpperCase();
-      if (A < B) {return -1;}
-      if (A > B) {return 1;}
-      return 0;
-    });
-
-    let sights = sightResponse.data.sights;
-    const sightSelect = document.querySelector('select') as HTMLSelectElement;
-
-    sights.forEach((data) => {
-      const option = document.createElement('option');
-      option.value = String(data.id);
-      option.text = data.name;
-      sightSelect?.appendChild(option);
-    });
-
-    sightSelect.addEventListener('change', () => {
-      const activeCards = document.querySelectorAll('.card');
-      if (sightSelect.selectedIndex === -1) {
-        activeCards.item(activeCards.length - 1).remove();
-        this.IDs.pop();
-        return;
-      }
-      const selectedOption = sightSelect.options[sightSelect.selectedIndex];
-      this.removeCard(selectedOption.value);
-     
-      const sightSelected = sights.find(entry => entry.id === parseInt(selectedOption.value));
-      if (sightSelected) {
-        this.IDs.push(parseInt(selectedOption.value));
-        new Place(placelist, sightSelected).render().then(() => {
+    get('sights').then((sightResponse) => {
+      sightResponse.data.sights.sort((a : Sight, b : Sight) => {
+        const A = a.name.toUpperCase();
+        const B = b.name.toUpperCase();
+        if (A < B) {return -1;}
+        if (A > B) {return 1;}
+        return 0;
+      });
+  
+      let sights = sightResponse.data.sights;
+      const sightSelect = document.querySelector('select') as HTMLSelectElement;
+  
+      sights.forEach((data) => {
+        const option = document.createElement('option');
+        option.value = String(data.id);
+        option.text = data.name;
+        sightSelect?.appendChild(option);
+      });
+  
+      sightSelect.addEventListener('change', () => {
+        const activeCards = document.querySelectorAll('.card');
+        if (sightSelect.selectedIndex === -1) {
+          activeCards.item(activeCards.length - 1).remove();
+          this.IDs.pop();
+          return;
+        }
+        const selectedOption = sightSelect.options[sightSelect.selectedIndex];
+        this.removeCard(selectedOption.value);
+       
+        const sightSelected = sights.find(entry => entry.id === parseInt(selectedOption.value));
+        if (sightSelected) {
+          this.IDs.push(parseInt(selectedOption.value));
+          new Place(placelist, sightSelected).render();
+          
           if (this.type === 'edit' || this.type === 'new') {
             this.renderDeletePlaceButton(String(selectedOption.value));
           }
-        });
-      }
+        }
+      });
     });
   }
 
-  async render() {
-
+  render() {
+    
     if (this.type === null) {
       this.type = 'new';
     }
@@ -137,10 +138,10 @@ class JourneyPage extends Base {
           router.go('login');
         }
 
-        await this.preRender(); 
+        this.preRender();         
 
         header = document.getElementById('header') as HTMLElement;
-        await new Header(header).render();
+        new Header(header).render();
 
         journeyInfoDiv = document.getElementById('journey-info');
         title = document.createElement('h1');
@@ -192,95 +193,97 @@ class JourneyPage extends Base {
       case 'view':
       case 'edit':
         
-        const journeyResponse = await get(`trip/${this.tripID}`) as JourneyResponse;
-        this.isOwn = (this.userData !== null && this.userData.userID === journeyResponse.data.journey.userID);
+        get(`trip/${this.tripID}`).then((journeyResponse) => {
+          this.isOwn = (this.userData !== null && this.userData.userID === journeyResponse.data.journey.userID);
+          
+          this.preRender();        
 
-        if (journeyResponse.status === 200 && journeyResponse.data.sights !== null) {
-          journeyResponse.data.sights.map((sight) => this.IDs.push(sight.id));
-          this.journey = journeyResponse.data.journey;
+          if (journeyResponse.status === 200 && journeyResponse.data.sights !== null) {
+            journeyResponse.data.sights.map((sight) => this.IDs.push(sight.id));
+            this.journey = journeyResponse.data.journey;
             
-          await this.preRender();
-            
-          header = document.getElementById('header') as HTMLElement;
+          
+            header = document.getElementById('header') as HTMLElement;
          
-          await new Header(header).render();
+            new Header(header).render();
   
-          journeyInfoDiv = document.getElementById('journey-info');
-          title = document.createElement('h1');
-          title.textContent = `${this.journey.name}`;
-          journeyInfoDiv?.insertAdjacentElement('afterbegin', title);
+            journeyInfoDiv = document.getElementById('journey-info');
+            title = document.createElement('h1');
+            title.textContent = `${this.journey.name}`;
+            journeyInfoDiv?.insertAdjacentElement('afterbegin', title);
 
-          this.addSightsToOptions();
+            this.addSightsToOptions();
 
-          const placelist = document.querySelector('#list-places') as HTMLDivElement;
-          journeyResponse.data.sights.forEach((sight) =>  {
-            new Place(placelist, sight).render().then(() => {
+            const placelist = document.querySelector('#list-places') as HTMLDivElement;
+            journeyResponse.data.sights.forEach((sight) =>  {
+              new Place(placelist, sight).render();
               if (this.type === 'edit' || this.type === 'new') {
                 this.renderDeletePlaceButton(String(sight.id));
               }
             });
-          });
   
-          const editForm = document.querySelector('form') as HTMLFormElement;
-          const editJourneyButton = document.getElementById('button-edit-journey');
-          const deleteJourneyButton = document.getElementById('button-delete-journey');
+            const editForm = document.querySelector('form') as HTMLFormElement;
+            const editJourneyButton = document.getElementById('button-edit-journey');
+            const deleteJourneyButton = document.getElementById('button-delete-journey');
 
-          const deleteDialog = document.querySelector('.delete-dialog') as HTMLDialogElement;
+            const deleteDialog = document.querySelector('.delete-dialog') as HTMLDialogElement;
       
-          const deleteModalButton = deleteDialog.querySelector('#button-delete') as HTMLButtonElement;
+            const deleteModalButton = deleteDialog.querySelector('#button-delete') as HTMLButtonElement;
         
-          deleteJourneyButton?.addEventListener('click', () => {
-            deleteDialog.showModal();
-          });
+            deleteJourneyButton?.addEventListener('click', () => {
+              deleteDialog.showModal();
+            });
 
-          const cancelButton = document.querySelector('.cancel') as HTMLButtonElement;
+            const cancelButton = document.querySelector('.cancel') as HTMLButtonElement;
 
-          cancelButton.addEventListener('click', () => {
-            deleteDialog.close();
-          });
-
-          deleteModalButton?.addEventListener('click', () => {
-            post(ROUTES.journey.delete(this.tripID), {}).then(() => {
+            cancelButton.addEventListener('click', () => {
               deleteDialog.close();
-              router.go(urls.base);
             });
-          });
-  
-          if (this.type === 'view') {
-            editJourneyButton?.addEventListener('click', () => {
-              router.go(ROUTES.journey.edit(this.tripID));
-            });
-          } else if (this.type === 'edit') {
-            editForm.addEventListener('submit', (e : Event) => {
 
-              form = document.querySelector('form') as HTMLFormElement; 
-
-              e.preventDefault();
-
-              if (this.IDs.length === 0) { 
-                new AuthorizationForm(this.parent).renderError(form, 'Выберите места для поездки');
-                return;
-              } 
-
-              const userID = this.userData.userID;          
-              const nameInput = document.querySelector('input') as HTMLInputElement;
-              const descriptionInput = document.querySelector('textarea') as HTMLTextAreaElement; 
-              const body = { userID : userID, name : nameInput.value, description : descriptionInput.value, sightIDs : this.IDs };
-
-              post(ROUTES.journey.editsight(this.tripID), body).then((createJourneyResponse) => {
-                if (createJourneyResponse.status === 500) {
-                  new AuthorizationForm(this.parent).renderError(form, 'Поездка с таким именем уже есть');
-                  return;
-                }
-                this.type = 'view';
-                router.go(ROUTES.journey.view(this.tripID));
+            deleteModalButton?.addEventListener('click', () => {
+              post(ROUTES.journey.delete(this.tripID), {}).then(() => {
+                deleteDialog.close();
+                router.go(urls.base);
               });
             });
+  
+            if (this.type === 'view') {
+              editJourneyButton?.addEventListener('click', () => {
+                router.go(ROUTES.journey.edit(this.tripID));
+              });
+            } else if (this.type === 'edit') {
+              editForm.addEventListener('submit', (e : Event) => {
+
+                form = document.querySelector('form') as HTMLFormElement; 
+
+                e.preventDefault();
+
+                if (this.IDs.length === 0) { 
+                  new AuthorizationForm(this.parent).renderError(form, 'Выберите места для поездки');
+                  return;
+                } 
+
+                const userID = this.userData.userID;          
+                const nameInput = document.querySelector('input') as HTMLInputElement;
+                const descriptionInput = document.querySelector('textarea') as HTMLTextAreaElement; 
+                const body = { userID : userID, name : nameInput.value, description : descriptionInput.value, sightIDs : this.IDs };
+
+                post(ROUTES.journey.editsight(this.tripID), body).then((createJourneyResponse) => {
+                  if (createJourneyResponse.status === 500) {
+                    new AuthorizationForm(this.parent).renderError(form, 'Поездка с таким именем уже есть');
+                    return;
+                  }
+                  this.type = 'view';
+                  router.go(ROUTES.journey.view(this.tripID));
+                });
+              });
+            }
+          } else {
+            router.go('404');
           }
-          break;
-        } else {
-          router.go('404');
-        }
+        },
+        );
+        break;
     }
   } 
 }

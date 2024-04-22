@@ -1,4 +1,6 @@
 import Base from '@components/Base/Base';
+import template from '@templates/ProfileBlock.hbs';
+
 
 class ProfileBlock extends Base {
 
@@ -7,7 +9,7 @@ class ProfileBlock extends Base {
   isOwn : boolean;
 
   constructor(parent : HTMLElement, profileData : unknown) {
-    super(parent);
+    super(parent, template);
 
     this.profileData = profileData;
     this.isOwn = (!this.userData) ? false : (this.profileData.userID === this.userData.userID); 
@@ -19,8 +21,8 @@ class ProfileBlock extends Base {
     }
   }
 
-  async render() {
-    await this.preRender();
+  render() {
+    this.preRender();
 
     const profileEditForm = document.querySelector('dialog') as HTMLDialogElement;
     

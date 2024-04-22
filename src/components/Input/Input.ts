@@ -1,4 +1,5 @@
 import Base from '@components/Base/Base';
+import template from '@templates/Input.hbs';
 
 /**
 * Класс Input. Экземпляры этого класса - строки для ввода данных.
@@ -37,7 +38,7 @@ class Input extends Base {
     img? : string,
     className? : string
   }) {
-    super(parent);
+    super(parent, template);
     this.field = field;
     this.placeholder = placeholder;
     this.type = type;

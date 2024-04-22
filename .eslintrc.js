@@ -27,5 +27,6 @@ module.exports = {
     'import/extensions': 'off',
     'import/no-extraneous-dependencies': 'off',
     "eol-last": ["error", "always"],
+    "@typescript-eslint/no-unused-vars": "off"
    },   
 };

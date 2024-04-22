@@ -7,6 +7,7 @@ import { addUserToLocalStorage } from '@utils/localstorage';
 import { validate } from '@utils/validation';
 import { signupErrors } from '../../../types/errors';
 import urls from '@router/urls';
+import template from '@templates/SignupForm.hbs';
 
 /**
 * Класс SignupForm представляет форму регистрации, которая может быть отрендерена в HTML.
@@ -16,15 +17,21 @@ class SignupForm extends AuthorizationForm {
   /**
   * Рендерит форму регистрации в DOM, включая логотип, поля ввода и кнопку.
   */
-  async render() {
-    await this.preRender();
+
+  constructor(parent: HTMLElement) {
+    super(parent, template);
+  }
+
+  render() {
+    this.preRender();
+    
     const logoGroup = document.getElementById('logo-group') as HTMLDivElement;
-    await new Logo(logoGroup).render();
+    new Logo(logoGroup).render();
 
     this.enablePasswordVisibilityButtons();
 
     const registrationForm = document.getElementById('registration-form') as HTMLDivElement;
-    await new Button(registrationForm, { id: 'button-submit', label: 'Зарегистрироваться', type: 'submit' }).render();
+    new Button(registrationForm, { id: 'button-submit', label: 'Зарегистрироваться', type: 'submit' }).render();
     const submitButton = document.getElementById('button-submit') as HTMLButtonElement;
     submitButton.disabled = true;
 

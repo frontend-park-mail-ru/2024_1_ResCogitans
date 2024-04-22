@@ -8,22 +8,16 @@ class Base {
 
   isAuth : boolean;
 
-  template: HandlebarsTemplateDelegate;
+  template : HandlebarsTemplateDelegate;
 
-  constructor(parent : HTMLElement) {
+  constructor(parent : HTMLElement, template : HandlebarsTemplateDelegate | undefined) {
     this.parent = parent;
     this.userData = JSON.parse(localStorage.getItem('user'));
     this.isAuth = (this.userData !== null);
+    this.template = template;
   }
 
-   
-  async loadTemplate() {
-    const templateModule = await import(`../../templates/${this.constructor.name}.hbs`);
-    this.template = templateModule.default;
-  }
-
-  async preRender(element? : HTMLElement) {
-    await this.loadTemplate();
+  preRender(element? : HTMLElement) {
     const html = this.template(this);
     if (element !== undefined) {
       element.insertAdjacentHTML('beforeend', html);
@@ -32,8 +26,9 @@ class Base {
     }
   }
 
-  async render() {
-    await this.preRender();
+  render() {
+    this.preRender();
   }
 }
+
 export default Base;

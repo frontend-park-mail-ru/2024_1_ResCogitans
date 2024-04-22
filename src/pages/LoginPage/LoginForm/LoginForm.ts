@@ -8,20 +8,27 @@ import { validate } from '@utils/validation';
 import AuthorizationForm from '@components/Form/AuthorizationForm';
 import { loginErrors } from '../../../types/errors';
 import { UserAuthResponseData } from '@types/api';
+import template from '@templates/LoginForm.hbs';
+
 /**
 * Класс LoginForm представляет форму входа, которая может быть отрендерена в HTML.
 * @class
 */
 class LoginForm extends AuthorizationForm {
 
-  async render() {
-    await this.preRender();
 
+  constructor(parent: HTMLElement) {
+    super(parent, template);
+  }
+
+  render() {
+    this.preRender();
+    
     const logoGroup = document.getElementById('logo-group') as HTMLDivElement;
-    await new Logo(logoGroup).render();
+    new Logo(logoGroup).render();
     const loginForm = document.getElementById('login-form') as HTMLDivElement;
 
-    await new Button(loginForm, {
+    new Button(loginForm, {
       id: 'button-submit', label: 'Войти', type: 'submit',
     }).render();
     
@@ -34,7 +41,7 @@ class LoginForm extends AuthorizationForm {
     submitButton.disabled = true;
 
     
-    await new Button(loginForm, {
+    new Button(loginForm, {
       id: 'signup-button', label: 'Регистрация',
     }).render();
    
