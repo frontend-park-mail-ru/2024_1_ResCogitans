@@ -50,7 +50,7 @@ class JourneyPage extends Base {
     }
   }
 
-  deleteButtonAdd(id : string) {
+  renderDeletePlaceButton(id : string) {
     const deleteButton = document.createElement('button');
     deleteButton.classList.add('button', 'button-primary', 'top-right');
     deleteButton.textContent = 'X';
@@ -114,7 +114,7 @@ class JourneyPage extends Base {
         this.IDs.push(parseInt(selectedOption.value));
         new Place(placelist, sightSelected).render().then(() => {
           if (this.type === 'edit' || this.type === 'new') {
-            this.deleteButtonAdd(String(selectedOption.value));
+            this.renderDeletePlaceButton(String(selectedOption.value));
           }
         });
       }
@@ -216,7 +216,7 @@ class JourneyPage extends Base {
           journeyResponse.data.sights.forEach((sight) =>  {
             new Place(placelist, sight).render().then(() => {
               if (this.type === 'edit' || this.type === 'new') {
-                this.deleteButtonAdd(String(sight.id));
+                this.renderDeletePlaceButton(String(sight.id));
               }
             });
           });
