@@ -141,7 +141,7 @@ class ProfilePage extends Base {
 
     const journeyList = await get(`${this.userID}/trips`);
     if (journeyList.status === 200 && journeyList.data.journeys !== null) {
-      const journeyDiv = document.querySelector('.profile-journeys ol') as HTMLDivElement;
+      const journeyDiv = document.querySelector('.profile-journeys') as HTMLDivElement;
       journeyDiv.innerHTML = '';
       journeyList.data.journeys.forEach((journey) => new JourneyPreview(journeyDiv, journey).render());
     }
