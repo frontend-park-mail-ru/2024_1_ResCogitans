@@ -1,11 +1,10 @@
 import Base from '@components/Base/Base';
 import Header from '@components/Header/Header';
-import { Journey, Sight } from 'src/types/api';
+import { Journey, Sight, WithResponse } from 'src/types/api';
 import Place from '@pages/PlacesPage/Placelist/Place/Place';
 import { post } from '@api/base';
 import { getTrip } from '@api/journey';
 import { getSights } from '@api/sight';
-import { get } from '@api/base';
 import { router } from '@router/router';
 import urls from '@router/urls';
 import { ROUTES } from '@router/ROUTES';
@@ -81,7 +80,7 @@ class JourneyPage extends Base {
       return;
     }
     const placelist = document.querySelector('#list-places') as HTMLDivElement;
-    get('sights').then((sightResponse) => {
+    getSights().then((sightResponse) => {
       sightResponse.data.sights.sort((a: Sight, b: Sight) => {
         const A = a.name.toUpperCase();
         const B = b.name.toUpperCase();
@@ -242,7 +241,7 @@ class JourneyPage extends Base {
             });
 
             deleteModalButton?.addEventListener('click', () => {
-              post(ROUTES.journey.delete(this.tripID), {}).then(() => {
+              post(`trip/${this.journey.id}/delete`, {}).then(() => {
                 deleteDialog.close();
                 router.go(urls.base);
               });
@@ -260,7 +259,7 @@ class JourneyPage extends Base {
                 e.preventDefault();
 
                 if (this.IDs.length === 0) {
-                  new AuthorizationForm(this.parent).renderError(form, 'Выберите места для поездки');
+                  new AuthorizationForm(this.parent, '').renderError(form, 'Выберите места для поездки');
                   return;
                 }
 
@@ -269,7 +268,7 @@ class JourneyPage extends Base {
                 const descriptionInput = document.querySelector('textarea') as HTMLTextAreaElement;
                 const body = { userID: userID, name: nameInput.value, description: descriptionInput.value, sightIDs: this.IDs };
 
-                post(ROUTES.journey.editsight(this.tripID), body).then((createJourneyResponse) => {
+                post(`trip/${this.journey.id}/sight/add`, body).then((createJourneyResponse) => {
                   if (createJourneyResponse.status === 500) {
                     new AuthorizationForm(this.parent).renderError(form, 'Поездка с таким именем уже есть');
                     return;

@@ -41,7 +41,7 @@ class SightPage extends Base {
     if (response === null) {
       reviewsDiv.insertAdjacentHTML('beforeend', '<p>Оставьте отзыв первыми</p>');
 
-      if (this.userData !== null) {
+      if (this.userData === null) {
         userReviewDiv.remove();
         new Button(reviewsDiv, { className : 'button-primary', id : 'button-login-redirect', label : 'Войти', url : '/login' }).render();
       }
@@ -87,6 +87,9 @@ class SightPage extends Base {
       const stars = new Stars(starsContainer, 5, true);
       stars.render();
   
+      const editStars = new Stars(editStarsContainer, 5, true);
+      editStars.render();
+
       this.renderReviews(responseSight.data.comments);
 
       const reviewsLabel = document.querySelector('#reviews-label') as HTMLHeadingElement;
@@ -95,7 +98,6 @@ class SightPage extends Base {
       }
 
       const cancelButtons = document.querySelectorAll('.cancel') as NodeListOf<HTMLButtonElement>;
-
 
       const deleteModalButton = deleteDialog.querySelector('.button-danger') as HTMLButtonElement;
       const editModalButton = editDialog.querySelector('.button-danger') as HTMLButtonElement;
@@ -127,7 +129,6 @@ class SightPage extends Base {
       cancelButtons.forEach((button : HTMLButtonElement) => button.addEventListener('click', function () {
         document.querySelector('.staged-delete')?.classList.remove('staged-delete');
         deleteDialog.close();
-        editStarsContainer.innerHTML = '';
         editDialog.close();
       }));
 
@@ -151,19 +152,12 @@ class SightPage extends Base {
         const userID = this.userData.userID;
         const feedback = feedbackField.value;
 
-        const editStars = new Stars(editStarsContainer, 5, true);
-     
-        if (editStarsContainer.children.length === 0) {
-          editStars.render();
-        }
-
-        const rating = editStars.rating;
-
-        const body = { rating : rating, feedback : feedback, userID : userID };
-
         if (!this.validateFeedback(feedbackField, editDialog)) {
           return;
         } else {
+          const rating = editStars.rating;
+          const body = { rating : rating, feedback : feedback, userID : userID };
+
           this.formErrorHandler.clearError(editDialog);
           post(ROUTES.sights.editComment(this.id, commentID), body).then((responseDeleteReview) => {
             if (responseDeleteReview.status === 401) {

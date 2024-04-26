@@ -14,10 +14,13 @@ class Stars {
   }
 
   render() {
+    if (this.parent.children.length === 5) this.parent.innerHTML = '';
     for (let i = 0; i < 5; i++) {
       const star = document.createElement('div');
       star.classList.add('star');
-      star.addEventListener('click', () => this.setRating(i + 1));
+      star.addEventListener('click', () => {
+        this.setRating(i + 1); 
+      });
       if (i < Math.floor(this.rating)) {
         star.classList.add('filled');
       } else if (i === Math.floor(this.rating) && this.rating % 1 > 0.5) {
@@ -30,9 +33,9 @@ class Stars {
   }
 
   setRating(rating: number) {
+    this.parent.innerHTML = '';
     if (!this.isEditable) return;
     this.rating = rating;
-    this.parent.innerHTML = '';
     this.render();
   }
 

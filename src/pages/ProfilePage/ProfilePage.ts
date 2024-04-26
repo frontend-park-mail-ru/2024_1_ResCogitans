@@ -4,13 +4,14 @@ import { validate } from '@utils/validation';
 import AuthorizationForm from '@components/Form/AuthorizationForm';
 import { get, post } from '@api/base';
 import JourneyPreview from './JourneyPreview';
-import { imageUpload } from '@api/user';
+import { editProfile, getUserProfile, imageUpload, resetPassword } from '@api/user';
 import { signupErrors } from '../../types/errors';
 import { ROUTES } from '@router/ROUTES';
 import ProfileBlock from './ProfileBlock';
 import { router } from '@router/router';
 import template from '@templates/ProfilePage.hbs';
 import { getUserTrips } from '@api/journey';
+import { UserProfile } from '@types/api';
 
 
 class ProfilePage extends Base {
@@ -37,7 +38,7 @@ class ProfilePage extends Base {
       return;
     }
 
-    get(`profile/${this.userID}`).then((profileData) => {
+    getUserProfile(this.userID).then((profileData) => {
 
       this.isOwn = (this.userData === null) ? false : (this.userID === profileData.data.id);
       this.preRender();
@@ -127,9 +128,7 @@ class ProfilePage extends Base {
           });
         }
 
-        const profileRequestBody = { userID: this.userData.id, username: usernameField.value, bio: statusField.value };
-
-        post(ROUTES.profile.edit(this.userID), profileRequestBody).then((profileBioNickEditResponse) => {
+        editProfile(this.userData.id, usernameField.value, statusField.value).then((profileBioNickEditResponse) => {
           if (profileBioNickEditResponse.status !== 200) {
             authForm.renderError(lowestInput, signupErrors[profileBioNickEditResponse.data.error]);
           } else {
@@ -146,7 +145,7 @@ class ProfilePage extends Base {
         });
 
         if (passwordField.value.length > 0 && passwordField.value === repeatPasswordField.value) {
-          post(ROUTES.profile.reset_password(this.userID), { password: passwordField.value }).then((passwordResponse) => {
+          resetPassword(this.userData.id, passwordField.value).then((passwordResponse) => {
             if (passwordResponse.status === 401) {
               authForm.renderError(lowestInput, signupErrors[passwordResponse.data.error]);
             }

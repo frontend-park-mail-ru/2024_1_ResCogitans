@@ -1,9 +1,9 @@
 import Place from './Place/Place';
-import { get } from '@api/base';
 import Base from '@components/Base/Base';
 import { Sights } from 'src/types/api';
 import template from '@templates/Placelist.hbs';
 import { WithResponse } from 'src/types/api';
+import { getSights } from '@api/sight';
 
 
 /**
@@ -30,7 +30,7 @@ class Placelist extends Base {
     this.preRender();
     
     (async () => {
-      const response = await get('sights') as WithResponse<Sights>;
+      const response = await getSights() as WithResponse<Sights>;
 
       const placelist = document.getElementById('list-places') as HTMLDivElement;
       response.data.sights.forEach((data) => new Place(placelist, data).render());
