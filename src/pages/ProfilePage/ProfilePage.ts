@@ -26,7 +26,7 @@ class ProfilePage extends Base {
     this.userID = parseInt(arguments[1][0]);
 
    
-    this.isOwn = (!this.userData) ? false : (this.userID === this.userData.userID); 
+    this.isOwn = (this.userData === null) ? false : (this.userID === this.userData.userID); 
   }
 
   render() {
