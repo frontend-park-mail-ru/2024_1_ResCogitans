@@ -13,7 +13,6 @@ class Base {
   constructor(parent : HTMLElement, template : HandlebarsTemplateDelegate | undefined) {
     this.parent = parent;
     this.userData = JSON.parse(localStorage.getItem('user'));
-    this.isAuth = (this.userData !== null);
     this.template = template;
   }
 

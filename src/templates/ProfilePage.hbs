@@ -1,57 +1,54 @@
 <div id="header">
 
 </div>
+
 <div class="profile-container" id="profile-block">
-   
-<div class="profile-container" id="profile-block">
-   
+
 </div>
 <div class="profile-container">
     <div id="search-links">
-        <h2 class="no-margin">Поездки</h2>
         <h2 class="no-margin">Поездки</h2>
     </div>
     <div class="profile-journeys">
         <p>Пока нет поездок</p>
     </div>
     {{#if this.isOwn}}
-        <a href="/journey/new"><button id="create-journey" class="button-primary">Создать новую поездку</button></a>
+    <a href="/journey/new"><button id="create-journey" class="button-primary">Создать новую поездку</button></a>
     {{/if}}
 </div>
 </div>
 
 <dialog class="profile-dialog">
     <form method="post" id="form">
-         <h2>Отредактируйте профиль</h2>
+        <h2>Отредактируйте профиль</h2>
         <div class="input" id="nickname-input">
-        <div class="input" id="nickname-input">
-            <label for="profile-edit-nickname">Новый ник</label>
-            <input id="profile-edit-nickname" class="form-input" maxlength="32" type="text"></input>
-            <label class="err-label"></label>
-        </div>
-        <div class="input">
-            <label for="profile-edit-password">Старый пароль</label>
-            <input id="profile-edit-password" class="form-input password" type="text"></input>
-            <label class="err-label"></label>
-        </div>
-        <div class="input">
-            <label for="profile-edit-password-repeat">Новый пароль</label>
-            <input id="profile-edit-password-repeat" class="form-input password" type="text"></input>
-            <label class="err-label"></label>
-        </div>
-        <div class="input" id="status-input">
-        <div class="input" id="status-input">
-            <label for="profile-edit-status">Новый статус</label>
-            <textarea id="profile-edit-status" class="form-input" type="text" cols="28"></textarea>
-            <textarea id="profile-edit-status" class="form-input" type="text" cols="28"></textarea>
-        </div>
-        <div>
-            <label for="profile-edit-avatar">Новый аватар</label>
-            <input id="profile-edit-avatar" type="file"></input>
-        </div>
-        <menu>
-            <button id="button-submit" class="button-primary" type="submit">Изменить</button>
-            <button id="button-cancel" class="cancel" type="reset">Отмена</button>
-        </menu>
+            <div class="input" id="nickname-input">
+                <label for="profile-edit-nickname">Новый ник</label>
+                <input id="profile-edit-nickname" class="form-input" maxlength="32" type="text"></input>
+                <label class="err-label"></label>
+            </div>
+            <div class="input">
+                <label for="profile-edit-password">Старый пароль</label>
+                <input id="profile-edit-password" class="form-input password" type="text"></input>
+                <label class="err-label"></label>
+            </div>
+            <div class="input">
+                <label for="profile-edit-password-repeat">Новый пароль</label>
+                <input id="profile-edit-password-repeat" class="form-input password" type="text"></input>
+                <label class="err-label"></label>
+            </div>
+            <div class="input" id="status-input">
+                <div class="input" id="status-input">
+                    <label for="profile-edit-status">Новый статус</label>
+                    <textarea id="profile-edit-status" class="form-input" type="text" cols="28"></textarea>
+                </div>
+                <div>
+                    <label for="profile-edit-avatar">Новый аватар</label>
+                    <input id="profile-edit-avatar" type="file"></input>
+                </div>
+                <menu>
+                    <button id="button-submit" class="button-primary" type="submit">Изменить</button>
+                    <button id="button-cancel" class="cancel" type="reset">Отмена</button>
+                </menu>
     </form>
 </dialog>

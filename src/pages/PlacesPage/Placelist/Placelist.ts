@@ -1,8 +1,9 @@
 import Place from './Place/Place';
 import { get } from '@api/base';
 import Base from '@components/Base/Base';
-import { Sight } from 'src/types/api';
+import { Sights } from 'src/types/api';
 import template from '@templates/Placelist.hbs';
+import { WithResponse } from 'src/types/api';
 
 
 /**
@@ -17,7 +18,7 @@ class Placelist extends Base {
     super(parent, template);
   }
 
-  renderPlaces(sights: Sight[]) {
+  renderPlaces(sights: Sights) {
     const placelist = document.getElementById('list-places') as HTMLDivElement;
     sights.forEach((data) => new Place(placelist, data).render());
   }
@@ -28,12 +29,14 @@ class Placelist extends Base {
   render() {
     this.preRender();
     
+    (async () => {
+      const response = await get('sights') as WithResponse<Sights>;
 
-    const response = await get('sights') as WithResponse<Sights>;
-
-    const placelist = document.getElementById('list-places') as HTMLDivElement;
-    response.data.sights.forEach((data) => new Place(placelist, data).render());
+      const placelist = document.getElementById('list-places') as HTMLDivElement;
+      response.data.sights.forEach((data) => new Place(placelist, data).render());
+    })();
   }
+
 }
 
 export default Placelist;

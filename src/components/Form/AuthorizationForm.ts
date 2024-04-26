@@ -1,10 +1,5 @@
 import Base from '@components/Base/Base';
-import Base from '@components/Base/Base';
 
-class AuthorizationForm extends Base {
-
-  renderError(parent : HTMLElement, message : string) {
-    const errorMessage = parent.querySelectorAll('.err-label')[0] as HTMLElement;
 class AuthorizationForm extends Base {
 
   renderError(parent : HTMLElement, message : string) {
@@ -51,13 +46,6 @@ class AuthorizationForm extends Base {
     });
   }
 
-  togglePasswordVisibility(inputWithButton : HTMLElement) {
-    const icon = inputWithButton.querySelector('img');
-    const inputElement = inputWithButton.children[1] as HTMLInputElement;
-   
-    if (inputElement.type === 'password') {
-      inputElement.type = 'text';
-      icon?.classList.replace('password-invisible', 'password-visible');
   togglePasswordVisibility(inputWithButton : HTMLElement) {
     const icon = inputWithButton.querySelector('img');
     const inputElement = inputWithButton.children[1] as HTMLInputElement;

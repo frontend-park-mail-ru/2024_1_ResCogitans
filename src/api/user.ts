@@ -3,11 +3,6 @@ import { ENV_CONFIG } from '../../envConfig';
 import { get, post } from '@api/base';
 
 export async function authorize(endpoint : string, body? : UserAuthRequest): Promise<WithResponse<UserAuthResponseData>> {
-  const response = await fetch(`${ENV_CONFIG.API_URL}/${endpoint}`, {
-import { WithResponse, UserAuthRequest, UserAuthResponseData } from 'src/types/api';
-import { ENV_CONFIG } from '../../envConfig';
-
-export async function authorize(endpoint : string, body? : UserAuthRequest): Promise<WithResponse<UserAuthResponseData>> {
   const response = await fetch(`${ENV_CONFIG.API_URL}/api/${endpoint}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

@@ -67,17 +67,9 @@ class Router {
     const PageConstructorFromRoutes = this.routes[path.split('/')[1]];
     const content = this.clearContent();
     const params = path.split('/').slice(2);
-    let isAuthorized : boolean;
-
-    const userData = localStorage.getItem('user');
-    if (userData !== null) {
-      isAuthorized = false;
-    } else {
-      isAuthorized = true;
-    }
 
     if (PageConstructorFromRoutes) {
-      const page = new PageConstructorFromRoutes(content, params, isAuthorized);
+      const page = new PageConstructorFromRoutes(content, params);
       page.render();
     } else {
       const PageConstructorNotFound = this.routes['404'];

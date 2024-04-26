@@ -19,8 +19,6 @@ class SightPage extends Base {
 
   formErrorHandler : AuthorizationForm;
 
-  formErrorHandler : AuthorizationForm;
- 
   constructor(parent : HTMLElement) {
     super(parent, template);
     this.id = parseInt(window.location.pathname.split('/')[2], 10);
@@ -43,7 +41,7 @@ class SightPage extends Base {
     if (response === null) {
       reviewsDiv.insertAdjacentHTML('beforeend', '<p>Оставьте отзыв первыми</p>');
 
-      if (this.isAuth === false) {
+      if (this.userData !== null) {
         userReviewDiv.remove();
         new Button(reviewsDiv, { className : 'button-primary', id : 'button-login-redirect', label : 'Войти', url : '/login' }).render();
       }
@@ -59,7 +57,7 @@ class SightPage extends Base {
   }
 
   render() {
-    get(`sight/${this.id}`).then((responseSight) => {
+    getSight(this.id).then((responseSight) => {
       this.sight = responseSight.data.sight;
 
       if (responseSight.status === 404) {
@@ -89,7 +87,7 @@ class SightPage extends Base {
       const stars = new Stars(starsContainer, 5, true);
       stars.render();
   
-      this.renderReviews(responseSight);
+      this.renderReviews(responseSight.data.comments);
 
       const reviewsLabel = document.querySelector('#reviews-label') as HTMLHeadingElement;
       if (responseSight.data.comments !== null) {

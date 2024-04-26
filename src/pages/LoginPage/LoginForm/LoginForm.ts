@@ -73,7 +73,6 @@ class LoginForm extends AuthorizationForm {
         password: passwordInput.value,
       };
       authorize('login', requestBody)
-      authorize('login', requestBody)
         .then((response) => {
           const responseData = response.data as UserAuthResponseData;
           if (response.status === 200) {
@@ -91,7 +90,6 @@ class LoginForm extends AuthorizationForm {
         });
     });
 
-    const registerButton = document.getElementById('signup-button') as HTMLButtonElement;
     const registerButton = document.getElementById('signup-button') as HTMLButtonElement;
     registerButton.addEventListener('click', () => {
       router.go(urls.signup);
