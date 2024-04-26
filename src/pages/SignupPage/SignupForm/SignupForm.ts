@@ -1,21 +1,12 @@
 import AuthorizationForm from '@components/Form/AuthorizationForm';
 import Button from '@components/Button/Button';
-import urls from '@router/urls';
 import Logo from '@components/Logo/Logo';
 import { authorize } from '@api/user';
 import { router } from '@router/router';
-import { userHelper } from '@utils/localstorage';
+import { addUserToLocalStorage } from '@utils/localstorage';
 import { validate } from '@utils/validation';
 import { signupErrors } from '../../../types/errors';
-import AuthorizationForm from '@components/Form/AuthorizationForm';
-import Button from '@components/Button/Button';
 import urls from '@router/urls';
-import Logo from '@components/Logo/Logo';
-import { authorize } from '@api/user';
-import { router } from '@router/router';
-import { userHelper } from '@utils/localstorage';
-import { validate } from '@utils/validation';
-import { signupErrors } from '../../../types/errors';
 
 /**
 * Класс SignupForm представляет форму регистрации, которая может быть отрендерена в HTML.
@@ -27,12 +18,6 @@ class SignupForm extends AuthorizationForm {
   */
   async render() {
     await this.preRender();
-
-    const logoGroup = document.getElementById('logo-group') as HTMLDivElement;
-    await new Logo(logoGroup).render();
-  async render() {
-    await this.preRender();
-
     const logoGroup = document.getElementById('logo-group') as HTMLDivElement;
     await new Logo(logoGroup).render();
 
@@ -49,7 +34,7 @@ class SignupForm extends AuthorizationForm {
     const email = document.getElementById('email') as HTMLInputElement;
     const password = document.getElementById('password') as HTMLInputElement;
     const repeatPassword = document.getElementById('password-repeat') as HTMLInputElement;
-
+ 
     registrationForm.addEventListener('input', (e: Event) => {
       const input = e.target as HTMLInputElement; 
       const parent = input.parentElement as HTMLElement;
@@ -94,8 +79,11 @@ class SignupForm extends AuthorizationForm {
           const responseData = response.data;
           const responseData = response.data;
           if (response.status === 200) {
-            userHelper('set', responseData.user?.username.split('@')[0]);
-            localStorage.setItem('userID', responseData.user?.id);
+            const responseID = responseData.user?.id;
+            const responseUsername = responseData.user?.username;
+            if (responseID !== undefined && responseUsername !== undefined) {
+              addUserToLocalStorage(responseUsername, responseID);
+            }
             router.go(urls.base);
           }
           if (response.status === 400 || response.status === 500) {

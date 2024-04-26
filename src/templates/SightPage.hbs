@@ -2,7 +2,7 @@
 
 </div>
 <div class="container">
-   <h1 class="h3-no-margin">{{this.sight.name}}</h1>
+   <h1 class="no-margin">{{this.sight.name}}</h1>
    <div class="sight-container">
       <div>
          <img src="/{{this.sight.url}}" class="sight-image">
@@ -10,22 +10,22 @@
       </div>
       <div class="sight-info">
          <div class="sight-block">
-            <h3 class="h3-no-margin">Подробнее</h3>
+            <h3 class="no-margin">Подробнее</h3>
             <p class="sight-description">{{this.sight.description}}</p>
          </div>
          <div class="sight-block">
-            <h3 class="h3-no-margin">Местоположение и контактные данные</h3>
+            <h3 class="no-margin">Местоположение и контактные данные</h3>
             <p>Ул. Пушкина, д.2 к.5</p>
          </div>
          <div class="sight-block">
-            <h3 class="h3-no-margin">Рейтинг</h3>
+            <h3 class="no-margin">Рейтинг</h3>
             <div class="rating">
                <div><span>{{this.sight.rating}}</span></div>
             </div>
          </div>
       </div>
    </div>
-   <h2 class="h3-no-margin" id="reviews-label">Отзывы</h2>
+   <h2 class="no-margin" id="reviews-label">Отзывы</h2>
    <div class="sight-reviews">
 
    </div>
@@ -36,7 +36,9 @@
             <textarea class="review-textarea" type="text" required rows="8"
                placeholder="Оставьте отзыв об этом месте..."></textarea>
             <label for="rate">Оценка</label>
-            <input id="rate" type="number" min="1" max="5" value="5">
+            <div class="rating">
+               <div id="stars-container"></div>
+            </div>
             <label class="err-label"></label>
          </div>
          <button id="review-submit" type="submit" class="button-primary">Отправить</button>
@@ -56,8 +58,11 @@
    <dialog class="edit-dialog">
       <label>Отредактируйте отзыв</label>
       <form>
-         <textarea id="editTextArea" rows="8"></textarea>
-         <input id="rate" type="number" min="1" max="5" value="5">
+         <textarea id="editTextArea" rows="8" cols="48"></textarea>
+         <div class="rating">
+            <div id="edit-stars-container"></div>
+         </div>
+         <label class="err-label"></label>
          <menu>
             <button class="button-danger" type="submit">Изменить</button>
             <button class="cancel" type="reset">Отмена</button>

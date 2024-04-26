@@ -1,6 +1,5 @@
 import { ENV_CONFIG } from '../../envConfig';
 
-import { ENV_CONFIG } from '../../envConfig';
 
 /**
 * Функция для выполнения GET запроса к указанному URL.
@@ -25,6 +24,7 @@ export async function post(endpoint : string, body? : unknown): Promise<unknown>
     credentials: 'include',
     body: JSON.stringify(body),
   });
+
   const responseData = await response.json();
   return { data: responseData, status: response.status };
 }

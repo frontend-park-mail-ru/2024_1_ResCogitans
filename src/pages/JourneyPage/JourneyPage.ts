@@ -1,77 +1,89 @@
 import Base from '@components/Base/Base';
 import Header from '@components/Header/Header';
-import { Journey } from 'src/types/api';
+import { Journey, Sight } from 'src/types/api';
 import Place from '@pages/PlacesPage/Placelist/Place/Place';
-import { get, post } from '@api/base';
+import { post } from '@api/base';
+import { getTrip } from '@api/journey';
+import { getSights } from '@api/sight';
 import { router } from '@router/router';
-import Button from '@components/Button/Button';
+import urls from '@router/urls';
+import { ROUTES } from '@router/ROUTES';
 
+import AuthorizationForm from '@components/Form/AuthorizationForm';
 
-// const exampleJourney: Journey = {
-//   tripID: 1,
-//   userID : 1,
-//   username: "testuser33",
-//   name: "Summer Adventure",
-//   description: "A summer trip exploring beautiful sights",
-//   sights: [
-//      {
-//        id: 1,
-//        rating: 5,
-//        name: "Eiffel Tower",
-//        description: "Iconic landmark in Paris",
-//        city: "Paris",
-//        url: "/public/3.jpg"
-//      },
-//      {
-//        id: 2,
-//        rating: 4,
-//        name: "Colosseum",
-//        description: "An ancient amphitheatre in Rome",
-//        city: "Rome",
-//        url: "/public/2.jpg"
-//      },
-//      {
-//        id: 3,
-//        rating: 3,
-//        name: "Statue of Liberty",
-//        description: "A symbol of freedom and democracy",
-//        city: "New York",
-//        url: "/public/3.jpg"
-//      }
-//   ]
-//  };
 class JourneyPage extends Base {
 
   parent : HTMLElement;
 
   IDs : number[];
 
-  tripID : string;
+  tripID? : string;
 
   journey : Journey;
 
-  // sights: Sight[];
-
   isOwn : boolean;
-  isEdit : boolean;
-  type : string;
 
-  constructor(parent : HTMLElement, tripID? : string) {
+  isEdit : boolean;
+
+  type? : string;
+
+  isAuthorized : boolean;
+
+  constructor(parent, pathParams, isAuthorized) {
     super(parent);
     this.IDs = [];
-    this.tripID = tripID;
-    this.isEdit = true;
     this.isOwn = false;
+    this.isAuthorized = isAuthorized;
+   
+    const journeyType = pathParams[1];
+   
+    if (pathParams.length > 2) {
+      router.go('404');
+    }
+   
+    this.isEdit = journeyType === 'edit' || pathParams[0] === 'new';
+    this.type = this.isEdit ? journeyType : 'view';
+    this.tripID = pathParams[0];
+
+    console.log(journeyType, this.type, this.isEdit, pathParams);
+
+    if (!this.type) {
+      this.type = 'new';
+    }
   }
 
-  async addSightsToOptions() {
+  renderDeletePlaceButton(id : string) {
+    const deleteButton = document.createElement('button');
+    deleteButton.classList.add('button', 'button-primary', 'top-right');
+    deleteButton.textContent = 'X';
 
+    deleteButton.addEventListener('click', () => {
+      this.removeCard(id);
+    });
+
+    const currentCard = document.querySelector(`#card-${id}`) as HTMLDivElement;
+    currentCard.appendChild(deleteButton);
+  }
+
+  removeCard(id : string) {
+    if (id !== undefined) {
+      const sightCard = document.getElementById(`card-${id}`) as HTMLDivElement || null;
+      if (sightCard !== null) {
+        sightCard.remove();
+        this.IDs = this.IDs.filter(item => item !== parseInt(id));
+        return;
+      }
+    } 
+  }
+   
+  async addSightsToOptions() {
     if (this.isEdit === false) {
       return;
-    }  
+    }
     const placelist = document.querySelector('#list-places') as HTMLDivElement;
-    const sightResponse = await get('sights');
-    sightResponse.data.sights.sort((a, b) => {
+    const sightResponse = await getSights();
+
+    sightResponse.data.sights.sort((a : Sight, b : Sight) => {
       const A = a.name.toUpperCase();
       const B = b.name.toUpperCase();
       if (A < B) {return -1;}
@@ -97,119 +109,182 @@ class JourneyPage extends Base {
         return;
       }
       const selectedOption = sightSelect.options[sightSelect.selectedIndex];
-      if (selectedOption !== undefined) {
-        const sightCard = document.getElementById(`card-${selectedOption.value}`) as HTMLDivElement || null;
-        if (sightCard !== null) {
-          sightCard.remove();
-          this.IDs = this.IDs.filter(item => item !== parseInt(selectedOption.value));
-          return;
-        }
-      } 
-        
+      this.removeCard(selectedOption.value);
+     
       const sightSelected = sights.find(entry => entry.id === parseInt(selectedOption.value));
       if (sightSelected) {
         this.IDs.push(parseInt(selectedOption.value));
-        new Place(placelist, sightSelected).render();
+        new Place(placelist, sightSelected).render().then(() => {
+          if (this.type === 'edit' || this.type === 'new') {
+            this.renderDeletePlaceButton(String(selectedOption.value));
+          }
+        });
       }
     });
   }
 
   async render() {
 
-    this.type = localStorage.getItem('journeyType');
     if (this.type === null) {
-      this.type = "edit";
+      this.type = 'new';
     }
+
+    document.body.classList.remove('auth-background');
+    let journeyInfoDiv, title, header;
+
     switch (this.type) {
-      case "edit":
-      this.isOwn = (localStorage.getItem('username') === this.journey.id);
-      console.log("HERE1");
-      if (localStorage.getItem('userID') === undefined) {
-        router.go('login');
-      }
+      case 'new':
 
-      await this.preRender(); 
+        if (this.userData.userID === undefined) {
+          router.go('login');
+        }
 
-      const header = document.getElementById('header') as HTMLElement;
-      document.body.classList.remove('auth-background');
-      await new Header(header).render();
-  
-      this.addSightsToOptions();
-              
-          const submitButton = document.getElementById('button-submit') as HTMLButtonElement;
-          submitButton.addEventListener('click', (e : Event) => {
-            e.preventDefault();
-            const userID = parseInt(localStorage.getItem('userID'));
-            if (userID === null) {
-              router.go('login');
-            }
-  
-            const nameInput = document.querySelector('input') as HTMLInputElement;
-            const descriptionInput = document.querySelector('textarea') as HTMLTextAreaElement; 
-            const body = { userID : userID, name : nameInput.value, description : descriptionInput.value };
-  
-            post('trip/create', body).then((response) => {
-              if (response.status === 200) {
-                this.tripID = response.data.id;
-                this.IDs.map((sightID) => {
-                  post(`trip/${this.tripID}/sight/add`, { sightID : sightID }).then((responseData) => {
-                    localStorage.setItem('journeyType', "view");
-                    console.log('going to', this.tripID);
-                    router.go(`journey/${this.tripID}`);
-                  });
-                });
+        await this.preRender(); 
+
+        header = document.getElementById('header') as HTMLElement;
+        await new Header(header).render();
+
+        journeyInfoDiv = document.getElementById('journey-info');
+        title = document.createElement('h1');
+        title.textContent = 'Создание поездки';
+        journeyInfoDiv?.insertAdjacentElement('afterbegin', title);
+     
+    
+        this.addSightsToOptions();
+          
+        const submitButton = document.getElementById('button-submit') as HTMLButtonElement;
+        submitButton.textContent = 'Создать';
+        document.getElementById('button-delete-journey')?.remove();
+        let form = document.querySelector('form') as HTMLFormElement; 
+            
+        form.addEventListener('submit', (e : Event) => {
+          e.preventDefault();
+
+          const errorDisplay = new AuthorizationForm(this.parent);
+          errorDisplay.clearError(form);
+
+          if (this.IDs.length === 0) { 
+            errorDisplay.renderError(form, 'Выберите места для поездки');
+            return;
+          } 
+
+          const userID = this.userData.userID;          
+          const nameInput = document.querySelector('input') as HTMLInputElement;
+          const descriptionInput = document.querySelector('textarea') as HTMLTextAreaElement; 
+          const body = { userID : userID, name : nameInput.value, description : descriptionInput.value };
+       
+          post('trip/create', body).then((response) => {
+            if (response.status === 200) {
+              this.tripID = response.data.id;
+              post(`trip/${this.tripID}/sight/add`, { sightIDs : this.IDs }).then(() => {
+                this.type = 'view';
+                router.go(ROUTES.journey.view(this.tripID));
+              });
+            } else {
+              if (response.status === 500) {
+                errorDisplay.renderError(form, 'Поездка с таким именем уже есть');
+                return;
               } else {
                 router.go('login');
               }
-            });
+            }
           });
-          break;
-    case "view":
-      console.log("HERE2");
-      console.log(window.location.pathname.split('/'));
-      this.tripID = window.location.pathname.split('/')[2];
-      if (this.tripID === undefined) {
-        localStorage.setItem('journeyType', 'edit');
-        return;
-      } else {
-        this.isEdit = false;
-        const journeyResponse = await get(`trip/${this.tripID}`);
-        if (journeyResponse.status === 200 && journeyResponse.data.journey !== null) {
+        });
+        break;
+      case 'view':
+      case 'edit':
+        
+        const journeyResponse = await getTrip(this.tripID);
+        this.isOwn = (this.userData !== null && this.userData.userID === journeyResponse.data.journey.userID);
+
+        if (journeyResponse.status === 200 && journeyResponse.data.sights !== null) {
+          journeyResponse.data.sights.map((sight) => this.IDs.push(sight.id));
           this.journey = journeyResponse.data.journey;
-          this.isOwn = (localStorage.getItem('username') === this.journey.username)
+            
           await this.preRender();
-          const header = document.getElementById('header') as HTMLElement;
-          document.body.classList.remove('auth-background');
+            
+          header = document.getElementById('header') as HTMLElement;
+         
           await new Header(header).render();
   
+          journeyInfoDiv = document.getElementById('journey-info');
+          title = document.createElement('h1');
+          title.textContent = `${this.journey.name}`;
+          journeyInfoDiv?.insertAdjacentElement('afterbegin', title);
+
           this.addSightsToOptions();
 
           const placelist = document.querySelector('#list-places') as HTMLDivElement;
-          journeyResponse.data.sights.forEach((sight) =>  new Place(placelist, sight).render());
-
+          journeyResponse.data.sights.forEach((sight) =>  {
+            new Place(placelist, sight).render().then(() => {
+              if (this.type === 'edit' || this.type === 'new') {
+                this.renderDeletePlaceButton(String(sight.id));
+              }
+            });
+          });
   
-          const form = document.querySelector('form') as HTMLFormElement;
-          
+          const editForm = document.querySelector('form') as HTMLFormElement;
           const editJourneyButton = document.getElementById('button-edit-journey');
           const deleteJourneyButton = document.getElementById('button-delete-journey');
-  
-          editJourneyButton?.addEventListener('click', () => {
-            localStorage.setItem('journeyType', "edit");
-            router.go(`journey/${this.tripID}`);
-            alert("click");
-          });
-  
+
+          const deleteDialog = document.querySelector('.delete-dialog') as HTMLDialogElement;
+      
+          const deleteModalButton = deleteDialog.querySelector('#button-delete') as HTMLButtonElement;
+        
           deleteJourneyButton?.addEventListener('click', () => {
-            localStorage.setItem('journeyType', "edit");
-            router.go(`journey/${this.tripID}`);
-            alert("click");
+            deleteDialog.showModal();
           });
+
+          const cancelButton = document.querySelector('.cancel') as HTMLButtonElement;
+
+          cancelButton.addEventListener('click', () => {
+            deleteDialog.close();
+          });
+
+          deleteModalButton?.addEventListener('click', () => {
+            post(`trip/${this.tripID}/delete`, {}).then(() => {
+              deleteDialog.close();
+              router.go(urls.base);
+            });
+          });
+  
+          if (this.type === 'view') {
+            editJourneyButton?.addEventListener('click', () => {
+              router.go(ROUTES.journey.edit(this.tripID));
+            });
+          } else if (this.type === 'edit') {
+            editForm.addEventListener('submit', (e : Event) => {
+
+              form = document.querySelector('form') as HTMLFormElement; 
+
+              e.preventDefault();
+
+              if (this.IDs.length === 0) { 
+                new AuthorizationForm(this.parent).renderError(form, 'Выберите места для поездки');
+                return;
+              } 
+
+              const userID = this.userData.userID;          
+              const nameInput = document.querySelector('input') as HTMLInputElement;
+              const descriptionInput = document.querySelector('textarea') as HTMLTextAreaElement; 
+              const body = { userID : userID, name : nameInput.value, description : descriptionInput.value, sightIDs : this.IDs };
+
+              post(`trip/${this.tripID}/sight/add`, body).then((createJourneyResponse) => {
+                if (createJourneyResponse.status === 500) {
+                  new AuthorizationForm(this.parent).renderError(form, 'Поездка с таким именем уже есть');
+                  return;
+                }
+                this.type = 'view';
+                router.go(ROUTES.journey.view(this.tripID));
+              });
+            });
+          }
           break;
-      }
-      }
+        } else {
+          router.go('404');
+        }
     }
-    
-  }
+  } 
 }
 
 export default JourneyPage;

@@ -1,12 +1,9 @@
-export function userHelper(method : string, username? : string) {
-  if (method === 'get') {
-    return localStorage.getItem('username');
-  } if (method === 'set' && username !== undefined) {
-    localStorage.setItem('username', username);
-  } else if (method === 'remove') {
-    localStorage.removeItem('username');
+export function addUserToLocalStorage(username: string, id : number) {
+  const userData = { username: username, userID : id };
+  if (localStorage.getItem('user') !== undefined) {
+    localStorage.clear();
   }
-  return null;
+  localStorage.setItem('user', JSON.stringify(userData));
 }
 
-export default userHelper;
+export default addUserToLocalStorage;

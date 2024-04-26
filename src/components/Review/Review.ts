@@ -15,7 +15,14 @@ class Review extends Base {
     this.placeID = placeID;
     this.reviewContent = reviewContent;
     this.isOwn = isOwn;
+    
+    if (!this.reviewContent.avatar) {
+      this.reviewContent.avatar = '/static/placeholder.jpg';
+    } else {
+      this.reviewContent.avatar = this.reviewContent.avatar.replace(/.*\/public\//, '/public/');
+    }
   }
+  
 
   async render() {
     await this.preRender();
@@ -27,9 +34,16 @@ class Review extends Base {
 
     const editReviewButton = document.querySelector(`#review-${this.reviewContent.id} .button-edit-review`);
     editReviewButton?.addEventListener('click', () => {
+      const editTextArea = document.querySelector('#editTextArea') as HTMLTextAreaElement;
+      editTextArea.value = this.reviewContent.feedback;
+
+      const editStarsContainer = document.querySelector('.edit-dialog #edit-stars-container') as HTMLElement;
+      new Stars(editStarsContainer, this.reviewContent.rating, true).render();
+  
       document.querySelector(`#review-${this.reviewContent.id}`)?.classList.add('staged-delete');
       editDialog.showModal();
     });
+  
 
     const deleteDialog = document.querySelector('.delete-dialog') as HTMLDialogElement;
 

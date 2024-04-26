@@ -1,47 +1,49 @@
 export interface UserAuthRequest {
-  username: string;
-  password: string;
+  username: string,
+  password: string,
 }
 
 export interface User {
-  id: number;
-  username: string;
+  username: string,
+  id: number,
 }
 
 export interface UserAuthResponseData {
-  user?: User;
-  code: number;
-  error: string;
+  user: User,
+  code: number,
+  error: string,
 }
 
 export interface WithResponse<T> {
-  status: number;
-  data: T;
+  status: number,
+  data: T,
 }
 
 export interface ReviewContent {
-  id : number;
-  placename: string;
-  username : string;
-  rating : number;
-  content : string;
-  notprofile: boolean;
+  id: number,
+  userID: number,
+  username: string,
+  sightID: number,
+  rating: number,
+  feedback: string,
+  avatar: string,
 }
 
 export interface UserProfile {
-  id: number;
-  username : string;
-  status: string;
-  avatarURL : string;
+  id: number,
+  username: string,
+  bio: string,
+  avatar: string,
+  error: string,
 }
 
 export interface Journey {
-  tripID : number,
+  id : number,
   userID : number,
   username : string,
-  name : string;
-  description : string;
-  sights : Sight[];
+  name : string,
+  description : string,
+  sights : Sight[],
 }
 
 export interface Sight {
@@ -50,5 +52,17 @@ export interface Sight {
   name: string,
   description: string,
   city: string,
-  url: string
+  url: string,
+}
+
+export interface SightResponse {
+  status: number,
+  data: {
+    comments: ReviewContent[],
+    sight: Sight,
+  }
+}
+
+export interface Sights {
+  sights: Sight[],
 }

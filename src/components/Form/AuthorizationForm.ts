@@ -15,17 +15,10 @@ class AuthorizationForm extends Base {
     }
   }
 
-  
-
   email = document.getElementById('email') as HTMLInputElement;
 
   password = document.getElementById('password') as HTMLInputElement;
   
-
-  email = document.getElementById('email') as HTMLInputElement;
-
-  password = document.getElementById('password') as HTMLInputElement;
-
   enableSubmitButton = (() => {
     const submitButton : HTMLButtonElement | null = document.getElementById('button-submit') as HTMLButtonElement;
     const errorMessages : NodeListOf<HTMLElement> = document.querySelectorAll('.has-error');

@@ -25,8 +25,7 @@ class Header extends Base {
   /**
   * Рендерит шапку, включая логотип, ссылки и кнопки в зависимости от состояния пользователя.
   */
-  async render() {
-    await this.preRender();
+
   async render() {
     await this.preRender();
 
@@ -37,11 +36,10 @@ class Header extends Base {
 
     const profileBlock = document.getElementById('button-group') as HTMLElement;
 
-    const username = localStorage.getItem('username');
-    const userID = localStorage.getItem('userID');
-    // backend request to check validation and not local storage 
-
-    if (username !== null) {
+    if (this.userData !== null) {
+      const username = this.userData.username;
+      const userID = this.userData.userID;
+      
       await new Link(profileBlock, { className: 'user-link', label: username, url : `/profile/${userID}` }).render();
       await new Button(profileBlock, { id: 'logout', label: 'Выйти' }).render();
 
@@ -55,11 +53,9 @@ class Header extends Base {
       });
     } else {
       await new Button(profileBlock, { className: 'login-button', id: 'button-login', label: 'Войти' }).render();
-      const loginButton = document.getElementById('button-login') as HTMLElement;
-      await new Button(profileBlock, { className: 'login-button', id: 'button-login', label: 'Войти' }).render();
-      const loginButton = document.getElementById('button-login') as HTMLElement;
-      loginButton.addEventListener('click', () => {
-        router.go(urls.login);
+      const loginButton = document.getElementById('button-login');
+      loginButton?.addEventListener('click', () => {
+        router.go('login');
       });
     }
   }

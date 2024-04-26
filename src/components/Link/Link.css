@@ -1,6 +1,11 @@
 .search-link {
     border-bottom: 3px solid white;
 }
+
+a {
+    text-decoration: none;
+}
+
 .search-link a:link, a:visited {
     color: var(--main-text-color);
     text-decoration: none;
@@ -18,12 +23,13 @@
 }
 
 .err-label {
-    color: transparent;
     display: block;
-    height: 24px;
-    font-size: 12px;
-    position: relative;
+    color: transparent;
+    margin-top: 10px;
     margin-bottom: 10px;
+    font-size: 14px;
+    min-height: 12px;
+    max-height: auto;
 }
 
 .has-error {

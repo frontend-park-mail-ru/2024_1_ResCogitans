@@ -3,7 +3,7 @@
     margin: 20px auto;
     background-color: #fff;
     border-radius: 10px;
-    padding: 20px;
+    padding: 2vw;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -25,11 +25,11 @@
     margin: 20px auto;
     background-color: #fff;
     border-radius: 10px;
-    padding: 20px;
+    padding: 2vw;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.h3-no-margin {
+.no-margin {
     margin-top: 0px;
     margin-bottom: 5px;
 }
@@ -53,7 +53,6 @@ textarea {
 
 dialog {
     border: 3px solid var(--primary-color);
-    min-width: 400px;
     border-radius: 20px;
 }
 

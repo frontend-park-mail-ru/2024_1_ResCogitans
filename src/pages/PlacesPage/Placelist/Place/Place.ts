@@ -6,6 +6,7 @@ import Stars from '@components/Stars/Stars';
 * Класс Place представляет место, которое может быть отрендерено в HTML.
 * @class
 */
+
 class Place extends Base {
 
   data : Sight;

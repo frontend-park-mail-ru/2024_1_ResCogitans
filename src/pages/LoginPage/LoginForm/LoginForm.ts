@@ -2,21 +2,12 @@ import Button from '@components/Button/Button';
 import urls from '@router/urls';
 import Logo from '@components/Logo/Logo';
 import  { router } from '@router/router';
-import { userHelper } from '@utils/localstorage';
+import { addUserToLocalStorage } from '@utils/localstorage';
 import { authorize } from '@api/user';
 import { validate } from '@utils/validation';
 import AuthorizationForm from '@components/Form/AuthorizationForm';
 import { loginErrors } from '../../../types/errors';
-import Button from '@components/Button/Button';
-import urls from '@router/urls';
-import Logo from '@components/Logo/Logo';
-import  { router } from '@router/router';
-import { userHelper } from '@utils/localstorage';
-import { authorize } from '@api/user';
-import { validate } from '@utils/validation';
-import AuthorizationForm from '@components/Form/AuthorizationForm';
-import { loginErrors } from '../../../types/errors';
-
+import { UserAuthResponseData } from '@types/api';
 /**
 * Класс LoginForm представляет форму входа, которая может быть отрендерена в HTML.
 * @class
@@ -39,13 +30,7 @@ class LoginForm extends AuthorizationForm {
     await new Button(loginForm, {
       id: 'button-submit', label: 'Войти', type: 'submit',
     }).render();
-    await new Button(loginForm, {
-    await new Button(loginForm, {
-      id: 'signup-button', label: 'Регистрация',
-    }).render();
-
-    const emailInput = document.getElementById('email') as HTMLInputElement;
-    const passwordInput = document.getElementById('password') as HTMLInputElement;
+    
     const emailInput = document.getElementById('email') as HTMLInputElement;
     const passwordInput = document.getElementById('password') as HTMLInputElement;
 
@@ -53,7 +38,12 @@ class LoginForm extends AuthorizationForm {
 
     const submitButton = document.getElementById('button-submit') as HTMLButtonElement;
     submitButton.disabled = true;
+
     
+    await new Button(loginForm, {
+      id: 'signup-button', label: 'Регистрация',
+    }).render();
+   
     const lowestInputDiv = passwordInput.parentElement as HTMLDivElement;
 
     loginForm.addEventListener('input', (e: Event) => {
@@ -84,10 +74,15 @@ class LoginForm extends AuthorizationForm {
       authorize('login', requestBody)
       authorize('login', requestBody)
         .then((response) => {
-          const responseData = response.data;
+          const responseData = response.data as UserAuthResponseData;
           if (response.status === 200) {
-            userHelper('set', responseData.user?.username.split('@')[0]); 
-            localStorage.setItem('userID', responseData.user?.id);
+            if (responseData.user.id === 0) {
+              this.renderError(lowestInputDiv, loginErrors[400]);
+              return;
+            }
+            const responseID = responseData.user.id;
+            const responseUsername = responseData.user.username;
+            addUserToLocalStorage(responseUsername, responseID);
             router.goBack();
           } else if (response.status === 400 || response.status === 500) {
             this.renderError(lowestInputDiv, loginErrors[response.status]);
