@@ -1,7 +1,6 @@
 import { WithResponse, UserAuthRequest, UserAuthResponseData, UserProfile } from 'src/types/api';
 import { ENV_CONFIG } from '../../envConfig';
 import { get, post } from '@api/base';
-import { ROUTES } from '@router/ROUTES';
 
 export async function authorize(endpoint : string, body? : UserAuthRequest): Promise<WithResponse<UserAuthResponseData>> {
   const response = await fetch(`${ENV_CONFIG.API_URL}/${endpoint}`, {
@@ -47,9 +46,9 @@ export async function editProfile(userId: number, username: string, bio: string)
     username: username,
     bio: bio,
   };
-  return await post(ROUTES.profile.edit(userId), profileRequestBody) as WithResponse<UserProfile>;
+  return await post(`profile/${userId}/edit`, profileRequestBody) as WithResponse<UserProfile>;
 }
 
 export async function resetPassword(userId: number, password: string) {
-  return await post(ROUTES.profile.reset_password(userId), { password: password }) as WithResponse<UserProfile>;
+  return await post(`profile/${userId}/reset_password`, { password: password }) as WithResponse<UserProfile>;
 }

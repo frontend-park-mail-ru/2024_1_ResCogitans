@@ -104,7 +104,7 @@ class ProfilePage extends Base {
         authForm.renderError(input, signupErrors[passwordResponse.data.error]);
       }
       
-      const imageUploadResponse = await imageUpload(ROUTES.profile.upload(this.userID), formData) as WithResponse<UserProfile>;
+      const imageUploadResponse = await imageUpload(`profile/${this.userID}/upload`, formData) as WithResponse<UserProfile>;
       if (imageUploadResponse.status !== 200) {
         authForm.renderError(input, signupErrors[imageUploadResponse.data.error]);
       }

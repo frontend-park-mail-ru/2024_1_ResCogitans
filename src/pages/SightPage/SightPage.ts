@@ -82,7 +82,7 @@ class SightPage extends Base {
       const userID = this.userData.userID;
       const rating = parseInt(rateForm.value);
       const requestBody = { userID, rating, feedback };
-      post(ROUTES.sights.createComment(this.id), requestBody).then((responseCreateReview) => {
+      post(`sight/${this.id}/create`, requestBody).then((responseCreateReview) => {
         if (responseCreateReview.status === 200) {
           router.go(ROUTES.sights.view(this.id));
         }
@@ -106,7 +106,7 @@ class SightPage extends Base {
     deleteModalButton?.addEventListener('click', (e : Event) => {
       e.preventDefault();
       const commentID = document.querySelector('.staged-delete')?.id.split('-')[1];
-      post(ROUTES.sights.deleteComment(this.id, commentID), {}).then((responseDeleteReview) => {
+      post(`sight/${this.id}/delete/${commentID}`, {}).then((responseDeleteReview) => {
         if (responseDeleteReview.status === 401) {
           router.go('login');
         } else {
@@ -126,7 +126,7 @@ class SightPage extends Base {
       const rating = parseInt(ratingField.value);
       const body = { rating : rating, feedback : feedback, userID : userID };
 
-      post(ROUTES.sights.editComment(this.id, commentID), body).then((responseDeleteReview) => {
+      post(`sight/${this.id}/edit/${commentID}`, body).then((responseDeleteReview) => {
         if (feedbackField.value.length < 5) {
           new AuthorizationForm(this.parent).renderError(editDialog, 'Отзыв не может быть короче 5 символов');
           return;

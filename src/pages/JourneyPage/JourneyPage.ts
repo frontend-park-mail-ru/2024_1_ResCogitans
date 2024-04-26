@@ -154,10 +154,10 @@ class JourneyPage extends Base {
           const descriptionInput = document.querySelector('textarea') as HTMLTextAreaElement; 
           const body = { userID : userID, name : nameInput.value, description : descriptionInput.value };
        
-          post(ROUTES.journey.create, body).then((response) => {
+          post('trip/create', body).then((response) => {
             if (response.status === 200) {
               this.tripID = response.data.id;
-              post(ROUTES.journey.editsight(this.tripID), { sightIDs : this.IDs }).then(() => {
+              post(`trip/${this.tripID}/sight/add`, { sightIDs : this.IDs }).then(() => {
                 this.type = 'view';
                 router.go(ROUTES.journey.view(this.tripID));
               });
@@ -211,7 +211,7 @@ class JourneyPage extends Base {
           });
 
           deleteModalButton?.addEventListener('click', () => {
-            post(ROUTES.journey.delete(this.tripID), {}).then(() => {
+            post(`trip/${this.tripID}/delete`, {}).then(() => {
               deleteDialog.close();
               router.go(urls.base);
             });
@@ -238,7 +238,7 @@ class JourneyPage extends Base {
               const descriptionInput = document.querySelector('textarea') as HTMLTextAreaElement; 
               const body = { userID : userID, name : nameInput.value, description : descriptionInput.value, sightIDs : this.IDs };
 
-              post(ROUTES.journey.editsight(this.tripID), body).then((createJourneyResponse) => {
+              post(`trip/${this.tripID}/sight/add`, body).then((createJourneyResponse) => {
                 if (createJourneyResponse.status === 500) {
                   new AuthorizationForm(this.parent).renderError(form, 'Поездка с таким именем уже есть');
                   return;
