@@ -1,0 +1,10 @@
+<div class="profile-info">
+    <img src="{{this.profileData.avatar}}">
+    <div class="details">
+        <h2>{{this.profileData.username}}</h2>
+        <p>{{this.profileData.status}}</p>
+    </div>
+</div>
+{{#if this.isOwn}}
+<button id="profile-edit-button">Редактировать профиль</button>
+{{/if}}
