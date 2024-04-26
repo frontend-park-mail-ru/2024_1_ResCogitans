@@ -1,5 +1,10 @@
 import Base from '@components/Base/Base';
+import Base from '@components/Base/Base';
 
+class AuthorizationForm extends Base {
+
+  renderError(parent : HTMLElement, message : string) {
+    const errorMessage = parent.querySelectorAll('.err-label')[0] as HTMLElement;
 class AuthorizationForm extends Base {
 
   renderError(parent : HTMLElement, message : string) {
@@ -31,8 +36,10 @@ class AuthorizationForm extends Base {
 
   clearError(parent : HTMLElement) {
     const errorMessage = parent.querySelectorAll('.err-label')[0] as HTMLElement;
-    errorMessage.innerHTML = '';
-    errorMessage.classList.remove('has-error');
+    if (errorMessage !== undefined) {
+      errorMessage.innerHTML = '';
+      errorMessage.classList.remove('has-error');
+    }
   }
 
   enablePasswordVisibilityButtons() {
@@ -51,7 +58,16 @@ class AuthorizationForm extends Base {
     if (inputElement.type === 'password') {
       inputElement.type = 'text';
       icon?.classList.replace('password-invisible', 'password-visible');
+  togglePasswordVisibility(inputWithButton : HTMLElement) {
+    const icon = inputWithButton.querySelector('img');
+    const inputElement = inputWithButton.children[1] as HTMLInputElement;
+   
+    if (inputElement.type === 'password') {
+      inputElement.type = 'text';
+      icon?.classList.replace('password-invisible', 'password-visible');
     } else {
+      inputElement.type = 'password';
+      icon?.classList.replace('password-visible', 'password-invisible');
       inputElement.type = 'password';
       icon?.classList.replace('password-visible', 'password-invisible');
     }

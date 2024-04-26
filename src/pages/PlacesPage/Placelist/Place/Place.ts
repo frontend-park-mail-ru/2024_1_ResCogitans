@@ -13,6 +13,10 @@ class Place extends Base {
 
   data : Sight;
 
+class Place extends Base {
+
+  data : Sight;
+
   /**
   * Создает новый экземпляр места.
   * @param {HTMLElement} parent - Родительский элемент, в который будет вставлено место.

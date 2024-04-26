@@ -29,8 +29,10 @@ class Placelist extends Base {
     this.preRender();
     
 
-    get('sights')
-      .then((response) => this.renderPlaces(response.data.sights));
+    const response = await get('sights') as WithResponse<Sights>;
+
+    const placelist = document.getElementById('list-places') as HTMLDivElement;
+    response.data.sights.forEach((data) => new Place(placelist, data).render());
   }
 }
 

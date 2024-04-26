@@ -23,6 +23,7 @@ class Header extends Base {
   * @param {Array<string>} labels - Массив меток для ссылок.
   */
   renderLinkBlock(parent : HTMLElement, labels : Array<string>) {
+  renderLinkBlock(parent : HTMLElement, labels : Array<string>) {
     labels.forEach((label) => new Link(parent, { label, className: 'search-link' }).render());
   }
 
@@ -46,6 +47,7 @@ class Header extends Base {
       new Link(profileBlock, { className: 'user-link', label: username, url : `/profile/${userID}` }).render();
       new Button(profileBlock, { id: 'logout', label: 'Выйти' }).render();
 
+      const logoutButton = document.getElementById('logout') as HTMLElement;
       const logoutButton = document.getElementById('logout') as HTMLElement;
 
       logoutButton.addEventListener('click', () => {

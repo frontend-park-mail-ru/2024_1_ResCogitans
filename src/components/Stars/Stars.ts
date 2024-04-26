@@ -11,12 +11,14 @@ class Stars {
     this.parent = parent;
     this.rating = rating;
     this.isEditable = isEditable;
+    this.isEditable = isEditable;
   }
 
   render() {
     for (let i = 0; i < 5; i++) {
       const star = document.createElement('div');
       star.classList.add('star');
+      star.addEventListener('click', () => this.setRating(i + 1));
       star.addEventListener('click', () => this.setRating(i + 1));
       if (i < Math.floor(this.rating)) {
         star.classList.add('filled');
@@ -27,6 +29,13 @@ class Stars {
       }
       this.parent.appendChild(star);
     }
+  }
+
+  setRating(rating: number) {
+    if (!this.isEditable) return;
+    this.rating = rating;
+    this.parent.innerHTML = '';
+    this.render();
   }
 
   setRating(rating: number) {

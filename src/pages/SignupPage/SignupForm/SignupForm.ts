@@ -38,6 +38,9 @@ class SignupForm extends AuthorizationForm {
     const email = document.getElementById('email') as HTMLInputElement;
     const password = document.getElementById('password') as HTMLInputElement;
     const repeatPassword = document.getElementById('password-repeat') as HTMLInputElement;
+    const email = document.getElementById('email') as HTMLInputElement;
+    const password = document.getElementById('password') as HTMLInputElement;
+    const repeatPassword = document.getElementById('password-repeat') as HTMLInputElement;
  
     registrationForm.addEventListener('input', (e: Event) => {
       const input = e.target as HTMLInputElement; 
@@ -81,6 +84,7 @@ class SignupForm extends AuthorizationForm {
       authorize('signup', requestBody)
         .then((response) => {
           const responseData = response.data;
+          const responseData = response.data;
           if (response.status === 200) {
             const responseID = responseData.user?.id;
             const responseUsername = responseData.user?.username;
@@ -90,6 +94,7 @@ class SignupForm extends AuthorizationForm {
             router.go(urls.base);
           }
           if (response.status === 400 || response.status === 500) {
+            this.renderError(lowestInput, signupErrors[responseData.error]);
             this.renderError(lowestInput, signupErrors[responseData.error]);
           }
         });

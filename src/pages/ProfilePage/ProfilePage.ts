@@ -18,11 +18,14 @@ class ProfilePage extends Base {
 
   userID : number;
 
+  userData: UserProfile;
+
   form : AuthorizationForm;
 
   constructor(parent : HTMLElement) {
     super(parent, template);
     this.form = new AuthorizationForm(parent);
+    this.userData = {} as UserProfile;
     this.userID = parseInt(arguments[1][0]);
 
    

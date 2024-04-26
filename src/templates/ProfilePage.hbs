@@ -3,9 +3,12 @@
 </div>
 <div class="profile-container" id="profile-block">
    
+<div class="profile-container" id="profile-block">
+   
 </div>
 <div class="profile-container">
     <div id="search-links">
+        <h2 class="no-margin">Поездки</h2>
         <h2 class="no-margin">Поездки</h2>
     </div>
     <div class="profile-journeys">
@@ -20,6 +23,7 @@
 <dialog class="profile-dialog">
     <form method="post" id="form">
          <h2>Отредактируйте профиль</h2>
+        <div class="input" id="nickname-input">
         <div class="input" id="nickname-input">
             <label for="profile-edit-nickname">Новый ник</label>
             <input id="profile-edit-nickname" class="form-input" maxlength="32" type="text"></input>
@@ -36,7 +40,9 @@
             <label class="err-label"></label>
         </div>
         <div class="input" id="status-input">
+        <div class="input" id="status-input">
             <label for="profile-edit-status">Новый статус</label>
+            <textarea id="profile-edit-status" class="form-input" type="text" cols="28"></textarea>
             <textarea id="profile-edit-status" class="form-input" type="text" cols="28"></textarea>
         </div>
         <div>

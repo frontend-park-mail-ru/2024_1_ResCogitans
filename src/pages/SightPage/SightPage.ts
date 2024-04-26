@@ -1,9 +1,10 @@
 import Base from '@components/Base/Base';
 import Header from '@components/Header/Header';
-import { Sight } from 'src/types/api';
+import { Sight, ReviewContent } from 'src/types/api';
 import Stars from '@components/Stars/Stars';
 import Review from '@components/Review/Review';
-import { post, get } from '@api/base';
+import { post } from '@api/base';
+import { getSight } from '@api/sight';
 import { router } from '@router/router';
 import Button from '@components/Button/Button';
 import AuthorizationForm from '@components/Form/AuthorizationForm';
@@ -15,6 +16,8 @@ class SightPage extends Base {
   id : number;
 
   sight : Sight;
+
+  formErrorHandler : AuthorizationForm;
 
   formErrorHandler : AuthorizationForm;
  
@@ -37,7 +40,7 @@ class SightPage extends Base {
     const reviewsDiv = document.querySelector('.sight-reviews') as HTMLDivElement;
     const userReviewDiv = document.querySelector('#user-review') as HTMLDivElement;
 
-    if (response.data.comments === null) {
+    if (response === null) {
       reviewsDiv.insertAdjacentHTML('beforeend', '<p>Оставьте отзыв первыми</p>');
 
       if (this.isAuth === false) {
@@ -45,7 +48,7 @@ class SightPage extends Base {
         new Button(reviewsDiv, { className : 'button-primary', id : 'button-login-redirect', label : 'Войти', url : '/login' }).render();
       }
     } else {
-      response.data.comments.forEach((review) => {
+      response.forEach((review) => {
         review.username = review.username;
         if (this.userData === null || review.userID === this.userData.userID) {
           userReviewDiv.remove();

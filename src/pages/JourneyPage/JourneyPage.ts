@@ -1,8 +1,10 @@
 import Base from '@components/Base/Base';
 import Header from '@components/Header/Header';
-import { Journey, Sight, JourneyResponse } from 'src/types/api';
+import { Journey, Sight } from 'src/types/api';
 import Place from '@pages/PlacesPage/Placelist/Place/Place';
-import { get, post } from '@api/base';
+import { post } from '@api/base';
+import { getTrip } from '@api/journey';
+import { getSights } from '@api/sight';
 import { router } from '@router/router';
 import urls from '@router/urls';
 import { ROUTES } from '@router/ROUTES';
@@ -35,7 +37,10 @@ class JourneyPage extends Base {
     this.isOwn = false;
     this.isAuthorized = isAuthorized;
    
+    this.isAuthorized = isAuthorized;
+   
     const journeyType = pathParams[1];
+   
    
     if (pathParams.length > 2) {
       router.go('404');
@@ -78,7 +83,7 @@ class JourneyPage extends Base {
   addSightsToOptions() {
     if (this.isEdit === false) {
       return;
-    }  
+    }
     const placelist = document.querySelector('#list-places') as HTMLDivElement;
     get('sights').then((sightResponse) => {
       sightResponse.data.sights.sort((a : Sight, b : Sight) => {
@@ -172,10 +177,10 @@ class JourneyPage extends Base {
           const descriptionInput = document.querySelector('textarea') as HTMLTextAreaElement; 
           const body = { userID : userID, name : nameInput.value, description : descriptionInput.value };
        
-          post(ROUTES.journey.create, body).then((response) => {
+          post('trip/create', body).then((response) => {
             if (response.status === 200) {
               this.tripID = response.data.id;
-              post(ROUTES.journey.editsight(this.tripID), { sightIDs : this.IDs }).then(() => {
+              post(`trip/${this.tripID}/sight/add`, { sightIDs : this.IDs }).then(() => {
                 this.type = 'view';
                 router.go(ROUTES.journey.view(this.tripID));
               });
