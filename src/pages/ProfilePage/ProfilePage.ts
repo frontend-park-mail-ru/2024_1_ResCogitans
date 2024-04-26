@@ -5,11 +5,9 @@ import { getUserTrips } from '@api/journey';
 import { validate } from '@utils/validation';
 import AuthorizationForm from '@components/Form/AuthorizationForm';
 import { getUserProfile, editProfile, resetPassword } from '@api/user';
-import { router } from '@router/router';
 import JourneyPreview from './JourneyPreview';
 import { imageUpload } from '@api/user';
 import { signupErrors } from '../../types/errors';
-import { ROUTES } from '@router/ROUTES';
 import ProfileBlock from './ProfileBlock';
 
 class ProfilePage extends Base {
@@ -117,12 +115,7 @@ class ProfilePage extends Base {
         authForm.renderError(lowestInput, signupErrors[profileBioNickEditResponse.data.error]);
       } else {
         profileBlock.innerHTML = '';
-        const templateData = { id : profileBioNickEditResponse.data.id, 
-          username : profileBioNickEditResponse.data.username, 
-          status : profileBioNickEditResponse.data.bio, 
-          avatar : profileBioNickEditResponse.data.avatar };
-
-        new ProfileBlock(profileBlock, templateData).render(); // вынести в тип
+        new ProfileBlock(profileBlock, profileBioNickEditResponse.data).render(); // вынести в тип
       }
 
       if (passwordField.value.length > 0 && passwordField.value === repeatPasswordField.value) {

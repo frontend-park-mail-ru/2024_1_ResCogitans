@@ -1,17 +1,18 @@
 import Base from '@components/Base/Base';
+import { UserProfile } from 'src/types/api';
 
 class ProfileBlock extends Base {
 
-  profileData : unknown; 
+  profileData : UserProfile; 
 
   isOwn : boolean;
 
-  constructor(parent : HTMLElement, profileData : unknown) {
+  constructor(parent : HTMLElement, profileData : UserProfile) {
     super(parent);
     this.profileData = profileData;
     this.isOwn = (this.userData.userID === profileData.id);
 
-    if (profileData.avatar === '') {
+    if (!profileData.avatar) {
       this.profileData.avatar = '/static/placeholder.jpg';
     } else {
       this.profileData.avatar = profileData.avatar.replace(/.*\/public\//, '/public/');
