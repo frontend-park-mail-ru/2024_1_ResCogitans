@@ -18,6 +18,6 @@
 }
 
 textarea {
+    width: auto;
     resize: vertical;
-    width: 90%;
 }

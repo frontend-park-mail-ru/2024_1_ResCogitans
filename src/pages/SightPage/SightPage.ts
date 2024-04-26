@@ -14,10 +14,22 @@ class SightPage extends Base {
   id : number;
 
   sight : Sight;
+
+  formErrorHandler : AuthorizationForm;
  
   constructor(parent : HTMLElement) {
     super(parent);
     this.id = parseInt(window.location.pathname.split('/')[2], 10);
+    this.formErrorHandler = new AuthorizationForm(parent);
+  }
+
+  validateFeedback(field : HTMLTextAreaElement, parent : HTMLElement) : boolean {
+    
+    if (field.value.length < 5) {
+      this.formErrorHandler.renderError(parent, 'Отзыв не может быть короче 5 символов');
+      return false;
+    }
+    return true;
   }
   
   async renderReviews(response : ReviewContent[]) {
@@ -59,17 +71,31 @@ class SightPage extends Base {
     
     const ratingDiv = document.querySelector('.rating') as HTMLDivElement;
     await new Stars(ratingDiv, this.sight.rating).render(); 
+
+    const deleteDialog = document.querySelector('.delete-dialog') as HTMLDialogElement;
+    const editDialog = document.querySelector('.edit-dialog') as HTMLDialogElement;
+
+    const editStarsContainer = editDialog.querySelector('#edit-stars-container') as HTMLElement;
   
     const submitButton = document.getElementById('review-submit') as HTMLButtonElement;
-    const reviewForm = document.querySelector('.review-textarea') as HTMLTextAreaElement;
-    const rateForm = document.getElementById('rate') as HTMLInputElement;
-
+    const reviewForm = document.querySelector('#review-form') as HTMLFormElement;
+    const reviewFormTextArea = reviewForm.querySelector('.review-textarea') as HTMLTextAreaElement;
+    const starsContainer = document.getElementById('stars-container') as HTMLElement;
+    const stars = new Stars(starsContainer, 5, true);
+    stars.render();
+  
     await this.renderReviews(responseSight.data.comments);
 
     const reviewsLabel = document.querySelector('#reviews-label') as HTMLHeadingElement;
     if (responseSight.data.comments !== null) {
       reviewsLabel.innerHTML += ` (${responseSight.data.comments.length})`;
     }
+
+    const cancelButtons = document.querySelectorAll('.cancel') as NodeListOf<HTMLButtonElement>;
+
+
+    const deleteModalButton = deleteDialog.querySelector('.button-danger') as HTMLButtonElement;
+    const editModalButton = editDialog.querySelector('.button-danger') as HTMLButtonElement;
 
     submitButton?.addEventListener('click', (e : Event) => {
       e.preventDefault();
@@ -78,28 +104,27 @@ class SightPage extends Base {
         router.go('login');
       }
 
-      const feedback = reviewForm.value;
+      const feedback = reviewFormTextArea;
       const userID = this.userData.userID;
-      const rating = parseInt(rateForm.value);
-      const requestBody = { userID, rating, feedback };
-      post(`sight/${this.id}/create`, requestBody).then((responseCreateReview) => {
-        if (responseCreateReview.status === 200) {
-          router.go(ROUTES.sights.view(this.id));
-        }
-      });
+      const rating = stars.rating;
+      const requestBody = { userID, rating, feedback : feedback.value };
+
+      if (!this.validateFeedback(feedback, reviewForm)) {
+        return;
+      } else {
+        this.formErrorHandler.clearError(editDialog);
+        post(`sight/${this.id}/create`, requestBody).then((responseCreateReview) => {
+          if (responseCreateReview.status === 200) {
+            router.go(ROUTES.sights.view(this.id));
+          }
+        });
+      }
     });
-
-    const cancelButtons = document.querySelectorAll('.cancel') as NodeListOf<HTMLButtonElement>;
-
-    const deleteDialog = document.querySelector('.delete-dialog') as HTMLDialogElement;
-    const editDialog = document.querySelector('.edit-dialog') as HTMLDialogElement;
-
-    const deleteModalButton = deleteDialog.querySelector('.button-danger') as HTMLButtonElement;
-    const editModalButton = editDialog.querySelector('.button-danger') as HTMLButtonElement;
    
     cancelButtons.forEach((button : HTMLButtonElement) => button.addEventListener('click', function () {
       document.querySelector('.staged-delete')?.classList.remove('staged-delete');
       deleteDialog.close();
+      editStarsContainer.innerHTML = '';
       editDialog.close();
     }));
 
@@ -121,23 +146,31 @@ class SightPage extends Base {
       const commentID = document.querySelector('.staged-delete')?.id.split('-')[1];
       const feedbackField = editDialog.querySelector('#editTextArea') as HTMLTextAreaElement;
       const userID = this.userData.userID;
-      const ratingField = editDialog.querySelector('#rate') as HTMLTextAreaElement;
       const feedback = feedbackField.value;
-      const rating = parseInt(ratingField.value);
+
+      const editStars = new Stars(editStarsContainer, 5, true);
+     
+      if (editStarsContainer.children.length === 0) {
+        editStars.render();
+      }
+
+      const rating = editStars.rating;
+
       const body = { rating : rating, feedback : feedback, userID : userID };
 
-      post(`sight/${this.id}/edit/${commentID}`, body).then((responseDeleteReview) => {
-        if (feedbackField.value.length < 5) {
-          new AuthorizationForm(this.parent).renderError(editDialog, 'Отзыв не может быть короче 5 символов');
-          return;
-        }
-        if (responseDeleteReview.status === 401) {
-          router.go('login');
-        } else {
-          deleteDialog.close();
-          router.go(ROUTES.sights.view(this.id));
-        }
-      });
+      if (!this.validateFeedback(feedbackField, editDialog)) {
+        return;
+      } else {
+        this.formErrorHandler.clearError(editDialog);
+        post(`sight/${this.id}/edit/${commentID}`, body).then((responseDeleteReview) => {
+          if (responseDeleteReview.status === 401) {
+            router.go('login');
+          } else {
+            editDialog.close();
+            router.go(ROUTES.sights.view(this.id));
+          }
+        });
+      }
     });
   }   
 }

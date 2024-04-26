@@ -1,26 +1,15 @@
 <div id="header">
 
 </div>
-<div class="profile-container">
-    <div class="profile-info">
-        <img src="{{this.userdata.avatar}}">
-        <div class="details">
-            <h2>{{this.userdata.username}}</h2>
-            <p>{{this.userdata.status}}</p>
-        </div>
-    </div>
-    {{#if this.isOwn}}
-       <button id="profile-edit-button">Редактировать профиль</button>
-    {{/if}}
+<div class="profile-container" id="profile-block">
+   
 </div>
 <div class="profile-container">
     <div id="search-links">
-        <h2 class="h3-no-margin">Поездки</h2>
+        <h2 class="no-margin">Поездки</h2>
     </div>
     <div class="profile-journeys">
-          <ol>
-
-        </ol>
+     
     </div>
     {{#if this.isOwn}}
         <a href="/journey/new"><button id="create-journey" class="button-primary">Создать новую поездку</button></a>
@@ -31,7 +20,7 @@
 <dialog class="profile-dialog">
     <form method="post" id="form">
          <h2>Отредактируйте профиль</h2>
-        <div class="input">
+        <div class="input" id="nickname-input">
             <label for="profile-edit-nickname">Новый ник</label>
             <input id="profile-edit-nickname" class="form-input" maxlength="32" type="text"></input>
             <label class="err-label"></label>
@@ -46,9 +35,9 @@
             <input id="profile-edit-password-repeat" class="form-input password" type="text"></input>
             <label class="err-label"></label>
         </div>
-        <div class="input">
+        <div class="input" id="status-input">
             <label for="profile-edit-status">Новый статус</label>
-            <textarea id="profile-edit-status" class="form-input" type="text"></textarea>
+            <textarea id="profile-edit-status" class="form-input" type="text" cols="28"></textarea>
         </div>
         <div>
             <label for="profile-edit-avatar">Новый аватар</label>
