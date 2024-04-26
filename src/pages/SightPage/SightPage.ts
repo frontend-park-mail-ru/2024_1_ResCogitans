@@ -1,9 +1,10 @@
 import Base from '@components/Base/Base';
 import Header from '@components/Header/Header';
-import { Sight } from 'src/types/api';
+import { Sight, ReviewContent } from 'src/types/api';
 import Stars from '@components/Stars/Stars';
 import Review from '@components/Review/Review';
-import { post, get } from '@api/base';
+import { post } from '@api/base';
+import { getSight } from '@api/sight';
 import { router } from '@router/router';
 import Button from '@components/Button/Button';
 import AuthorizationForm from '@components/Form/AuthorizationForm';
@@ -31,11 +32,11 @@ class SightPage extends Base {
     return true;
   }
   
-  async renderReviews(response : unknown) {
+  async renderReviews(response : ReviewContent[]) {
     const reviewsDiv = document.querySelector('.sight-reviews') as HTMLDivElement;
     const userReviewDiv = document.querySelector('#user-review') as HTMLDivElement;
 
-    if (response.data.comments === null) {
+    if (response === null) {
       reviewsDiv.insertAdjacentHTML('beforeend', '<p>Оставьте отзыв первыми</p>');
 
       if (this.isAuth === false) {
@@ -43,7 +44,7 @@ class SightPage extends Base {
         new Button(reviewsDiv, { className : 'button-primary', id : 'button-login-redirect', label : 'Войти', url : '/login' }).render();
       }
     } else {
-      response.data.comments.forEach((review) => {
+      response.forEach((review) => {
         review.username = review.username;
         if (this.userData === null || review.userID === this.userData.userID) {
           userReviewDiv.remove();
@@ -55,9 +56,8 @@ class SightPage extends Base {
 
 
   async render() {
-    const responseSight = await get(`sight/${this.id}`);
+    const responseSight = await getSight(this.id);
     this.sight = responseSight.data.sight;
-    
     if (responseSight.status === 404) {
       router.go('404');
       return;
@@ -84,7 +84,7 @@ class SightPage extends Base {
     const stars = new Stars(starsContainer, 5, true);
     stars.render();
   
-    await this.renderReviews(responseSight);
+    await this.renderReviews(responseSight.data.comments);
 
     const reviewsLabel = document.querySelector('#reviews-label') as HTMLHeadingElement;
     if (responseSight.data.comments !== null) {
@@ -113,7 +113,7 @@ class SightPage extends Base {
         return;
       } else {
         this.formErrorHandler.clearError(editDialog);
-        post(ROUTES.sights.createComment(this.id), requestBody).then((responseCreateReview) => {
+        post(`sight/${this.id}/create`, requestBody).then((responseCreateReview) => {
           if (responseCreateReview.status === 200) {
             router.go(ROUTES.sights.view(this.id));
           }
@@ -131,7 +131,7 @@ class SightPage extends Base {
     deleteModalButton?.addEventListener('click', (e : Event) => {
       e.preventDefault();
       const commentID = document.querySelector('.staged-delete')?.id.split('-')[1];
-      post(ROUTES.sights.deleteComment(this.id, commentID), {}).then((responseDeleteReview) => {
+      post(`sight/${this.id}/delete/${commentID}`, {}).then((responseDeleteReview) => {
         if (responseDeleteReview.status === 401) {
           router.go('login');
         } else {
@@ -162,7 +162,7 @@ class SightPage extends Base {
         return;
       } else {
         this.formErrorHandler.clearError(editDialog);
-        post(ROUTES.sights.editComment(this.id, commentID), body).then((responseDeleteReview) => {
+        post(`sight/${this.id}/edit/${commentID}`, body).then((responseDeleteReview) => {
           if (responseDeleteReview.status === 401) {
             router.go('login');
           } else {

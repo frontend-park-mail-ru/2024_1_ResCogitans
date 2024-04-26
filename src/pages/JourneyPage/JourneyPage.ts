@@ -1,8 +1,10 @@
 import Base from '@components/Base/Base';
 import Header from '@components/Header/Header';
-import { Journey, Sight, JourneyResponse } from 'src/types/api';
+import { Journey, Sight } from 'src/types/api';
 import Place from '@pages/PlacesPage/Placelist/Place/Place';
-import { get, post } from '@api/base';
+import { post } from '@api/base';
+import { getTrip } from '@api/journey';
+import { getSights } from '@api/sight';
 import { router } from '@router/router';
 import urls from '@router/urls';
 import { ROUTES } from '@router/ROUTES';
@@ -77,9 +79,9 @@ class JourneyPage extends Base {
   async addSightsToOptions() {
     if (this.isEdit === false) {
       return;
-    }  
+    }
     const placelist = document.querySelector('#list-places') as HTMLDivElement;
-    const sightResponse = await get('sights');
+    const sightResponse = await getSights();
 
     sightResponse.data.sights.sort((a : Sight, b : Sight) => {
       const A = a.name.toUpperCase();
@@ -171,10 +173,10 @@ class JourneyPage extends Base {
           const descriptionInput = document.querySelector('textarea') as HTMLTextAreaElement; 
           const body = { userID : userID, name : nameInput.value, description : descriptionInput.value };
        
-          post(ROUTES.journey.create, body).then((response) => {
+          post('trip/create', body).then((response) => {
             if (response.status === 200) {
               this.tripID = response.data.id;
-              post(ROUTES.journey.editsight(this.tripID), { sightIDs : this.IDs }).then(() => {
+              post(`trip/${this.tripID}/sight/add`, { sightIDs : this.IDs }).then(() => {
                 this.type = 'view';
                 router.go(ROUTES.journey.view(this.tripID));
               });
@@ -192,7 +194,7 @@ class JourneyPage extends Base {
       case 'view':
       case 'edit':
         
-        const journeyResponse = await get(`trip/${this.tripID}`) as JourneyResponse;
+        const journeyResponse = await getTrip(this.tripID);
         this.isOwn = (this.userData !== null && this.userData.userID === journeyResponse.data.journey.userID);
 
         if (journeyResponse.status === 200 && journeyResponse.data.sights !== null) {
@@ -240,7 +242,7 @@ class JourneyPage extends Base {
           });
 
           deleteModalButton?.addEventListener('click', () => {
-            post(ROUTES.journey.delete(this.tripID), {}).then(() => {
+            post(`trip/${this.tripID}/delete`, {}).then(() => {
               deleteDialog.close();
               router.go(urls.base);
             });
@@ -267,7 +269,7 @@ class JourneyPage extends Base {
               const descriptionInput = document.querySelector('textarea') as HTMLTextAreaElement; 
               const body = { userID : userID, name : nameInput.value, description : descriptionInput.value, sightIDs : this.IDs };
 
-              post(ROUTES.journey.editsight(this.tripID), body).then((createJourneyResponse) => {
+              post(`trip/${this.tripID}/sight/add`, body).then((createJourneyResponse) => {
                 if (createJourneyResponse.status === 500) {
                   new AuthorizationForm(this.parent).renderError(form, 'Поездка с таким именем уже есть');
                   return;
