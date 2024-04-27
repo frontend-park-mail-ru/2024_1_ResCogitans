@@ -23,7 +23,7 @@ class Stars {
       });
       if (i < Math.floor(this.rating)) {
         star.classList.add('filled');
-      } else if (i === Math.floor(this.rating) && this.rating % 1 > 0.5) {
+      } else if (i === Math.floor(this.rating) && this.rating % 1 >= 0.5) {
         star.classList.add('partial');
       } else {
         star.classList.add('empty');

@@ -58,6 +58,7 @@ class SightPage extends Base {
 
   render() {
     getSight(this.id).then((responseSight) => {
+      responseSight.data.sight.rating = (responseSight.data.sight.rating).toFixed(2);
       this.sight = responseSight.data.sight;
 
       if (responseSight.status === 404) {

@@ -47,7 +47,11 @@ class Router {
   }
  
   goBack() {
-    window.history.back();
+    if (document.referrer) {
+      this.go(new URL(document.referrer).pathname);
+    } else {
+      window.history.back();
+    }
   }
  
   clearContent() {
