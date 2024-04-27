@@ -101,7 +101,7 @@ class SightPage extends Base {
       const cancelButtons = document.querySelectorAll('.cancel') as NodeListOf<HTMLButtonElement>;
 
       const deleteModalButton = deleteDialog.querySelector('.button-danger') as HTMLButtonElement;
-      const editModalButton = editDialog.querySelector('.button-danger') as HTMLButtonElement;
+      const editModalButton = editDialog.querySelector('.button-primary') as HTMLButtonElement;
 
       submitButton?.addEventListener('click', (e : Event) => {
         e.preventDefault();

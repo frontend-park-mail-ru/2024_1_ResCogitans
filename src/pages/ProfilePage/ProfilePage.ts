@@ -45,7 +45,6 @@ class ProfilePage extends Base {
 
       const authForm = new AuthorizationForm(this.parent, '');
 
-
       const profileTemplateData = { userID: profileData.data.id, username: profileData.data.username, status: profileData.data.bio, avatar: profileData.data.avatar };
 
 
@@ -136,7 +135,7 @@ class ProfilePage extends Base {
                 userID: profileBioNickEditResponse.data.id,
                 username: profileBioNickEditResponse.data.username,
                 status: profileBioNickEditResponse.data.bio,
-                avatar: profileBioNickEditResponse.data.avatar,
+                avatar: !profileBioNickEditResponse.data.avatar ? '' : profileBioNickEditResponse.data.avatar,
               };
   
               new ProfileBlock(profileBlock, templateData).render();
