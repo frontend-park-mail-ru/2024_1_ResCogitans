@@ -36,4 +36,5 @@ html, body {
     background-repeat: no-repeat;
     background-position: center;
     background-attachment: fixed;
+    position: relative;
 }

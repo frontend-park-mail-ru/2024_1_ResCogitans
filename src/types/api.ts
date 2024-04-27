@@ -68,8 +68,13 @@ export interface Sights {
 }
 
 export interface SurveyQuestion {
-  id: number,
+  questionID: number,
   text: string,
+}
+
+export interface SurveyGrade {
+  questionID: number,
+  rating: number,
 }
 
 export interface SurveyQuestionData<T> {

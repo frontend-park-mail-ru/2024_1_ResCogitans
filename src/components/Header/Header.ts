@@ -6,7 +6,6 @@ import  { router } from '@router/router';
 import { authorize } from '@api/user';
 import Base from '@components/Base/Base';
 import template from '@templates/Header.hbs';
-import SurveyForm from 'components/Form/SurveyForm';
 
 /**
 * Класс Header. Это шапка сайта.
@@ -67,12 +66,8 @@ class Header extends Base {
 
     /*запрос на бек о получении необходимости проголосовать за сервис*/
     if (elligibleForSurvey) {
-      const surveyDialog = document.createElement('dialog');
-      const l = document.createElement('h2');
-      l.textContent = 'hello world';
-      surveyDialog.appendChild(l);
-      pageContent?.appendChild(surveyDialog);
-      surveyDialog.show();
+      const iframe = this.parent.querySelector('.iframe-container') as HTMLDivElement;
+      iframe.style.display = 'flex';
     }
   }
 }

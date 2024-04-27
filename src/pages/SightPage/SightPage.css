@@ -55,6 +55,10 @@ dialog {
     border-radius: 20px;
 }
 
+dialog::backdrop {
+    backdrop-filter: blur(10px);
+}
+
 menu {
     display: grid;
     grid-auto-flow: column;
