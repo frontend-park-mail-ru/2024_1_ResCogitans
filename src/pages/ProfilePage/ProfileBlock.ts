@@ -1,6 +1,7 @@
 import Base from '@components/Base/Base';
 import template from '@templates/ProfileBlock.hbs';
-
+import urls from '@router/urls';
+import  { router } from '@router/router';
 
 class ProfileBlock extends Base {
 
@@ -31,8 +32,12 @@ class ProfileBlock extends Base {
     profileSettingsButton?.addEventListener('click', () => {
       profileEditForm.showModal();
     });
-  }
 
+    const SurveyStatisticsButton = document.querySelector('#survey-statistics-button') as HTMLButtonElement;
+    SurveyStatisticsButton?.addEventListener('click', () => {
+      router.go(urls.survey);
+    });
+  }
 }
 
 export default ProfileBlock;

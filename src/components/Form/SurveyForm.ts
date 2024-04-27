@@ -5,15 +5,15 @@ import SurveyQuestionData from '@types';
 
 class SurveyForm extends Base {
 
-    surverQuestionData : SurveyQuestionData;
+  surverQuestionData : SurveyQuestionData;
 
-    constructor(parent: HTMLElement) {
-        super(parent, template);
-    }
+  constructor(parent: HTMLElement) {
+    super(parent, template);
+  }
 
-    render() {
-        this.preRender();
-    }
+  render() {
+    this.preRender();
+  }
 }
 
-export default SurveyForm
+export default SurveyForm;

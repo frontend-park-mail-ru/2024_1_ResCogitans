@@ -6,6 +6,7 @@ import NotFoundPage from '@pages/NotFoundPage/NotFoundPage';
 import ProfilePage from '@pages/ProfilePage/ProfilePage';
 import SightPage from '@pages/SightPage/SightPage';
 import JourneyPage from '@pages/JourneyPage/JourneyPage';
+import SurveyPage from '@pages/SurveyPage/SurveyPage';
 
 const routesList = {
   [urls.base]: PlacesPage,
@@ -15,6 +16,7 @@ const routesList = {
   [urls.profile]: ProfilePage,
   [urls.sight]: SightPage,
   [urls.journey]: JourneyPage,
+  [urls.survey]: SurveyPage,
 };
 
 interface Page {
