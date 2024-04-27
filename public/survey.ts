@@ -45,11 +45,10 @@ class SurveyForm {
 
         get('review/check').then((questionsResponse) => {
             this.questionData = questionsResponse.data;
-            console.log(this.questionData.flag);
             if (this.questionData.flag === false) {
-                this.parent.classList.add('survey-hidden');
                 return;
             }
+            this.parent.classList.remove('survey-hidden');
             this.renderSurveyBegin();
         })
         
@@ -74,7 +73,8 @@ class SurveyForm {
         if (id > 0) {
             const questionID = this.questionData.questions[id - 1].questionID;
             const rating = this.stars.rating
-            this.surveyData.push( { questionID, rating });
+            const userID = this.userData.id;
+            this.surveyData.push( { userID : userID, questionID, rating });
         }
         
         if (id >= this.questionData.questions.length) {

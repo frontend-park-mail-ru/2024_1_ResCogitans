@@ -73,6 +73,7 @@ export interface SurveyQuestion {
 }
 
 export interface SurveyGrade {
+  userID : number;
   questionID: number,
   rating: number,
 }
