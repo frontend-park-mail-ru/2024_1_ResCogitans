@@ -1,6 +1,7 @@
 import Stars from '@components/Stars/Stars';
 import Base from  '@components/Base/Base';
 import { UserProfile, SurveyGrade } from '@types/api';
+import { get } from '@api/base';
 
 
 const MOCK = {
@@ -42,7 +43,15 @@ class SurveyForm {
 
         this.userData = new Base(parent, '').userData;
 
-        this.renderSurveyBegin();
+        get('review/check').then((questionsResponse) => {
+            this.questionData = questionsResponse.data;
+            if (this.questionData.flag === false) {
+                this.parent.classList.add('survey-hidden');
+                return;
+            }
+            this.renderSurveyBegin();
+        })
+        
     }
 
     createElement(type: string, parent: HTMLElement, id?: string, className?: string, textContent?: string): HTMLElement {
@@ -160,7 +169,6 @@ class SurveyForm {
             this.parent.classList.add('survey-hidden');
         })
 
-        this.questionData = MOCK;
 
         nextButton.addEventListener('click', () => {
             console.log(this.currentID);
