@@ -1,0 +1,23 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    gap: 10px;
+}
+
+.grid-container > div > p {
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.survey-answer-preview {
+    display: contents;
+}
+
+.survey-answer-preview > div {
+    display: block;
+}
+
+.survey-answer-preview > div > p {
+    text-align: center;
+}
