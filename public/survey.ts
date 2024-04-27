@@ -45,6 +45,7 @@ class SurveyForm {
 
         get('review/check').then((questionsResponse) => {
             this.questionData = questionsResponse.data;
+            console.log(this.questionData.flag);
             if (this.questionData.flag === false) {
                 this.parent.classList.add('survey-hidden');
                 return;
@@ -138,7 +139,9 @@ class SurveyForm {
 
 
         buttonSubmit.addEventListener('click', () => {
-            post('review/create', this.surveyData);
+            this.surveyData.forEach((elem) => {
+                post('review/create', elem);
+            })
             this.parent.classList.add('survey-hidden');
         })
 
