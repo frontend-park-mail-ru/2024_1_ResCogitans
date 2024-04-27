@@ -1,7 +1,7 @@
 import Stars from '@components/Stars/Stars';
 import Base from  '@components/Base/Base';
 import { UserProfile, SurveyGrade } from '@types/api';
-import { get } from '@api/base';
+import { get, post } from '@api/base';
 
 
 const MOCK = {
@@ -138,8 +138,8 @@ class SurveyForm {
 
 
         buttonSubmit.addEventListener('click', () => {
-            // post('survey/submit', body)
-            console.log(this.surveyData);
+            post('review/create', this.surveyData);
+            this.parent.classList.add('survey-hidden');
         })
 
     }
