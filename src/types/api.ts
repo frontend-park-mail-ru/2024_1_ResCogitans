@@ -38,12 +38,12 @@ export interface UserProfile {
 }
 
 export interface Journey {
-  id : number,
-  userID : number,
-  username : string,
-  name : string,
-  description : string,
-  sights : Sight[],
+  id: number,
+  userID: number,
+  username: string,
+  name: string,
+  description: string,
+  sights: Sight[],
 }
 
 export interface Sight {
@@ -65,4 +65,20 @@ export interface SightResponse {
 
 export interface Sights {
   sights: Sight[],
+}
+
+export interface SurveyQuestion {
+  id: number,
+  text: string,
+}
+
+export interface SurveyQuestionData<T> {
+  questions: T[],
+}
+
+export interface SurveyStatisticQuestion {
+  id: number,
+  text: string,
+  userGrade : number,
+  averageGrade : number,
 }

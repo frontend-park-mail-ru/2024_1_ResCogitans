@@ -6,6 +6,7 @@ import  { router } from '@router/router';
 import { authorize } from '@api/user';
 import Base from '@components/Base/Base';
 import template from '@templates/Header.hbs';
+import SurveyForm from 'components/Form/SurveyForm';
 
 /**
 * Класс Header. Это шапка сайта.
@@ -32,6 +33,8 @@ class Header extends Base {
 
   render() {
     this.preRender();
+
+    const pageContent = document.querySelector('#content');
     
     const logoGroup = document.getElementById('logo-group') as HTMLElement;
     const logo = new Logo(logoGroup);
@@ -64,7 +67,12 @@ class Header extends Base {
 
     /*запрос на бек о получении необходимости проголосовать за сервис*/
     if (elligibleForSurvey) {
-      new Button(profileBlock, { className: 'survey-button', id: 'survey-button', label: '⭐' }).render();
+      const surveyDialog = document.createElement('dialog');
+      const l = document.createElement('h2');
+      l.textContent = 'hello world';
+      surveyDialog.appendChild(l);
+      pageContent?.appendChild(surveyDialog);
+      surveyDialog.show();
     }
   }
 }
