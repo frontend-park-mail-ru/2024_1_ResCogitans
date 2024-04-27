@@ -60,6 +60,12 @@ class Header extends Base {
         router.go('login');
       });
     }
+    const elligibleForSurvey = true;
+
+    /*запрос на бек о получении необходимости проголосовать за сервис*/
+    if (elligibleForSurvey) {
+      new Button(profileBlock, { className: 'survey-button', id: 'survey-button', label: '⭐' }).render();
+    }
   }
 }
 
