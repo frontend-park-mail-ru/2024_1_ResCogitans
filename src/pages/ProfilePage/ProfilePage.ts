@@ -2,10 +2,9 @@ import Base from '@components/Base/Base';
 import Header from '@components/Header/Header';
 import { validate } from '@utils/validation';
 import AuthorizationForm from '@components/Form/AuthorizationForm';
-import { get, post } from '@api/base';
 import JourneyPreview from './JourneyPreview';
 import { editProfile, getUserProfile, imageUpload, resetPassword } from '@api/user';
-import { signupErrors } from '../../types/errors';
+import { profileErrors, signupErrors } from '../../types/errors';
 import { ROUTES } from '@router/ROUTES';
 import ProfileBlock from './ProfileBlock';
 import { router } from '@router/router';
@@ -20,15 +19,11 @@ class ProfilePage extends Base {
 
   userID: number;
 
-  userData: UserProfile;
-
   form: AuthorizationForm;
 
   constructor(parent: HTMLElement) {
     super(parent, template);
-    this.userData = {} as UserProfile;
     this.userID = parseInt(arguments[1][0]);
-
   }
 
   render() {
@@ -82,6 +77,11 @@ class ProfilePage extends Base {
       const inputs = document.querySelectorAll('input') as NodeListOf<HTMLInputElement>;
 
       const usernameField = inputs[0] as HTMLInputElement;
+
+      usernameField.addEventListener('change', () => {
+        authForm.clearError(usernameField.parentElement as HTMLElement);
+      });
+
       const passwordField = inputs[1] as HTMLInputElement;
       const repeatPasswordField = inputs[2] as HTMLInputElement;
       const statusField = document.querySelector('textarea') as HTMLTextAreaElement;
@@ -92,7 +92,7 @@ class ProfilePage extends Base {
       const imageInput = document.querySelector('#profile-edit-avatar') as HTMLInputElement;
       let formData: FormData;
 
-      let lowestInput = document.querySelectorAll('.input')[2] as HTMLInputElement;
+      let lowestInput = document.querySelectorAll('.input')[4] as HTMLInputElement;
 
       imageInput.addEventListener('change', () => {
         if (imageInput.files && imageInput.files.length > 0) {
@@ -123,38 +123,38 @@ class ProfilePage extends Base {
         if (formData) {
           imageUpload(ROUTES.profile.upload(this.userID), formData).then((imageUploadResponse) => {
             if (imageUploadResponse.status !== 200) {
-              authForm.renderError(lowestInput, signupErrors[imageUploadResponse.data.error]);
+              authForm.renderError(usernameField, signupErrors[imageUploadResponse.data.error]);
             }
           });
         }
 
-        editProfile(this.userData.id, usernameField.value, statusField.value).then((profileBioNickEditResponse) => {
-          if (profileBioNickEditResponse.status !== 200) {
-            authForm.renderError(lowestInput, signupErrors[profileBioNickEditResponse.data.error]);
-          } else {
-            profileBlock.innerHTML = '';
-            const templateData = {
-              userID: profileBioNickEditResponse.data.id,
-              username: profileBioNickEditResponse.data.username,
-              status: profileBioNickEditResponse.data.bio,
-              avatar: profileBioNickEditResponse.data.avatar,
-            };
+        editProfile(this.userData.userID, usernameField.value, statusField.value)
+          .then((profileBioNickEditResponse) => {
+            if (profileBioNickEditResponse.status === 200) {
+              profileBlock.innerHTML = '';
+              const templateData = {
+                userID: profileBioNickEditResponse.data.id,
+                username: profileBioNickEditResponse.data.username,
+                status: profileBioNickEditResponse.data.bio,
+                avatar: profileBioNickEditResponse.data.avatar,
+              };
+  
+              new ProfileBlock(profileBlock, templateData).render();
+              profileEditForm.close();
+            } else {
+              authForm.renderError(usernameField.parentElement as HTMLElement, profileErrors[profileBioNickEditResponse.data.error]);
+            }
+          });
 
-            new ProfileBlock(profileBlock, templateData).render(); // вынести в тип
-          }
-        });
 
         if (passwordField.value.length > 0 && passwordField.value === repeatPasswordField.value) {
-          resetPassword(this.userData.id, passwordField.value).then((passwordResponse) => {
+          resetPassword(this.userData.userID, passwordField.value).then((passwordResponse) => {
             if (passwordResponse.status === 401) {
               authForm.renderError(lowestInput, signupErrors[passwordResponse.data.error]);
             }
           });
         }
 
-        if (document.querySelectorAll('.has-error').length === 0) {
-          profileEditForm.close();
-        }
       },
 
       );

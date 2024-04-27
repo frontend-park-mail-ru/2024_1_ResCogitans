@@ -12,3 +12,7 @@ export const loginErrors: { [key: string] : string } = {
 export const logoutErrors : { [key: string] : string } = {
   '401': 'Выход из аккаунта уже был выполнен ранее',
 };
+
+export const profileErrors : { [key : string] : string } = {
+  'failed edit profile' : 'Данный ник занят',
+};

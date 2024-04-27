@@ -3,7 +3,7 @@ import Base from '@components/Base/Base';
 class AuthorizationForm extends Base {
 
   renderError(parent : HTMLElement, message : string) {
-    const errorMessage = parent.querySelectorAll('.err-label')[0] as HTMLElement;
+    const errorMessage = parent.querySelector('.err-label') as HTMLElement;
     if (message !== undefined && message !== null) {
       errorMessage.innerHTML = message;
       errorMessage.classList.add('has-error');

@@ -1,10 +1,10 @@
-import User from 'src/types/api';
+import User, { UserProfile } from 'src/types/api';
 
 class Base {
 
   parent: HTMLElement;
 
-  userData : User;
+  userData : UserProfile;
 
   isAuth : boolean;
 
