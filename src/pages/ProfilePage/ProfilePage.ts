@@ -82,7 +82,7 @@ class ProfilePage extends Base {
       });
 
       const passwordField = inputs[1] as HTMLInputElement;
-      const repeatPasswordField = inputs[2] as HTMLInputElement;
+      const newPasswordField = inputs[2] as HTMLInputElement;
       const statusField = document.querySelector('textarea') as HTMLTextAreaElement;
 
       usernameField.value = profileTemplateData.username;
@@ -127,33 +127,38 @@ class ProfilePage extends Base {
           });
         }
 
-        editProfile(this.userData.userID, usernameField.value, statusField.value)
-          .then((profileBioNickEditResponse) => {
-            if (profileBioNickEditResponse.status === 200) {
-              profileBlock.innerHTML = '';
-              const templateData = {
-                userID: profileBioNickEditResponse.data.id,
-                username: profileBioNickEditResponse.data.username,
-                status: profileBioNickEditResponse.data.bio,
-                avatar: !profileBioNickEditResponse.data.avatar ? '' : profileBioNickEditResponse.data.avatar,
-              };
-  
-              new ProfileBlock(profileBlock, templateData).render();
-              profileEditForm.close();
-            } else {
-              authForm.renderError(usernameField.parentElement as HTMLElement, profileErrors[profileBioNickEditResponse.data.error]);
-            }
-          });
+        if (usernameField.value.length > 5 || usernameField.value.length === 0) {
+          editProfile(this.userData.userID, usernameField.value, statusField.value)
+            .then((profileBioNickEditResponse) => {
+              if (profileBioNickEditResponse.status === 200) {
+                profileBlock.innerHTML = '';
+                const templateData = {
+                  userID: profileBioNickEditResponse.data.id,
+                  username: profileBioNickEditResponse.data.username,
+                  status: profileBioNickEditResponse.data.bio,
+                  avatar: !profileBioNickEditResponse.data.avatar ? '' : profileBioNickEditResponse.data.avatar,
+                };
 
-
-        if (passwordField.value.length > 0 && passwordField.value === repeatPasswordField.value) {
-          resetPassword(this.userData.userID, passwordField.value).then((passwordResponse) => {
-            if (passwordResponse.status === 401) {
-              authForm.renderError(lowestInput, signupErrors[passwordResponse.data.error]);
-            }
-          });
+                new ProfileBlock(profileBlock, templateData).render();
+              } else {
+                authForm.renderError(usernameField.parentElement as HTMLElement, profileErrors[profileBioNickEditResponse.data.error]);
+              }
+            });
+        } else {
+          authForm.renderError(usernameField.parentElement as HTMLElement, profileErrors.short);
         }
 
+
+        if (passwordField.value.length > 0 && passwordField.value !== newPasswordField.value) {
+          resetPassword(this.userData.userID, newPasswordField.value).then((passwordResponse) => {
+            if (passwordResponse.status !== 200) {
+              authForm.renderError(newPasswordField.parentElement as HTMLElement, signupErrors[passwordResponse.data.error]);
+            }
+          });
+        } else {
+          authForm.renderError(newPasswordField.parentElement as HTMLElement, profileErrors.notnew);
+        }
+        // не давать запросам выполняться при наличии хоть одной ошибки!!!
       },
 
       );

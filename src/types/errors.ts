@@ -15,4 +15,6 @@ export const logoutErrors : { [key: string] : string } = {
 
 export const profileErrors : { [key : string] : string } = {
   'failed edit profile' : 'Данный ник занят',
+  'notnew' : 'Новый пароль совпадает со старым',
+  'short' : 'Имя пользователя должно быть не короче 3-х символов',
 };
