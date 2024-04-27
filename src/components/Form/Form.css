@@ -1,3 +1,5 @@
+@import '../Form/SurveyForm.css';
+
 #form {
     z-index: 1;
     position: fixed;
@@ -5,7 +7,6 @@
     left: 50%;
     transform: translate(-50%, -50%);
     padding: 30px;
-    display: flex;
     display: flex;
     flex-direction: column;
     width: 300px;

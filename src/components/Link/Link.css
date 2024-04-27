@@ -40,3 +40,17 @@ a {
     color:  black;
     font-weight: 800;
 }
+
+.h1 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 4.2vw;
+    font-weight: 800;
+    text-align: center;
+}
+
+.h2 {
+    font-size: 18px;
+    font-weight: 100;
+    font-size: 3.6vw;
+}

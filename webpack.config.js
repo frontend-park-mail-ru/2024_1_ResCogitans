@@ -6,12 +6,15 @@ const Dotenv = require('dotenv-webpack');
 const ESLintPlugin = require('eslint-webpack-plugin');
 
 module.exports = {
- mode: 'development',
- entry: './src/index.ts',
- output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'public'),
- },
+  mode: 'development',
+  entry: {
+     index: './src/index.ts',
+     survey: './public/survey.ts'
+  },
+  output: {
+     filename: '[name].bundle.js',
+     path: path.resolve(__dirname, 'public'),
+  },
  module: {
     rules: [
       {

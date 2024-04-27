@@ -1,0 +1,43 @@
+.iframe-container {
+    z-index: 1;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 2vw;
+    display: flex;
+    flex-direction: column;
+    width: min(70vw, 600px);
+    height: 40vw;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border: 3px solid var(--secondary-color);
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.iframe-container::backdrop {
+    backdrop-filter: blur(10px);
+}
+
+iframe {
+    height: 100%;
+    width: 100%;
+    border: none;
+}
+
+.button-labels, .button-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.survey-hidden {
+    display: none;
+}
+
+.navigate-buttons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+}
