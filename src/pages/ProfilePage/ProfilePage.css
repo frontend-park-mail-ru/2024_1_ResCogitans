@@ -1,23 +1,4 @@
-.profile-container {
-  max-width: 800px;
-  margin: 20px auto;
-  background-color: #fff;
-  border-radius: 10px;
-  padding: 2vw;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  max-width: 800px;
-  margin: 20px auto;
-  background-color: #fff;
-  border-radius: 10px;
-  padding: 2vw;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
 .profile-info {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  margin-bottom: 30px;
-  gap: 20px;
   display: grid;
   grid-template-columns: 1fr 2fr;
   margin-bottom: 30px;
@@ -41,15 +22,6 @@
   padding: 2vw;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-.review {
-  display: grid;
-  grid-template-columns: 1fr 3fr;
-  margin: 20px auto;
-  background-color: #fff;
-  border-radius: 10px;
-  padding: 2vw;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
 
 .review img {
     width: max(100px, 80%);
@@ -62,21 +34,7 @@
 .review-text {
   color: #555;
 }
-.review-text {
-  color: #555;
-}
 
-.rating {
-  margin-top: 20px;
-  display: flex;
-  align-self: self-end;
-
-  & span {
-    margin-right: 20px;
-    font-size: 24px;
-    font-weight: 700;
-  }
-}
 .rating {
   margin-top: 20px;
   display: flex;

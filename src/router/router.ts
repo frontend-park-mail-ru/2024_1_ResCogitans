@@ -32,18 +32,20 @@ class Router {
 
 
     document.addEventListener('click', (e) => {
-      e.preventDefault();
       let href: string;
       if (e.target.tagName === 'A') {
+        e.preventDefault();
         href = e.target.getAttribute('href');
       } else if (e.target.tagName === 'BUTTON' || e.target.tagName === 'IMG') {
-        if (e.target.closest('a') !== null) {
+        const parentAnchorElement = e.target.closest('a');
+        if (parentAnchorElement !== null && parentAnchorElement !== undefined) {
+          e.preventDefault();
           href = e.target.closest('a').getAttribute('href');
         }
       } else {
         return;
       }
-      this.go(href);
+      if (href) this.go(href);
     });
 
   }

@@ -44,7 +44,7 @@ class ProfilePage extends Base {
       const authForm = new AuthorizationForm(this.parent, '');
 
       const profileTemplateData = {
-        userID: profileData.data.id, username: profileData.data.username, status: profileData.data.bio, avatar: profileData.data.avatar, 
+        userID: profileData.data.id, username: profileData.data.username, status: profileData.data.bio, avatar: profileData.data.avatar,
       };
 
 
@@ -71,22 +71,40 @@ class ProfilePage extends Base {
 
       const linkBlock = document.querySelector('#underlined-links') as HTMLDivElement;
       const journeyLink = this.createElement('label', {
-        class : 'underlined-link', 
+        class: 'underlined-link',
       }, 'Поездки', {
-        parent : linkBlock, position : 'into', 
+        parent: linkBlock, position: 'into',
       });
       const albumsLink = this.createElement('label', {
-        class : 'underlined-link', 
+        class: 'underlined-link',
       }, 'Альбомы', {
-        parent : linkBlock, position : 'into', 
+        parent: linkBlock, position: 'into',
       });
 
       let JOURNEY_DATA;
+      const contentBlock = document.getElementById('content-block') as HTMLDivElement;
+      let createButton: HTMLElement;
 
       journeyLink.addEventListener('click', () => {
         profileContent.innerHTML = '';
-        JOURNEY_DATA.forEach((journey) => new JourneyPreview(profileContent, journey).render());
+        if (!JOURNEY_DATA) {
+          this.createElement('h3', {}, this.isOwn ? 'Вы пока не создавали поездки' : 'Пользователь пока не создавал поездки', {
+            parent: profileContent, position: 'into',
+          });
+        } else {
+          JOURNEY_DATA.forEach((journey) => new JourneyPreview(profileContent, journey).render());
+        }
+
+        createButton.textContent = 'Создать новую поездку';
       });
+
+      if (this.isOwn) {
+        createButton = this.createElement('a', {
+          class: 'button-primary button-link', id: 'create-button', href: '/journey/new',
+        }, 'Создать новую поездку', {
+          parent: contentBlock, position: 'after',
+        });
+      }
 
       albumsLink.addEventListener('click', () => {
         profileContent.innerHTML = '';
@@ -95,31 +113,26 @@ class ProfilePage extends Base {
 
         if (length == 0) {
           this.createElement('h3', {}, this.isOwn ? 'Вы пока не создавали альбомы' : 'Пользователь пока не создавал альбомы', {
-            parent : profileContent, position : 'into',
+            parent: profileContent, position: 'into',
           });
         }
 
         for (let i = 0; i < length; i++) {
           const AlbumDiv = this.createElement('div', {
-            class : 'container', 
+            class: 'container',
           }, '', {
-            parent : profileContent, position : 'into', 
+            parent: profileContent, position: 'into',
           });
 
           this.createElement('label', {
-            class : 'h2', 
+            class: 'h2',
           }, `Альбом ${i + 1}`, {
-            parent : AlbumDiv, position : 'into', 
+            parent: AlbumDiv, position: 'into',
           });
         }
 
-        if (this.isOwn) {
-          this.createElement('button', {
-            class : 'button-primary', id : 'button-create-album',
-          });
-        }
+        createButton.textContent = 'Создать новый альбом';
       });
-
 
       // endblock
 
@@ -225,8 +238,13 @@ class ProfilePage extends Base {
           JOURNEY_DATA = journeyList.data.journeys;
           profileContent.innerHTML = '';
           journeyList.data.journeys.forEach((journey) => new JourneyPreview(profileContent, journey).render());
+        } else {
+          this.createElement('h3', {}, this.isOwn ? 'Вы пока не создавали поездки' : 'Пользователь пока не создавал поездки', {
+            parent: profileContent, position: 'into',
+          });
         }
       });
+
     });
 
   }
