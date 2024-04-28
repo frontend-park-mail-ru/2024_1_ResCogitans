@@ -22,10 +22,10 @@ class MainSearch extends Base {
     const searchBlock = document.getElementById('main-search') as HTMLElement;
     this.preRender(searchBlock);
 
-    const linkArea = document.getElementById('search-links') as HTMLElement;
-    new Link(linkArea,  { className: 'search-link', src: 'static/restaurant.svg', label: 'Рестораны' }).render();
-    new Link(linkArea, { className: 'search-link', src: 'static/hotel.svg', label: 'Отели' }).render();
-    new Link(linkArea, { className: 'search-link', src: 'static/attraction.svg', label: 'Развлечения' }).render();
+    const linkArea = document.getElementById('underlined-links') as HTMLElement;
+    new Link(linkArea,  { className: 'underlined-link', src: 'static/restaurant.svg', label: 'Рестораны' }).render();
+    new Link(linkArea, { className: 'underlined-link', src: 'static/hotel.svg', label: 'Отели' }).render();
+    new Link(linkArea, { className: 'underlined-link', src: 'static/attraction.svg', label: 'Развлечения' }).render();
 
     const searchbarArea = document.getElementById('form-search') as HTMLElement;
     new Input(searchbarArea, {

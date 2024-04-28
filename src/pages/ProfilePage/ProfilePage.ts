@@ -10,8 +10,6 @@ import ProfileBlock from './ProfileBlock';
 import { router } from '@router/router';
 import template from '@templates/ProfilePage.hbs';
 import { getUserTrips } from '@api/journey';
-import { UserProfile } from '@types/api';
-
 
 class ProfilePage extends Base {
 
@@ -65,6 +63,25 @@ class ProfilePage extends Base {
       const cancelButton = document.querySelector('#button-cancel') as HTMLButtonElement;
       cancelButton.addEventListener('click', () => profileEditForm.close());
       const passwordInputs = document.querySelectorAll('.password') as NodeListOf<HTMLInputElement>;
+
+
+      // link block for journey and albums
+
+      const linkBlock = document.querySelector('#underlined-links') as HTMLDivElement;
+      const journeyLink = this.createElement('a', { class : 'underlined-link' }, 'Поездки', { parent : linkBlock, position : 'into' });
+      const albumsLink = this.createElement('a', { class : 'underlined-link' }, 'Альбомы', { parent : linkBlock, position : 'into' });
+
+
+
+
+
+
+
+
+
+
+
+      // endblock
 
       passwordInputs.forEach((input: HTMLInputElement) => input.addEventListener('input', () => {
         const parent = input.parentElement as HTMLElement;

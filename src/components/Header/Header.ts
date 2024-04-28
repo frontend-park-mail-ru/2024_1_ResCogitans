@@ -23,7 +23,7 @@ class Header extends Base {
   * @param {Array<string>} labels - Массив меток для ссылок.
   */
   renderLinkBlock(parent : HTMLElement, labels : Array<string>) {
-    labels.forEach((label) => new Link(parent, { label, className: 'search-link' }).render());
+    labels.forEach((label) => new Link(parent, { label, className: 'underlined-link' }).render());
   }
 
   /**
