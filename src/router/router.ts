@@ -20,34 +20,49 @@ const routesList = {
 interface Page {
   render: () => void;
 }
- 
-type Routes = Record<string, new (content: HTMLElement, ...args : any[]) => Page>;
+
+type Routes = Record<string, new (content: HTMLElement, ...args: any[]) => Page>;
 
 class Router {
   routes: Routes;
- 
+
   constructor(routes: Routes) {
     this.routes = routes;
     window.addEventListener('popstate', () => this.changeLocation());
+
+
+    document.addEventListener('click', (e) => {
+      e.preventDefault();
+      let href: string;
+      if (e.target.tagName === 'A') {
+        href = e.target.getAttribute('href');
+      } else if (e.target.tagName === 'BUTTON' || e.target.tagName === 'IMG') {
+        href = e.target.closest('a').getAttribute('href');
+      } else {
+        return;
+      }
+      this.go(href);
+    });
+
   }
- 
+
   route(path: string, PageConstructor: new (content: HTMLElement, param?: string) => Page) {
     this.routes[path] = PageConstructor;
     return this;
   }
- 
+
   go(path: string, params?: string) {
     if (!path.startsWith('/')) {
       path = '/' + path;
     }
     if (window.location.pathname !== path) {
       window.history.pushState({
-        params, 
+        params,
       }, '', path);
     }
     this.changeLocation();
   }
- 
+
   goBack() {
     if (document.referrer) {
       this.go(new URL(document.referrer).pathname);
@@ -55,7 +70,7 @@ class Router {
       window.history.back();
     }
   }
- 
+
   clearContent() {
     let content = document.getElementById('content') as HTMLDivElement;
     if (!content) {
@@ -67,7 +82,7 @@ class Router {
     content.innerHTML = '';
     return content;
   }
- 
+
   changeLocation() {
     let path = window.location.pathname;
     const PageConstructorFromRoutes = this.routes[path.split('/')[1]];
@@ -85,9 +100,9 @@ class Router {
     }
   }
 }
- 
+
 
 const router = new Router(routesList);
 export {
-  router, 
+  router,
 };

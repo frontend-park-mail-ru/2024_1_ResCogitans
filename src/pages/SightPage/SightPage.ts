@@ -58,7 +58,32 @@ class SightPage extends Base {
     }  
   }
 
+  renderSight() {
+    const name = document.querySelector('.no-margin') as HTMLHeadingElement;
+    name.textContent = this.sight.name;
+
+    const photo = document.querySelector('.sight-container img') as HTMLImageElement;
+    photo.src = `/${this.sight.url}`;
+
+    const location = document.querySelector('h2') as HTMLHeadingElement;
+    location.textContent = `${this.sight.city}, ${this.sight.country}`;
+
+    const description = document.querySelector('p') as HTMLParagraphElement;
+    description.textContent = this.sight.description;
+
+    const rating = document.querySelector('.rating span') as HTMLSpanElement;
+    rating.textContent = this.sight.rating.toString(10);
+
+  }
+
+
   render() {
+
+    this.preRender();
+
+    const header = document.getElementById('header') as HTMLElement;
+    new Header(header).render();
+
     getSight(this.id).then((responseSight) => {
       responseSight.data.sight.rating = (responseSight.data.sight.rating).toFixed(2);
       this.sight = responseSight.data.sight;
@@ -68,15 +93,13 @@ class SightPage extends Base {
         return;
       }
 
-      this.preRender();
-
-      const header = document.getElementById('header') as HTMLElement;
-      new Header(header).render();
+      this.renderSight();
 
       document.body.classList.remove('auth-background');
    
       const ratingDiv = document.querySelector('.rating') as HTMLDivElement;
       new Stars(ratingDiv, this.sight.rating).render(); 
+
 
       const deleteDialog = document.querySelector('.delete-dialog') as HTMLDialogElement;
       const editDialog = document.querySelector('.edit-dialog') as HTMLDialogElement;

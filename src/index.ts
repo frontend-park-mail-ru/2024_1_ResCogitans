@@ -8,19 +8,3 @@ if (root === null) {
 }
 
 router.go(window.location.pathname);
-
-// document.addEventListener('click', (e) => {
-//   alert('intecepted');
-//   let href: string;
-
-//   if (e.target.tagName === 'A') {
-//     e.preventDefault();
-//     href = e.target.getAttribute('href');
-//   } else if (e.target.parent) {
-//     if (e.target.parent.tagName === 'A') {
-//       href = e.target.parent.getAttribute('href');
-//     }
-//   }
-
-//   router.go(href);
-// });
