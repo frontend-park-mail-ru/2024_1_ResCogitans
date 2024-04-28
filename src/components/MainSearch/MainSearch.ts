@@ -11,9 +11,12 @@ import template from '@templates/MainSearch.hbs';
 */
 class MainSearch extends Base {
 
-  constructor(parent: HTMLElement) {
+  constructor(parent: HTMLElement, categoryChangeCallback: (category: number) => void) {
     super(parent, template);
+    this.categoryChangeCallback = categoryChangeCallback;
   }
+
+  categoryChangeCallback: (category: number) => void;
 
   /**
   * Рендерит основное поле поиска в DOM, включая ссылки и поле ввода.
@@ -21,17 +24,32 @@ class MainSearch extends Base {
   render() {
     const searchBlock = document.getElementById('main-search') as HTMLElement;
     this.preRender(searchBlock);
-
+   
     const linkArea = document.getElementById('underlined-links') as HTMLElement;
-    new Link(linkArea,  {
-      className: 'underlined-link', src: 'static/restaurant.svg', label: 'Рестораны', 
-    }).render();
-    new Link(linkArea, {
-      className: 'underlined-link', src: 'static/hotel.svg', label: 'Отели', 
-    }).render();
-    new Link(linkArea, {
-      className: 'underlined-link', src: 'static/attraction.svg', label: 'Развлечения', 
-    }).render();
+    const categories = [
+      {
+        label: 'Все места', category: 0, id: 'all-places',
+      },
+      {
+        label: 'Рестораны', category: 1, id: 'restaurants',
+      },
+      {
+        label: 'Отели', category: 2, id: 'hotels',
+      },
+      {
+        label: 'Развлечения', category: 3, id: 'entertainments',
+      },
+    ];
+
+    categories.forEach(category => {
+      const link = new Link(linkArea, {
+        className: 'underlined-link',
+        label: category.label,
+        id: category.id,
+      });
+      link.render();
+      document.querySelector(`#${category.id}`)?.addEventListener('click', () => this.categoryChangeCallback(category.category));
+    });
 
     const searchbarArea = document.getElementById('form-search') as HTMLElement;
     new Input(searchbarArea, {

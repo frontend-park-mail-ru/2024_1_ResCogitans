@@ -1,6 +1,6 @@
 import Place from './Place/Place';
 import Base from '@components/Base/Base';
-import { Sights } from 'src/types/api';
+import { Sights, Sight } from 'src/types/api';
 import template from '@templates/Placelist.hbs';
 import { WithResponse } from 'src/types/api';
 import { getSights } from '@api/sight';
@@ -13,6 +13,7 @@ import { getSights } from '@api/sight';
 * @class
 */
 class Placelist extends Base {
+  private sightsByCategory: { [key: number]: Sight[] } = {};
 
   constructor(parent: HTMLElement) {
     super(parent, template);
@@ -28,7 +29,6 @@ class Placelist extends Base {
   */
   render() {
     this.preRender();
-    
     (async () => {
       const response = await getSights() as WithResponse<Sights>;
 
@@ -37,6 +37,13 @@ class Placelist extends Base {
     })();
   }
 
+  filterByCategory(category: number) {
+    getSights(category).then((sightResponse) => {
+      const placelist = document.getElementById('list-places') as HTMLDivElement;
+      placelist.innerHTML = '';
+      sightResponse.data.sights.forEach((data) => new Place(placelist, data).render());
+    });
+  }
 }
 
 export default Placelist;

@@ -13,7 +13,6 @@ class PlacesPage extends Base {
   /**
   * Рендерит страницу мест в DOM, включая шапку сайта, основное поле поиска и список мест.
   */
-
   constructor(parent: HTMLElement) {
     super(parent, template); 
   }
@@ -28,8 +27,11 @@ class PlacesPage extends Base {
     document.body.classList.remove('auth-background');
 
     new Header(header).render();
-    new MainSearch(mainsearch).render();
-    new Placelist(places).render();
+  
+    const placelist = new Placelist(places);
+    const mainSearchInstance = new MainSearch(mainsearch, placelist.filterByCategory);
+    placelist.render();
+    mainSearchInstance.render();
   }
 }
 
