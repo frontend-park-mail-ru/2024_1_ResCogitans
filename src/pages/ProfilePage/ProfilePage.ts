@@ -72,13 +72,13 @@ class ProfilePage extends Base {
       const albumsLink = this.createElement('a', { class : 'underlined-link' }, 'Альбомы', { parent : linkBlock, position : 'into' });
 
 
+      journeyLink.addEventListener('click', () => {
+        alert('journey clicked');
+      });
 
-
-
-
-
-
-
+      albumsLink.addEventListener('click', () => {
+        alert('albums clicked');
+      });
 
 
       // endblock
@@ -181,7 +181,7 @@ class ProfilePage extends Base {
       );
 
       getUserTrips(this.userID).then((journeyList) => {
-        const journeyDiv = document.querySelector('.profile-journeys') as HTMLDivElement;
+        const journeyDiv = document.querySelector('.profile-content') as HTMLDivElement;
 
         if (journeyList.status === 200 && journeyList.data.journeys !== null) {
           journeyDiv.innerHTML = '';
