@@ -37,7 +37,9 @@ class Router {
       if (e.target.tagName === 'A') {
         href = e.target.getAttribute('href');
       } else if (e.target.tagName === 'BUTTON' || e.target.tagName === 'IMG') {
-        href = e.target.closest('a').getAttribute('href');
+        if (e.target.closest('a') !== null) {
+          href = e.target.closest('a').getAttribute('href');
+        }
       } else {
         return;
       }
