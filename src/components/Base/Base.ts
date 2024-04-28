@@ -45,7 +45,9 @@ class Base {
       element.textContent = content;
     }
     if (insertion) {
-      const { parent, position, referenceElement } = insertion;
+      const {
+        parent, position, referenceElement, 
+      } = insertion;
       switch (position) {
         case 'before':
           parent.insertBefore(element, referenceElement || parent.firstChild);

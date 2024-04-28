@@ -23,9 +23,15 @@ class MainSearch extends Base {
     this.preRender(searchBlock);
 
     const linkArea = document.getElementById('underlined-links') as HTMLElement;
-    new Link(linkArea,  { className: 'underlined-link', src: 'static/restaurant.svg', label: 'Рестораны' }).render();
-    new Link(linkArea, { className: 'underlined-link', src: 'static/hotel.svg', label: 'Отели' }).render();
-    new Link(linkArea, { className: 'underlined-link', src: 'static/attraction.svg', label: 'Развлечения' }).render();
+    new Link(linkArea,  {
+      className: 'underlined-link', src: 'static/restaurant.svg', label: 'Рестораны', 
+    }).render();
+    new Link(linkArea, {
+      className: 'underlined-link', src: 'static/hotel.svg', label: 'Отели', 
+    }).render();
+    new Link(linkArea, {
+      className: 'underlined-link', src: 'static/attraction.svg', label: 'Развлечения', 
+    }).render();
 
     const searchbarArea = document.getElementById('form-search') as HTMLElement;
     new Input(searchbarArea, {
@@ -35,7 +41,9 @@ class MainSearch extends Base {
       placeholder: 'Всё, что душе угодно...',
     }).render();
     const searchbarDiv = document.getElementById('searchbar') as HTMLElement;
-    new Button(searchbarDiv, { type: 'submit', label: 'Поиск' }).render();
+    new Button(searchbarDiv, {
+      type: 'submit', label: 'Поиск', 
+    }).render();
   }
 }
 

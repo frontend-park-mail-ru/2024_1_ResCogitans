@@ -43,7 +43,9 @@ class SightPage extends Base {
 
       if (this.userData === null) {
         userReviewDiv.remove();
-        new Button(reviewsDiv, { className : 'button-primary', id : 'button-login-redirect', label : 'Войти', url : '/login' }).render();
+        new Button(reviewsDiv, {
+          className : 'button-primary', id : 'button-login-redirect', label : 'Войти', url : '/login', 
+        }).render();
       }
     } else {
       response.forEach((review) => {
@@ -113,7 +115,9 @@ class SightPage extends Base {
         const feedback = reviewFormTextArea;
         const userID = this.userData.userID;
         const rating = stars.rating;
-        const requestBody = { userID, rating, feedback : feedback.value };
+        const requestBody = {
+          userID, rating, feedback : feedback.value, 
+        };
 
         if (!this.validateFeedback(feedback, reviewForm)) {
           return;
@@ -157,7 +161,9 @@ class SightPage extends Base {
           return;
         } else {
           const rating = editStars.rating;
-          const body = { rating : rating, feedback : feedback, userID : userID };
+          const body = {
+            rating : rating, feedback : feedback, userID : userID, 
+          };
 
           this.formErrorHandler.clearError(editDialog);
           post(ROUTES.sights.editComment(this.id, commentID), body).then((responseDeleteReview) => {

@@ -31,7 +31,9 @@ class SignupForm extends AuthorizationForm {
     this.enablePasswordVisibilityButtons();
 
     const registrationForm = document.getElementById('registration-form') as HTMLDivElement;
-    new Button(registrationForm, { id: 'button-submit', label: 'Зарегистрироваться', type: 'submit' }).render();
+    new Button(registrationForm, {
+      id: 'button-submit', label: 'Зарегистрироваться', type: 'submit', 
+    }).render();
     const submitButton = document.getElementById('button-submit') as HTMLButtonElement;
     submitButton.disabled = true;
 

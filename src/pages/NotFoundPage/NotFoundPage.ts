@@ -19,7 +19,9 @@ class NotFoundPage extends Base {
     const header = document.getElementById('header') as HTMLDivElement;
     const notfound = document.getElementById('notfound') as HTMLDivElement;
     new Header(header).render();
-    new Button(notfound, { id: 'back-button', label: 'На главную' }).render();
+    new Button(notfound, {
+      id: 'back-button', label: 'На главную', 
+    }).render();
 
     const backButton = document.getElementById('back-button') as HTMLButtonElement;
     backButton.addEventListener('click', () => {

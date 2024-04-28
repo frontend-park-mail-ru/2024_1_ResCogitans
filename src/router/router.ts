@@ -41,7 +41,9 @@ class Router {
       path = '/' + path;
     }
     if (window.location.pathname !== path) {
-      window.history.pushState({ params }, '', path);
+      window.history.pushState({
+        params, 
+      }, '', path);
     }
     this.changeLocation();
   }
@@ -86,4 +88,6 @@ class Router {
  
 
 const router = new Router(routesList);
-export { router };
+export {
+  router, 
+};
