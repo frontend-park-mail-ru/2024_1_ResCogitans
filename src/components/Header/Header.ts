@@ -63,7 +63,7 @@ class Header extends Base {
       });
     }
 
-      const iframe = this.parent.querySelector('.iframe-container') as HTMLDivElement;
+    const iframe = this.parent.querySelector('.iframe-container') as HTMLDivElement;
   }
 }
 

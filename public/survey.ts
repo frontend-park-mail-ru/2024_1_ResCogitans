@@ -45,10 +45,10 @@ class SurveyForm {
 
         get('review/check').then((questionsResponse) => {
             this.questionData = questionsResponse.data;
-            console.log(this.questionData.flag);
             if (this.questionData.flag === false) {
-                this.parent.classList.add('survey-hidden');
                 return;
+            } else {
+                this.parent.classList.remove('survey-hidden');
             }
             this.renderSurveyBegin();
         })
@@ -74,7 +74,7 @@ class SurveyForm {
         if (id > 0) {
             const questionID = this.questionData.questions[id - 1].questionID;
             const rating = this.stars.rating
-            this.surveyData.push( { questionID, rating });
+            this.surveyData[( { questionID, rating });
         }
         
         if (id >= this.questionData.questions.length) {
@@ -139,6 +139,7 @@ class SurveyForm {
 
 
         buttonSubmit.addEventListener('click', () => {
+            console.log(this.surveyData);
             this.surveyData.forEach((elem) => {
                 post('review/create', elem);
             })
