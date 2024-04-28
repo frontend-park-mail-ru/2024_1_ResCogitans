@@ -27,9 +27,9 @@ class SurveyPage extends Base {
     getAverageSurvey().then((surveyList) => {        
     const surveyDiv = document.querySelector('.survey-statistics') as HTMLDivElement;
 
-    if (surveyList.status === 200 && surveyList.data.surveys !== null) {
-      surveyList.data.surveys.forEach((survey) => new SurveyAnswerPreview(surveyDiv, survey).render());
-    }
+      if (surveyList.status === 200 && surveyList.data !== null) {
+        surveyList.data.forEach((survey) => new SurveyAnswerPreview(surveyDiv, survey).render());
+      }
     });
   }
 }

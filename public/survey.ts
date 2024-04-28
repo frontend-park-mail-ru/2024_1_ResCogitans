@@ -50,6 +50,7 @@ class SurveyForm {
             } else {
                 this.parent.classList.remove('survey-hidden');
             }
+            this.parent.classList.remove('survey-hidden');
             this.renderSurveyBegin();
         })
         
@@ -74,7 +75,8 @@ class SurveyForm {
         if (id > 0) {
             const questionID = this.questionData.questions[id - 1].questionID;
             const rating = this.stars.rating
-            this.surveyData[( { questionID, rating });
+            const userID = this.userData.id;
+            this.surveyData.push( { userID : userID, questionID, rating });
         }
         
         if (id >= this.questionData.questions.length) {

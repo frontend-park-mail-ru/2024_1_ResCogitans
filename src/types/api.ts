@@ -73,6 +73,7 @@ export interface SurveyQuestion {
 }
 
 export interface SurveyGrade {
+  userID : number;
   questionID: number,
   rating: number,
 }
@@ -84,6 +85,6 @@ export interface SurveyQuestionData<T> {
 export interface SurveyStatisticQuestion {
   id: number,
   text: string,
-  userGrade : number,
-  averageGrade : number,
+  UserGrade : number,
+  AverageGrade : number,
 }
