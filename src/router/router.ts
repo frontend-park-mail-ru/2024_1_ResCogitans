@@ -32,15 +32,16 @@ class Router {
 
 
     document.addEventListener('click', (e) => {
-      let href: string;
-      if (e.target.tagName === 'A') {
+      let href: string | null;
+      const target = e.target as HTMLElement;
+      if (target.tagName === 'A' || target.tagName === 'BUTTON') {
         e.preventDefault();
-        href = e.target.getAttribute('href');
-      } else if (e.target.tagName === 'BUTTON' || e.target.tagName === 'IMG') {
-        const parentAnchorElement = e.target.closest('a');
+        href = target.getAttribute('href');
+      } else if (target.tagName === 'BUTTON' || target.tagName === 'IMG') {
+        const parentAnchorElement = target.closest('a');
         if (parentAnchorElement !== null && parentAnchorElement !== undefined) {
           e.preventDefault();
-          href = e.target.closest('a').getAttribute('href');
+          href = target.closest('a').getAttribute('href');
         }
       } else {
         return;

@@ -59,14 +59,14 @@ class LoginForm extends AuthorizationForm {
     },
     );
 
-    loginForm.addEventListener('click', () => {
+    loginForm.addEventListener('input', () => {
       const elementsWithError = document.querySelectorAll('.has-error');
       elementsWithError.forEach(element => {
         element.classList.remove('has-error');
       });
     }); 
 
-    loginForm.addEventListener('submit', (e : Event) => {
+    submitButton.addEventListener('click', (e : Event) => {
       e.preventDefault();
       const requestBody = {
         username: emailInput.value,

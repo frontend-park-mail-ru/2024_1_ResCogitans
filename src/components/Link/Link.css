@@ -15,7 +15,7 @@ a {
     margin-right: 15px;
 }
 
-.underlined-link:hover {
+.underlined-link:hover, .active {
     border-bottom: 3px solid var(--main-text-color);
     opacity: 80%;
     padding-bottom: 0px;
