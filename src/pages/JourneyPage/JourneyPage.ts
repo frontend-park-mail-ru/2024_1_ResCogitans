@@ -170,12 +170,16 @@ class JourneyPage extends Base {
           const userID = this.userData.userID;
           const nameInput = document.querySelector('input') as HTMLInputElement;
           const descriptionInput = document.querySelector('textarea') as HTMLTextAreaElement;
-          const body = { userID: userID, name: nameInput.value, description: descriptionInput.value };
+          const body = {
+            userID: userID, name: nameInput.value, description: descriptionInput.value, 
+          };
 
           post('trip/create', body).then((response) => {
             if (response.status === 200) {
               this.tripID = response.data.id;
-              post(`trip/${this.tripID}/sight/add`, { sightIDs: this.IDs }).then(() => {
+              post(`trip/${this.tripID}/sight/add`, {
+                sightIDs: this.IDs, 
+              }).then(() => {
                 this.type = 'view';
                 router.go(ROUTES.journey.view(this.tripID));
               });
@@ -266,7 +270,9 @@ class JourneyPage extends Base {
                 const userID = this.userData.userID;
                 const nameInput = document.querySelector('input') as HTMLInputElement;
                 const descriptionInput = document.querySelector('textarea') as HTMLTextAreaElement;
-                const body = { userID: userID, name: nameInput.value, description: descriptionInput.value, sightIDs: this.IDs };
+                const body = {
+                  userID: userID, name: nameInput.value, description: descriptionInput.value, sightIDs: this.IDs, 
+                };
 
                 post(`trip/${this.journey.id}/sight/add`, body).then((createJourneyResponse) => {
                   if (createJourneyResponse.status === 500) {

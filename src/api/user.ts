@@ -5,7 +5,9 @@ import { get, post } from '@api/base';
 export async function authorize(endpoint : string, body? : UserAuthRequest): Promise<WithResponse<UserAuthResponseData>> {
   const response = await fetch(`${ENV_CONFIG.API_URL}/api/${endpoint}`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json', 
+    },
     credentials: 'include',
     body: JSON.stringify(body),
   });
@@ -33,7 +35,9 @@ export async function imageUpload(endpoint : string, body? : FormData) {
   });
   const responseData = await response.json();
  
-  return { data: responseData, status: response.status };
+  return {
+    data: responseData, status: response.status, 
+  };
 }
 
 export async function getUserProfile(userId: number) {
@@ -50,5 +54,7 @@ export async function editProfile(userId: number, username: string, bio: string)
 }
 
 export async function resetPassword(userId: number, password: string) {
-  return await post(`profile/${userId}/reset_password`, { password: password }) as WithResponse<UserProfile>;
+  return await post(`profile/${userId}/reset_password`, {
+    password: password, 
+  }) as WithResponse<UserProfile>;
 }

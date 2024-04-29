@@ -1,13 +1,7 @@
 const express = require('express');
 const path = require('path');
-const https = require('https');
+const http = require('http');
 const fs = require('fs');
-
-const options = {
- key: fs.readFileSync('../Personal/key.pem'),
- passphrase: 'exg0rd',
- cert: fs.readFileSync('../Personal/cert.pem')
-};
 
 const app = express();
 
@@ -22,7 +16,6 @@ app.all('*', (req, res) => {
 
 const PORT = 3000;
 
-// Create an HTTPS service using the options and the Express app
-https.createServer(options, app).listen(PORT, () => {
+http.createServer(app).listen(PORT, () => {
  console.log(`Server started on port ` + PORT);
 });

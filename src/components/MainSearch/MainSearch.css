@@ -6,14 +6,14 @@ h1 {
     margin-top: 50px;
 }
 
-#search-block {
+#underlined-block {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
 }
 
-#search-links {
+#underlined-links {
     display: flex;
     align-items: center;
     justify-content: center;

@@ -23,7 +23,9 @@ class Header extends Base {
   * @param {Array<string>} labels - Массив меток для ссылок.
   */
   renderLinkBlock(parent : HTMLElement, labels : Array<string>) {
-    labels.forEach((label) => new Link(parent, { label, className: 'search-link' }).render());
+    labels.forEach((label) => new Link(parent, {
+      label, className: 'underlined-link', 
+    }).render());
   }
 
   /**
@@ -43,8 +45,12 @@ class Header extends Base {
       const username = this.userData.username;
       const userID = this.userData.userID;
       
-      new Link(profileBlock, { className: 'user-link', label: username, url : `/profile/${userID}` }).render();
-      new Button(profileBlock, { id: 'logout', label: 'Выйти' }).render();
+      new Link(profileBlock, {
+        className: 'user-link', label: username, url : `/profile/${userID}`, 
+      }).render();
+      new Button(profileBlock, {
+        id: 'logout', label: 'Выйти', 
+      }).render();
 
       const logoutButton = document.getElementById('logout') as HTMLElement;
 
@@ -54,7 +60,9 @@ class Header extends Base {
         router.go(urls.base);
       });
     } else {
-      new Button(profileBlock, { className: 'login-button', id: 'button-login', label: 'Войти' }).render();
+      new Button(profileBlock, {
+        className: 'login-button', id: 'button-login', label: 'Войти', 
+      }).render();
       const loginButton = document.getElementById('button-login');
       loginButton?.addEventListener('click', () => {
         router.go('login');

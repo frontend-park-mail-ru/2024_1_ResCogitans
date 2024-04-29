@@ -27,7 +27,9 @@ class Link extends Base {
   * @param {string} options.url - URL, на который будет осуществлен редирект после нажатия.
   * @param {string} [options.src=''] - URL изображения для ссылки.
   */
-  constructor(parent : HTMLElement, { id, className, label, url, src } : 
+  constructor(parent : HTMLElement, {
+    id, className, label, url, src, 
+  } : 
   { id? : string, 
     className? : string, 
     label? : string, 

@@ -43,7 +43,9 @@ class SightPage extends Base {
 
       if (this.userData === null) {
         userReviewDiv.remove();
-        new Button(reviewsDiv, { className : 'button-primary', id : 'button-login-redirect', label : 'Войти', url : '/login' }).render();
+        new Button(reviewsDiv, {
+          className : 'button-primary', id : 'button-login-redirect', label : 'Войти', url : '/login', 
+        }).render();
       }
     } else {
       response.forEach((review) => {
@@ -56,7 +58,32 @@ class SightPage extends Base {
     }  
   }
 
+  renderSight() {
+    const name = document.querySelector('.no-margin') as HTMLHeadingElement;
+    name.textContent = this.sight.name;
+
+    const photo = document.querySelector('.sight-container img') as HTMLImageElement;
+    photo.src = `/${this.sight.url}`;
+
+    const location = document.querySelector('h2') as HTMLHeadingElement;
+    location.textContent = `${this.sight.city}, ${this.sight.country}`;
+
+    const description = document.querySelector('p') as HTMLParagraphElement;
+    description.textContent = this.sight.description;
+
+    const rating = document.querySelector('.rating span') as HTMLSpanElement;
+    rating.textContent = this.sight.rating.toString(10);
+
+  }
+
+
   render() {
+
+    this.preRender();
+
+    const header = document.getElementById('header') as HTMLElement;
+    new Header(header).render();
+
     getSight(this.id).then((responseSight) => {
       responseSight.data.sight.rating = (responseSight.data.sight.rating).toFixed(2);
       this.sight = responseSight.data.sight;
@@ -66,15 +93,13 @@ class SightPage extends Base {
         return;
       }
 
-      this.preRender();
-
-      const header = document.getElementById('header') as HTMLElement;
-      new Header(header).render();
+      this.renderSight();
 
       document.body.classList.remove('auth-background');
    
       const ratingDiv = document.querySelector('.rating') as HTMLDivElement;
       new Stars(ratingDiv, this.sight.rating).render(); 
+
 
       const deleteDialog = document.querySelector('.delete-dialog') as HTMLDialogElement;
       const editDialog = document.querySelector('.edit-dialog') as HTMLDialogElement;
@@ -113,7 +138,9 @@ class SightPage extends Base {
         const feedback = reviewFormTextArea;
         const userID = this.userData.userID;
         const rating = stars.rating;
-        const requestBody = { userID, rating, feedback : feedback.value };
+        const requestBody = {
+          userID, rating, feedback : feedback.value, 
+        };
 
         if (!this.validateFeedback(feedback, reviewForm)) {
           return;
@@ -157,7 +184,9 @@ class SightPage extends Base {
           return;
         } else {
           const rating = editStars.rating;
-          const body = { rating : rating, feedback : feedback, userID : userID };
+          const body = {
+            rating : rating, feedback : feedback, userID : userID, 
+          };
 
           this.formErrorHandler.clearError(editDialog);
           post(ROUTES.sights.editComment(this.id, commentID), body).then((responseDeleteReview) => {

@@ -31,7 +31,9 @@ import template from '@templates/Button.hbs';
   * @param {string} [options.url=''] - URL, на который будет осуществлен редирект после нажатия.
   * @param {string} [options.type=''] - Тип кнопки (например, 'submit').
   */
-  constructor(parent : HTMLElement, { id, label, className, img, url, type } : 
+  constructor(parent : HTMLElement, {
+    id, label, className, img, url, type, 
+  } : 
   { id? : string,
     label? : string,
     className? : string,

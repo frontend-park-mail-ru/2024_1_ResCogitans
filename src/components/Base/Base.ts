@@ -4,19 +4,19 @@ class Base {
 
   parent: HTMLElement;
 
-  userData : UserProfile;
+  userData: UserProfile;
 
-  isAuth : boolean;
+  isAuth: boolean;
 
-  template : HandlebarsTemplateDelegate;
+  template: HandlebarsTemplateDelegate;
 
-  constructor(parent : HTMLElement, template : HandlebarsTemplateDelegate | undefined) {
+  constructor(parent: HTMLElement, template: HandlebarsTemplateDelegate | undefined) {
     this.parent = parent;
     this.userData = JSON.parse(localStorage.getItem('user'));
     this.template = template;
   }
 
-  preRender(element? : HTMLElement) {
+  preRender(element?: HTMLElement) {
     const html = this.template(this);
     if (element !== undefined) {
       element.insertAdjacentHTML('beforeend', html);
@@ -28,6 +28,47 @@ class Base {
   render() {
     this.preRender();
   }
+
+  createElement(
+    tagName: string,
+    attributes: { [key: string]: string },
+    content?: string,
+    insertion?: { parent: HTMLElement, position?: 'before' | 'after' | 'into', referenceElement?: HTMLElement },
+  ): HTMLElement {
+    const element = document.createElement(tagName);
+    for (const attr in attributes) {
+      if (attributes.hasOwnProperty(attr)) {
+        element.setAttribute(attr, attributes[attr]);
+      }
+    }
+    if (content) {
+      element.textContent = content;
+    }
+    if (insertion) {
+      const {
+        parent, position, referenceElement, 
+      } = insertion;
+      switch (position) {
+        case 'before':
+          parent.insertBefore(element, referenceElement || parent.firstChild);
+          break;
+        case 'after':
+          if (referenceElement) {
+            parent.insertBefore(element, referenceElement.nextSibling);
+          } else {
+            parent.appendChild(element);
+          }
+          break;
+        case 'into':
+        default:
+          parent.appendChild(element);
+          break;
+      }
+    }
+    return element;
+  }
+
+
 }
 
 export default Base;

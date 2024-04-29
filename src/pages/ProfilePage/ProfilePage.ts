@@ -10,8 +10,6 @@ import ProfileBlock from './ProfileBlock';
 import { router } from '@router/router';
 import template from '@templates/ProfilePage.hbs';
 import { getUserTrips } from '@api/journey';
-import { UserProfile } from '@types/api';
-
 
 class ProfilePage extends Base {
 
@@ -45,7 +43,9 @@ class ProfilePage extends Base {
 
       const authForm = new AuthorizationForm(this.parent, '');
 
-      const profileTemplateData = { userID: profileData.data.id, username: profileData.data.username, status: profileData.data.bio, avatar: profileData.data.avatar };
+      const profileTemplateData = {
+        userID: profileData.data.id, username: profileData.data.username, status: profileData.data.bio, avatar: profileData.data.avatar,
+      };
 
 
       const header = document.getElementById('header') as HTMLElement;
@@ -57,6 +57,7 @@ class ProfilePage extends Base {
 
       new ProfileBlock(profileBlock, profileTemplateData).render();
 
+      const profileContent = document.querySelector('.profile-content') as HTMLDivElement;
 
       const profileEditForm = document.querySelector('dialog') as HTMLDialogElement;
 
@@ -65,6 +66,75 @@ class ProfilePage extends Base {
       const cancelButton = document.querySelector('#button-cancel') as HTMLButtonElement;
       cancelButton.addEventListener('click', () => profileEditForm.close());
       const passwordInputs = document.querySelectorAll('.password') as NodeListOf<HTMLInputElement>;
+
+      // link block for journey and albums
+
+      const linkBlock = document.querySelector('#underlined-links') as HTMLDivElement;
+      const journeyLink = this.createElement('label', {
+        class: 'underlined-link',
+      }, 'Поездки', {
+        parent: linkBlock, position: 'into',
+      });
+      const albumsLink = this.createElement('label', {
+        class: 'underlined-link',
+      }, 'Альбомы', {
+        parent: linkBlock, position: 'into',
+      });
+
+      let JOURNEY_DATA;
+      const contentBlock = document.getElementById('content-block') as HTMLDivElement;
+      let createButton: HTMLElement;
+
+      journeyLink.addEventListener('click', () => {
+        profileContent.innerHTML = '';
+        if (!JOURNEY_DATA) {
+          this.createElement('h3', {}, this.isOwn ? 'Вы пока не создавали поездки' : 'Пользователь пока не создавал поездки', {
+            parent: profileContent, position: 'into',
+          });
+        } else {
+          JOURNEY_DATA.forEach((journey) => new JourneyPreview(profileContent, journey).render());
+        }
+
+        createButton.textContent = 'Создать новую поездку';
+      });
+
+      if (this.isOwn) {
+        createButton = this.createElement('a', {
+          class: 'button-primary button-link', id: 'create-button', href: '/journey/new',
+        }, 'Создать новую поездку', {
+          parent: contentBlock, position: 'after',
+        });
+      }
+
+      albumsLink.addEventListener('click', () => {
+        profileContent.innerHTML = '';
+
+        const length = 0;
+
+        if (length == 0) {
+          this.createElement('h3', {}, this.isOwn ? 'Вы пока не создавали альбомы' : 'Пользователь пока не создавал альбомы', {
+            parent: profileContent, position: 'into',
+          });
+        }
+
+        for (let i = 0; i < length; i++) {
+          const AlbumDiv = this.createElement('div', {
+            class: 'container',
+          }, '', {
+            parent: profileContent, position: 'into',
+          });
+
+          this.createElement('label', {
+            class: 'h2',
+          }, `Альбом ${i + 1}`, {
+            parent: AlbumDiv, position: 'into',
+          });
+        }
+
+        createButton.textContent = 'Создать новый альбом';
+      });
+
+      // endblock
 
       passwordInputs.forEach((input: HTMLInputElement) => input.addEventListener('input', () => {
         const parent = input.parentElement as HTMLElement;
@@ -164,13 +234,17 @@ class ProfilePage extends Base {
       );
 
       getUserTrips(this.userID).then((journeyList) => {
-        const journeyDiv = document.querySelector('.profile-journeys') as HTMLDivElement;
-
         if (journeyList.status === 200 && journeyList.data.journeys !== null) {
-          journeyDiv.innerHTML = '';
-          journeyList.data.journeys.forEach((journey) => new JourneyPreview(journeyDiv, journey).render());
+          JOURNEY_DATA = journeyList.data.journeys;
+          profileContent.innerHTML = '';
+          journeyList.data.journeys.forEach((journey) => new JourneyPreview(profileContent, journey).render());
+        } else {
+          this.createElement('h3', {}, this.isOwn ? 'Вы пока не создавали поездки' : 'Пользователь пока не создавал поездки', {
+            parent: profileContent, position: 'into',
+          });
         }
       });
+
     });
 
   }
