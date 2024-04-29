@@ -13,8 +13,6 @@ import { getSights } from '@api/sight';
 * @class
 */
 class Placelist extends Base {
-  private sightsByCategory: { [key: number]: Sight[] } = {};
-
   constructor(parent: HTMLElement) {
     super(parent, template);
   }
