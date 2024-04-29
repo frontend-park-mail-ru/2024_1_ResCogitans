@@ -201,6 +201,13 @@ class JourneyPage extends Base {
           this.isOwn = (this.userData !== null && this.userData.userID === journeyResponse.data.journey.userID);
           this.journey = journeyResponse.data.journey;
 
+          if (this.type === 'edit') {
+            if (!this.userData || this.userData.userID !== this.journey.userID) {
+              router.goBack();
+              return;
+            }
+          }
+
           this.preRender();
 
           if (journeyResponse.status === 200 && journeyResponse.data.sights !== null) {
