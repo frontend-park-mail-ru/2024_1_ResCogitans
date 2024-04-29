@@ -101,7 +101,7 @@ class ProfilePage extends Base {
       if (this.isOwn) {
         createButton = this.createElement('a', {
           class: 'button-primary button-link', id: 'create-button', href: '/journey/new',
-        }, 'Создать новую поездку', {
+        }, 'Создать поездку', {
           parent: contentBlock, position: 'after',
         });
       }
@@ -131,7 +131,7 @@ class ProfilePage extends Base {
           });
         }
 
-        createButton.textContent = 'Создать новый альбом';
+        createButton.textContent = 'Создать альбом';
       });
 
       // endblock
