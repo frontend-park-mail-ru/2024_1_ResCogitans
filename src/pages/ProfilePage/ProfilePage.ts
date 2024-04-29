@@ -83,7 +83,15 @@ class ProfilePage extends Base {
 
       let JOURNEY_DATA;
       const contentBlock = document.getElementById('content-block') as HTMLDivElement;
-      let createButton: HTMLElement;
+      let createButton: HTMLButtonElement;
+
+      if (this.isOwn) {
+        createButton = this.createElement('button', {
+          class: 'button-primary button-link', id: 'create-button', href: '/journey/new',
+        }, 'Создать поездку', {
+          parent: contentBlock, position: 'after',
+        }) as HTMLButtonElement;
+      }
 
       journeyLink.addEventListener('click', () => {
         profileContent.innerHTML = '';
@@ -96,15 +104,11 @@ class ProfilePage extends Base {
         }
 
         createButton.textContent = 'Создать новую поездку';
+        albumsLink.classList.remove('active');
+        journeyLink.classList.add('active');
+        createButton.setAttribute('href', '/journey/new');
       });
 
-      if (this.isOwn) {
-        createButton = this.createElement('a', {
-          class: 'button-primary button-link', id: 'create-button', href: '/journey/new',
-        }, 'Создать поездку', {
-          parent: contentBlock, position: 'after',
-        });
-      }
 
       albumsLink.addEventListener('click', () => {
         profileContent.innerHTML = '';
@@ -132,6 +136,9 @@ class ProfilePage extends Base {
         }
 
         createButton.textContent = 'Создать альбом';
+        albumsLink.classList.add('active');
+        journeyLink.classList.remove('active');
+        createButton.setAttribute('href', '/albums/new');
       });
 
       // endblock
