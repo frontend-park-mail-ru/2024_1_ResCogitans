@@ -3,6 +3,7 @@ import Button from '@components/Button/Button';
 import Input from '@components/Input/Input';
 import Base from '@components/Base/Base';
 import template from '@templates/MainSearch.hbs';
+import { getCategories } from '@api/sight';
 
 
 /**
@@ -26,31 +27,21 @@ class MainSearch extends Base {
     this.preRender(searchBlock);
    
     const linkArea = document.getElementById('underlined-links') as HTMLElement;
-    const categories = [
-      {
-        label: 'Все места', category: 0, id: 'all-places',
-      },
-      {
-        label: 'Рестораны', category: 1, id: 'restaurants',
-      },
-      {
-        label: 'Отели', category: 2, id: 'hotels',
-      },
-      {
-        label: 'Развлечения', category: 3, id: 'entertainments',
-      },
-    ];
-
-    categories.forEach(category => {
-      const link = new Link(linkArea, {
-        className: 'underlined-link',
-        label: category.label,
-        id: category.id,
+    getCategories().then((categoryResponse) => {
+      const categories = categoryResponse.data.categories.concat([{
+        name: 'Все места', id: 0,
+      }]);
+      categories.forEach(category => {
+        const link = new Link(linkArea, {
+          className: 'underlined-link',
+          label: category.name,
+          id: `category-${category.id}`,
+        });
+        link.render();
+        document.querySelector(`#category-${category.id}`)?.addEventListener('click', () => this.categoryChangeCallback(category.id));
       });
-      link.render();
-      document.querySelector(`#${category.id}`)?.addEventListener('click', () => this.categoryChangeCallback(category.category));
     });
-
+    
     const searchbarArea = document.getElementById('form-search') as HTMLElement;
     new Input(searchbarArea, {
       id: 'searchbar',
