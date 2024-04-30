@@ -40,3 +40,8 @@ a {
     color:  black;
     font-weight: 800;
 }
+
+.secondary {
+    font-weight: 100;
+    color: #131313;
+}

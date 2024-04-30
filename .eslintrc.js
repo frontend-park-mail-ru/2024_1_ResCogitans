@@ -24,6 +24,7 @@ module.exports = {
   },
   rules: {
     'class-methods-use-this': 'off',
+    '@typescript-eslint/no-shadow' : 'off',
     'import/extensions': 'off',
     'import/no-extraneous-dependencies': 'off',
     "eol-last": ["error", "always"],

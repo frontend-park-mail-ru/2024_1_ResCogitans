@@ -1,5 +1,4 @@
 .container {
-    max-width: 800px;
     margin: 20px auto;
     background-color: #fff;
     border-radius: 10px;
@@ -34,11 +33,6 @@
     margin-bottom: 5px;
 }
 
-textarea {
-    margin: 10px;
-    font-size: 16px;
-}
-
 #rate {
     width: 40px;
 }
@@ -48,11 +42,6 @@ textarea {
     flex-direction: column;
     gap: 10px;
     align-items: flex-end;
-}
-
-dialog {
-    border: 3px solid var(--primary-color);
-    border-radius: 20px;
 }
 
 menu {

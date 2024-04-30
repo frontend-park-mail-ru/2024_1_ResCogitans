@@ -52,16 +52,18 @@ class JourneyPage extends Base {
   }
 
   renderDeletePlaceButton(id: string) {
-    const deleteButton = document.createElement('button');
-    deleteButton.classList.add('button', 'button-primary', 'top-right');
-    deleteButton.textContent = 'X';
+
+    const currentCard = document.querySelector(`#card-${id}`) as HTMLDivElement;
+    const deleteButton = this.createElement('button', {
+      class: 'button button-primary top-right', 
+    }, 'X', {
+      parent : currentCard, 
+    });
 
     deleteButton.addEventListener('click', () => {
       this.removeCard(id);
     });
-
-    const currentCard = document.querySelector(`#card-${id}`) as HTMLDivElement;
-    currentCard.appendChild(deleteButton);
+  
   }
 
   removeCard(id: string) {

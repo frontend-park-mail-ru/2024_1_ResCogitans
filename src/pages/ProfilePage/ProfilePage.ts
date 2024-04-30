@@ -245,6 +245,7 @@ class ProfilePage extends Base {
           JOURNEY_DATA = journeyList.data.journeys;
           profileContent.innerHTML = '';
           journeyList.data.journeys.forEach((journey) => new JourneyPreview(profileContent, journey).render());
+          journeyLink.classList.add('active');
         } else {
           this.createElement('h3', {}, this.isOwn ? 'Вы пока не создавали поездки' : 'Пользователь пока не создавал поездки', {
             parent: profileContent, position: 'into',
