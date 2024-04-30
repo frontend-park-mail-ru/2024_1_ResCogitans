@@ -113,19 +113,19 @@ class AlbumPage extends Base {
     }
 
     const imagesAmount = photoContainer.querySelectorAll('div').length;
-    window.addEventListener('keydown', (key) => {
+    document.addEventListener('keydown', (key) => {
       const scrollWidth = photoContainer.scrollWidth;
       let avgScroll = scrollWidth / imagesAmount;
-      console.log(avgScroll);
+      console.log('avg scroll is ', avgScroll);
   
       let scr = photoContainer.scrollLeft;
-      console.log(scr);
+      console.log('scroll before ', scr);
       if (key.key === 'ArrowLeft') {
-        if (photoContainer.scrollLeft - avgScroll > 0) photoContainer.scrollLeft -= avgScroll;
+        if (photoContainer.scrollLeft - avgScroll >= -5) photoContainer.scrollLeft -= avgScroll;
       } else if (key.key === 'ArrowRight') {
         if (photoContainer.scrollLeft + avgScroll < scrollWidth) photoContainer.scrollLeft += avgScroll;
       }
-      console.log(scr);
+      console.log('scroll after ', scr);
     });
     
 
