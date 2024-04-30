@@ -56,7 +56,7 @@ class Base {
           if (referenceElement) {
             parent.insertBefore(element, referenceElement.nextSibling);
           } else {
-            parent.appendChild(element);
+            parent.insertAdjacentElement('afterend', element);
           }
           break;
         case 'into':

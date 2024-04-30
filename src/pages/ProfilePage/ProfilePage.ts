@@ -19,9 +19,9 @@ class ProfilePage extends Base {
 
   form: AuthorizationForm;
 
-  constructor(parent: HTMLElement) {
+  constructor(parent: HTMLElement, params : unknown) {
     super(parent, template);
-    this.userID = parseInt(arguments[1][0]);
+    this.userID = parseInt(params[0]);
   }
 
   render() {
@@ -67,7 +67,6 @@ class ProfilePage extends Base {
       cancelButton.addEventListener('click', () => profileEditForm.close());
       const passwordInputs = document.querySelectorAll('.password') as NodeListOf<HTMLInputElement>;
 
-      // link block for journey and albums
 
       const linkBlock = document.querySelector('#underlined-links') as HTMLDivElement;
       const journeyLink = this.createElement('label', {

@@ -28,10 +28,11 @@ type Routes = Record<string, new (content: HTMLElement, ...args: any[]) => Page>
 class Router {
   routes: Routes;
 
+  params : {};
+
   constructor(routes: Routes) {
     this.routes = routes;
     window.addEventListener('popstate', () => this.changeLocation());
-
 
     document.addEventListener('click', (e) => {
       let href: string | null;
@@ -94,10 +95,11 @@ class Router {
     let path = window.location.pathname;
     const PageConstructorFromRoutes = this.routes[path.split('/')[1]];
     const content = this.clearContent();
-    const params = path.split('/').slice(2);
+    const paramArray = path.split('/').slice(2);
+    this.params = paramArray;
 
     if (PageConstructorFromRoutes) {
-      const page = new PageConstructorFromRoutes(content, params);
+      const page = new PageConstructorFromRoutes(content, this.params);
       page.render();
     } else {
       const PageConstructorNotFound = this.routes['404'];

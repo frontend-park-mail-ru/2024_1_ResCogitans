@@ -22,16 +22,66 @@
 
 #image-dialog {
     position: relative;
+    max-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    text-align: center;
+}
 
-    & img {
-        max-width: min(600px, 60vw);
-        height: auto;
+.image-dialog-image {
+    max-height: 75vh;
+    max-width: min(600px, 60vw);
+}
+
+.fullscreen {
+    background-color: black;
+    width: 100vw;
+    height: 105vh;
+    object-fit: contain;
+    border-radius: 0;
+
+    & button:focus {
+        outline: none;
     }
 }
 
+dialog button {
+    margin-top: 10px;
+}
+
+
 .photo-main {
     border: 5px solid var(--primary-color);
+}
+
+.scroll-container {
+    background-color: black;
+    padding: 0;
+    display: flex;
+    max-height: 630px;
+    overflow-y: hidden;
+    scroll-snap-type: x;
+    overflow-x: auto;
+    align-items: center;
+}
+
+
+.scroll-image {
+    flex: 0 0 100vw;
+    object-fit: contain;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+    text-align: center;
+
+    & img {
+        width: 100vw; /* Ensure image fits within the container width */
+        max-height: 600px; /* Ensure image fits within the container height */
+        object-fit: contain; /* Maintain aspect ratio without cropping */
+    }
+
+    & label {
+        color: white;
+        font-size: 18px;
+    }
 }
