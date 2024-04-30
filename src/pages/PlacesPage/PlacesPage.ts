@@ -29,7 +29,7 @@ class PlacesPage extends Base {
     new Header(header).render();
   
     const placelist = new Placelist(places);
-    const mainSearchInstance = new MainSearch(mainsearch, placelist.filterByCategory);
+    const mainSearchInstance = new MainSearch(mainsearch, placelist.filterByCategory, placelist.filterByName);
     placelist.render();
     mainSearchInstance.render();
   }

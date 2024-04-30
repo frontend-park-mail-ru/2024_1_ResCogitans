@@ -12,12 +12,15 @@ import { getCategories } from '@api/sight';
 */
 class MainSearch extends Base {
 
-  constructor(parent: HTMLElement, categoryChangeCallback: (category: number) => void) {
+  constructor(parent: HTMLElement, categoryChangeCallback: (category: number) => void, searchChangeCallback: (name: string) => void) {
     super(parent, template);
     this.categoryChangeCallback = categoryChangeCallback;
+    this.searchChangeCallback = searchChangeCallback;
   }
 
   categoryChangeCallback: (category: number) => void;
+
+  searchChangeCallback: (name: string) => void;
 
   /**
   * Рендерит основное поле поиска в DOM, включая ссылки и поле ввода.
@@ -51,8 +54,21 @@ class MainSearch extends Base {
     }).render();
     const searchbarDiv = document.getElementById('searchbar') as HTMLElement;
     new Button(searchbarDiv, {
-      type: 'submit', label: 'Поиск', 
+      label: 'Поиск', id: 'main-search-button',
     }).render();
+
+    const inputElement = searchbarDiv.querySelector('input');
+    inputElement?.addEventListener('keypress', (event) => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        this.searchChangeCallback(inputElement.value);
+      }
+    });
+    
+    document.querySelector('#main-search-button')?.addEventListener('click', (event) => {
+      event.preventDefault();
+      this.searchChangeCallback(inputElement.value);
+    });
   }
 }
 
