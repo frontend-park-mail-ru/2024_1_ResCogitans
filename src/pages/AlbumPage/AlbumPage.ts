@@ -5,16 +5,16 @@ import AuthorizationForm from '@components/Form/AuthorizationForm';
 
 
 interface Photo {
-  id : number,
-  url : string,
+  id: number,
+  url: string,
   description: string,
 }
 
-const PHOTOS : Photo[] = [
+const PHOTOS: Photo[] = [
   {
     id: 1,
     url: '/public/1.jpg',
-    description : 'sample1',
+    description: 'sample1',
   },
 ];
 
@@ -23,7 +23,7 @@ for (let i = 2; i < 20; i++) {
   PHOTOS.push({
     id: i,
     url: `/public/${i}.jpg`,
-    description : `Фото${i}`,
+    description: `Фото${i}`,
   });
 }
 
@@ -38,7 +38,9 @@ class AlbumPage extends Base {
 
   params: AlbumParams;
 
-  imagesAmount : number;
+  imagesAmount: number;
+
+  width : number;
 
   constructor(parent: HTMLElement, params: AlbumParams) {
     super(parent, template);
@@ -47,10 +49,55 @@ class AlbumPage extends Base {
     this.params = {
       id: params[1], type: params[0],
     };
+    this.width = window.innerWidth;
 
   }
 
-  updateModal(img : Photo, imageDialog : HTMLDialogElement) : number {
+  swipeHandler(swipeArea : HTMLElement) {
+
+    let startX = 0;
+    let endX = 0;
+
+    swipeArea.addEventListener('touchstart', (e) => {
+      startX = e.touches[0].clientX;
+    });
+
+    swipeArea.addEventListener('touchmove', (e) => {
+      endX = e.touches[0].clientX;
+    });
+
+    function handleSwipe() {
+      const swipeThreshold = 100;
+
+      if (endX - startX > swipeThreshold) {
+        document.dispatchEvent(new KeyboardEvent('keydown', {
+          key: 'ArrowLeft', 
+        } )); 
+      } else if (startX - endX > swipeThreshold) {
+        document.dispatchEvent(new KeyboardEvent('keydown', {
+          key: 'ArrowRight', 
+        } )); 
+      }
+    }
+    
+    swipeArea.addEventListener('touchend', () => {
+      handleSwipe();
+    });
+  }
+
+  updateModal(img: Photo, imageDialog: HTMLDialogElement): number {
+    const descriptionForPhones = imageDialog.querySelector('#mobile-description') as HTMLParagraphElement;
+    if (this.width <= 480) {
+      if (descriptionForPhones) {
+        descriptionForPhones.textContent = `${img.description}`;
+      } else {
+        this.createElement('p', {
+          id : 'mobile-description', 
+        }, `${img.description}`, {
+          parent: imageDialog,
+        }) as HTMLParagraphElement;
+      }
+    }
     const modalImage = imageDialog.querySelector('img') as HTMLImageElement;
     modalImage.src = img.url;
 
@@ -70,6 +117,8 @@ class AlbumPage extends Base {
     imageDialog.classList.add('fullscreen');
     imageDialog.querySelector('#image-content').remove();
 
+    this.swipeHandler(imageDialog);
+
 
     const photoContainer = document.getElementById('photo-container') as HTMLDivElement;
     photoContainer.classList.add('scroll-container');
@@ -78,17 +127,18 @@ class AlbumPage extends Base {
     this.imagesAmount = PHOTOS.length;
 
     const closeButton = this.createElement('button', {
-      class : 'top-right', 
+      class: 'top-right',
     }, '❌', {
-      parent : imageDialog, 
+      parent: imageDialog,
     });
     const photoOutOf = this.createElement('label', {
-      class : 'top-left', 
-    }, `Фото из ${ this.imagesAmount }`, {
-      parent : imageDialog, 
+      class: 'top-left',
+    }, `Фото из ${this.imagesAmount}`, {
+      parent: imageDialog,
     });
 
     closeButton.addEventListener('click', () => {
+      document.body.classList.remove('scroll-disabled');
       imageDialog.close();
     });
 
@@ -112,9 +162,9 @@ class AlbumPage extends Base {
       });
 
       const imageDescription = this.createElement('p', {
-        class : 'no-margin', 
+        class: 'no-margin',
       }, img.description, {
-        parent : photoDiv, position : 'into', 
+        parent: photoDiv, position: 'into',
       });
 
       photoContainer.appendChild(photoDiv);
@@ -122,8 +172,8 @@ class AlbumPage extends Base {
     }
 
     let curImageIndex = 1;
-    
-    photoContainer.addEventListener('click', (e : Event) => {
+
+    photoContainer.addEventListener('click', (e: Event) => {
       if (e.target.tagName === 'IMG') {
         imageDialog.showModal();
         curImageIndex = parseInt(e.target.id) - 1;
@@ -134,23 +184,29 @@ class AlbumPage extends Base {
 
     document.addEventListener('keydown', (key) => {
       const scrollWidth = photoContainer.scrollWidth;
-      const avgScroll = scrollWidth /  this.imagesAmount;
+      const avgScroll = (scrollWidth / this.imagesAmount);
 
-      const scr = photoContainer.scrollLeft;
-
+     
+      let newScrollPosition = photoContainer.scrollLeft;
       if (key.key === 'ArrowLeft') {
-        if (scr - avgScroll >= -5) {
-          photoContainer.scrollLeft -= avgScroll;
-          this.updateModal(PHOTOS[curImageIndex -= 1], imageDialog);
+        newScrollPosition -= avgScroll;
+        if (newScrollPosition < 0) {
+          newScrollPosition = (scrollWidth + newScrollPosition);
         }
       } else if (key.key === 'ArrowRight') {
-        if (scr + avgScroll < scrollWidth) {
-          photoContainer.scrollLeft += avgScroll;
-          this.updateModal(PHOTOS[curImageIndex += 1], imageDialog);
-        }
+        newScrollPosition += avgScroll;
       }
-    });
 
+      newScrollPosition %= scrollWidth;
+      photoContainer.scrollLeft = newScrollPosition;
+     
+      curImageIndex = Math.floor(photoContainer.scrollLeft / avgScroll);
+     
+      this.updateModal(PHOTOS[curImageIndex], imageDialog);
+    });
+     
+     
+     
     return;
   }
 
