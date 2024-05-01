@@ -56,7 +56,7 @@ dialog button {
 }
 
 .scroll-container {
-    background-color: black;
+    background-color: white;
     padding: 0;
     display: flex;
     max-height: 630px;
@@ -80,8 +80,10 @@ dialog button {
         object-fit: contain; /* Maintain aspect ratio without cropping */
     }
 
-    & label {
-        color: white;
+    & p {
+        max-width: fit-content;
+        overflow-wrap: break-word;
+        color: black;
         font-size: 18px;
     }
 }

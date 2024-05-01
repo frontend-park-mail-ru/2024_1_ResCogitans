@@ -61,7 +61,7 @@ class SignupForm extends AuthorizationForm {
       });
     }); 
 
-    registrationForm.addEventListener('submit', (e : Event) => {
+    submitButton.addEventListener('click', (e : Event) => {
       e.preventDefault();
 
       const requestBody = {

@@ -10,27 +10,16 @@ const PHOTOS = [
     url: '/public/1.jpg',
     description : 'sample1',
   },
-  {
-    id: 2,
-    url: '/public/2.jpg',
-    description : 'sample2',
-  },
-  {
-    id: 3,
-    url: '/public/3.jpg',
-    description : 'текст',
-  },
-  {
-    id: 4,
-    url: '/public/4.jpg',
-    description : 'sample4',
-  },
-  {
-    id: 5,
-    url: '/public/5.jpg',
-    description : 'sample5',
-  },
 ];
+
+
+for (let i = 2; i < 20; i++) {
+  PHOTOS.push({
+    id: i,
+    url: `/public/${i}.jpg`,
+    description : `samplesamplesamplesamplesamplesamplesamplesamplesamplesamplesamplesamplesamplesamplesamplesamplesamplesamplesamplesamplesamplesample${i}`,
+  });
+}
 
 interface AlbumParams {
   id: number,
@@ -93,7 +82,7 @@ class AlbumPage extends Base {
         parent: photoDiv,
       });
 
-      const imageDescription = this.createElement('label', {
+      const imageDescription = this.createElement('p', {
         class : 'no-margin', 
       }, img.description, {
         parent : photoDiv, position : 'into', 
