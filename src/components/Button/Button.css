@@ -93,3 +93,11 @@ button > a {
     right: 10px;
     border-radius: 50%;
  }
+
+ .top-left {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    border-radius: 50%;
+    color: white;
+ }

@@ -4,7 +4,13 @@ import Header from '@components/Header/Header';
 import AuthorizationForm from '@components/Form/AuthorizationForm';
 
 
-const PHOTOS = [
+interface Photo {
+  id : number,
+  url : string,
+  description: string,
+}
+
+const PHOTOS : Photo[] = [
   {
     id: 1,
     url: '/public/1.jpg',
@@ -17,7 +23,7 @@ for (let i = 2; i < 20; i++) {
   PHOTOS.push({
     id: i,
     url: `/public/${i}.jpg`,
-    description : `samplesamplesamplesamplesamplesamplesamplesamplesamplesamplesamplesamplesamplesamplesamplesamplesamplesamplesamplesamplesamplesample${i}`,
+    description : `Фото${i}`,
   });
 }
 
@@ -32,6 +38,8 @@ class AlbumPage extends Base {
 
   params: AlbumParams;
 
+  imagesAmount : number;
+
   constructor(parent: HTMLElement, params: AlbumParams) {
     super(parent, template);
 
@@ -40,6 +48,15 @@ class AlbumPage extends Base {
       id: params[1], type: params[0],
     };
 
+  }
+
+  updateModal(img : Photo, imageDialog : HTMLDialogElement) : number {
+    const modalImage = imageDialog.querySelector('img') as HTMLImageElement;
+    modalImage.src = img.url;
+
+    const photoOutOf = imageDialog.querySelector('label') as HTMLLabelElement;
+    photoOutOf.textContent = `Фото ${img.id} из ${this.imagesAmount}`;
+    return img.id;
   }
 
   renderAsView() {
@@ -53,24 +70,35 @@ class AlbumPage extends Base {
     imageDialog.classList.add('fullscreen');
     imageDialog.querySelector('#image-content').remove();
 
-    const closeButton = this.createElement('button', {
-      class : 'top-right', 
-    }, 'X', {
-      parent : imageDialog, 
-    });
-    closeButton.addEventListener('click', () => {
-      imageDialog.close();
-    });
-
-   
 
     const photoContainer = document.getElementById('photo-container') as HTMLDivElement;
     photoContainer.classList.add('scroll-container');
     photoContainer.removeAttribute('id');
 
+    this.imagesAmount = PHOTOS.length;
+
+    const closeButton = this.createElement('button', {
+      class : 'top-right', 
+    }, '❌', {
+      parent : imageDialog, 
+    });
+    const photoOutOf = this.createElement('label', {
+      class : 'top-left', 
+    }, `Фото из ${ this.imagesAmount }`, {
+      parent : imageDialog, 
+    });
+
+    closeButton.addEventListener('click', () => {
+      imageDialog.close();
+    });
+
+
+    const modalImage = imageDialog.querySelector('img') as HTMLImageElement;
+    modalImage.classList.remove('image-dialog-image');
+    modalImage.classList.add('fullscreen');
+
     for (let img of PHOTOS) {
       const photoDiv = this.createElement('div', {
-        id: `${img.id}`,
         class: 'scroll-image',
       }, '', {
         parent: photoContainer,
@@ -78,6 +106,7 @@ class AlbumPage extends Base {
 
       const image = this.createElement('img', {
         src: img.url,
+        id: `${img.id}`,
       }, '', {
         parent: photoDiv,
       });
@@ -90,33 +119,37 @@ class AlbumPage extends Base {
 
       photoContainer.appendChild(photoDiv);
 
-      photoDiv.addEventListener('click', () => {
-        imageDialog.showModal();
-
-        const modalImage = imageDialog.querySelector('img') as HTMLImageElement;
-        modalImage.src = img.url;
-        modalImage.classList.remove('image-dialog-image');
-        modalImage.classList.add('fullscreen');
-      });
-
     }
 
-    const imagesAmount = photoContainer.querySelectorAll('div').length;
+    let curImageIndex = 1;
+    
+    photoContainer.addEventListener('click', (e : Event) => {
+      if (e.target.tagName === 'IMG') {
+        imageDialog.showModal();
+        curImageIndex = parseInt(e.target.id) - 1;
+        this.updateModal(PHOTOS[curImageIndex], imageDialog);
+      }
+      return;
+    });
+
     document.addEventListener('keydown', (key) => {
       const scrollWidth = photoContainer.scrollWidth;
-      let avgScroll = scrollWidth / imagesAmount;
-      console.log('avg scroll is ', avgScroll);
-  
-      let scr = photoContainer.scrollLeft;
-      console.log('scroll before ', scr);
+      const avgScroll = scrollWidth /  this.imagesAmount;
+
+      const scr = photoContainer.scrollLeft;
+
       if (key.key === 'ArrowLeft') {
-        if (photoContainer.scrollLeft - avgScroll >= -5) photoContainer.scrollLeft -= avgScroll;
+        if (scr - avgScroll >= -5) {
+          photoContainer.scrollLeft -= avgScroll;
+          this.updateModal(PHOTOS[curImageIndex -= 1], imageDialog);
+        }
       } else if (key.key === 'ArrowRight') {
-        if (photoContainer.scrollLeft + avgScroll < scrollWidth) photoContainer.scrollLeft += avgScroll;
+        if (scr + avgScroll < scrollWidth) {
+          photoContainer.scrollLeft += avgScroll;
+          this.updateModal(PHOTOS[curImageIndex += 1], imageDialog);
+        }
       }
-      console.log('scroll after ', scr);
     });
-    
 
     return;
   }
@@ -167,6 +200,13 @@ class AlbumPage extends Base {
         const fileType = file.type;
         const validImageTypes = ['image/gif', 'image/jpeg', 'image/png', 'image/webp'];
 
+        if (!validImageTypes.includes(fileType)) {
+          this.authForm.renderError(lowestInput, 'Выберите фото допустимых форматов: jpeg, png, webp, gif');
+          return;
+        } else {
+          this.authForm.clearError(lowestInput);
+        }
+
         if (fileCount === 1) {
           submitButton = this.createElement('button', {
             class: 'button-primary',
@@ -174,9 +214,6 @@ class AlbumPage extends Base {
           }, 'Создать альбом', {
             parent: infoContainer,
           }) as HTMLButtonElement;
-
-
-
 
           submitButton.addEventListener('click', (e: Event) => {
 
@@ -189,13 +226,6 @@ class AlbumPage extends Base {
             window.dispatchEvent(e);
           });
 
-        }
-
-        if (!validImageTypes.includes(fileType)) {
-          this.authForm.renderError(lowestInput, 'Выберите фото допустимых форматов: jpeg, png, webp, gif');
-          return;
-        } else {
-          this.authForm.clearError(lowestInput);
         }
 
         formData.append('file', file);
@@ -215,7 +245,7 @@ class AlbumPage extends Base {
 
         const deleteButton = this.createElement('button', {
           class: 'button button-primary top-right',
-        }, 'X', {
+        }, '❌', {
           parent: photoDiv,
         });
 
@@ -255,7 +285,6 @@ class AlbumPage extends Base {
         });
       }
     });
-
 
 
     saveButton.addEventListener('click', () => {
