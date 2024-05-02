@@ -5,6 +5,7 @@ button, .button-link {
     padding: 10px 10px;
     border-style: none;
     transition: all 0.25s ease-in-out;
+    margin: 5px;
 }
 
 .button-primary {
