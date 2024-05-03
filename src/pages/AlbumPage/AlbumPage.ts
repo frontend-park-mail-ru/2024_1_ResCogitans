@@ -27,9 +27,6 @@ interface Photo {
 //   });
 // }
 
-
-let PHOTOS: Photo[] = [];
-
 interface AlbumParams {
   id: number,
   type: string,
@@ -96,7 +93,7 @@ class AlbumPage extends Base {
 
     const modalImage = imageDialog.querySelector('img') as HTMLImageElement;
     modalImage.src = img.url;
-    
+
     const photoOutOf = imageDialog.querySelector('p') as HTMLParagraphElement;
     photoOutOf.textContent = `Фото ${img.id} из ${this.imagesAmount}`;
     return img.id;
@@ -111,7 +108,7 @@ class AlbumPage extends Base {
     document.body.classList.remove('auth-background');
     new Header(header).render();
 
-    const imageUploadInput = document.getElementById('upload-photo') as HTMLInputElement;
+    const imageUploadInput = document.querySelector('input') as HTMLInputElement;
     const photoContainer = document.getElementById('photo-container') as HTMLDivElement;
     const infoContainer = document.querySelector('.container') as HTMLDivElement;
     const title = infoContainer.querySelector('h1') as HTMLHeadElement;
@@ -119,6 +116,8 @@ class AlbumPage extends Base {
     const photoOutOf = imageDialog.querySelector('p') as HTMLParagraphElement;
     let deleteButton: HTMLButtonElement;
     let curImageIndex = 1;
+
+    let PHOTOS: Photo[] = [];
 
     interface ImageDescriptions {
       [key: number]: string;
@@ -141,7 +140,7 @@ class AlbumPage extends Base {
 
       this.imagesAmount = PHOTOS.length;
 
-     
+
       const modalImage = imageDialog.querySelector('img') as HTMLImageElement;
 
       for (let img of PHOTOS) {
@@ -172,119 +171,127 @@ class AlbumPage extends Base {
     };
 
     const renderAsEdit = () => {
-      const imageDescriptions: ImageDescriptions = {};
 
-      let formData = new FormData();
       const lowestInput = document.querySelector('.input') as HTMLInputElement;
       let submitButton: HTMLButtonElement;
+     
+      let formData = new FormData();
+      let fileNameHelperArray : string[] = [];
 
       imageUploadInput.addEventListener('change', (e: Event) => {
         if (imageUploadInput.files && imageUploadInput.files.length > 0) {
-          const file = imageUploadInput.files[0];
-          const fileType = file.type;
-          const validImageTypes = ['image/gif', 'image/jpeg', 'image/png', 'image/webp'];
+          const files = imageUploadInput.files;
 
-          if (!validImageTypes.includes(fileType)) {
-            this.authForm.renderError(lowestInput, 'Выберите фото допустимых форматов: jpeg, png, webp, gif');
-            return;
-          } else if (file.size > 8388608) {
-            this.authForm.renderError(lowestInput, 'Выберите фото размером меньше 8 Мб');
-            return;
-          } else {
-            this.authForm.clearError(lowestInput);
-          }
+          for (let i = 0; i < files.length; i++) {
+            const fileType = files[i].type;
+            const validImageTypes = ['image/gif', 'image/jpeg', 'image/png', 'image/webp'];
 
-
-          formData.append('file', file);
-          this.imagesAmount++;
-
-          const imgURL = URL.createObjectURL(file);
-          const photoDiv = this.createElement('div', {
-            id: `${this.imagesAmount}`,
-            class: 'scroll-image',
-          }, '', {
-            parent: photoContainer,
-          });
-
-          PHOTOS.push({
-            id: this.imagesAmount, url: imgURL, description: '',
-          });
-
-          const img = this.createElement('img', {
-            src: imgURL,
-            id: this.imagesAmount.toString(),
-          }, '', {
-            parent: photoDiv,
-          }) as HTMLImageElement;
-
-          const div = this.createElement('div', {
-            class : 'container photo-data', 
-          }, '', {
-            parent : photoDiv, 
-          });
-
-          const imageDescription = this.createElement('input', {
-            placeholder: 'Изменить описание',
-          }, '', {
-            parent: div,
-          },
-          ) as HTMLInputElement;
-
-
-          const setMainInput = this.createElement('input', {
-            type: 'checkbox',
-            id: 'setmain-input',
-          }, '', {
-            parent: div,
-          });
-
-          const setMainLabel = this.createElement('label', {
-            for: 'setmain-input',
-          }, 'Сделать главной', {
-            parent: div,
-            
-          });
-
-          if (this.imagesAmount === 1) {
-            const imageAdded = new Event('imageadded');
-            document.dispatchEvent(imageAdded);
-          }
-        
-
-          deleteButton = this.createElement('button', {
-            id: 'delete-button',
-            class: 'button',
-          }, 'Удалить фото', {
-            parent: div,
-          }) as HTMLButtonElement;
-  
-          deleteButton.addEventListener('click', (deleteEvent: Event) => {
-            this.imagesAmount--;
-            deleteEvent.stopPropagation();
-  
-            const photoId = parseInt(photoDiv.id);
-
-            photoDiv.remove();
-            PHOTOS = PHOTOS.filter((item) => item.id !== photoId);
-            PHOTOS.forEach((item, index) => {
-              item.id = index + 1;
-              const div = photoContainer.children[index] as HTMLDivElement;
-              div.id = `${index + 1}`;
-              div.querySelector('img').id = `${index + 1}`;
-            });
-
-            formData.delete('file');
-            if (this.imagesAmount === 0) {
-              const noPhotos = new Event('photosdeleted');
-              document.dispatchEvent(noPhotos);
+            if (!validImageTypes.includes(fileType)) {
+              this.authForm.renderError(lowestInput, 'Выберите фото допустимых форматов: jpeg, png, webp, gif');
+              return;
+            } else if (files[i].size > 8388608) {
+              this.authForm.renderError(lowestInput, 'Выберите фото размером меньше 8 Мб');
+              return;
+            } else {
+              this.authForm.clearError(lowestInput);
             }
 
-          });
+            this.imagesAmount++;
 
-          imageDescription.addEventListener('onfocusout', () => {
-            const photoId = parseInt(photoDiv.id);
-            PHOTOS[photoId].description = imageDescription.value;
-          });
+            formData.append(`file${this.imagesAmount}`, files[i], files[i].name);
+            fileNameHelperArray.push(`file${this.imagesAmount}`);
+            console.log(fileNameHelperArray);
+
+            const imgURL = URL.createObjectURL(files[i]);
+            const photoDiv = this.createElement('div', {
+              id: `${this.imagesAmount}`,
+              class: 'scroll-image',
+            }, '', {
+              parent: photoContainer,
+            });
+
+            PHOTOS.push({
+              id: this.imagesAmount, url: imgURL, description: '',
+            });
+
+            const img = this.createElement('img', {
+              src: imgURL,
+              id: this.imagesAmount.toString(),
+            }, '', {
+              parent: photoDiv,
+            }) as HTMLImageElement;
+
+            const div = this.createElement('div', {
+              class: 'container photo-data',
+            }, '', {
+              parent: photoDiv,
+            });
+
+            const imageDescription = this.createElement('input', {
+              placeholder: 'Изменить описание',
+            }, '', {
+              parent: div,
+            },
+            ) as HTMLInputElement;
+
+
+            const setMainInput = this.createElement('input', {
+              type: 'checkbox',
+              id: 'setmain-input',
+            }, '', {
+              parent: div,
+            });
+
+            const setMainLabel = this.createElement('label', {
+              for: 'setmain-input',
+            }, 'Сделать главной', {
+              parent: div,
+
+            });
+
+            if (this.imagesAmount === 1) {
+              const imageAdded = new Event('imageadded');
+              document.dispatchEvent(imageAdded);
+            }
+
+
+            deleteButton = this.createElement('button', {
+              id: 'delete-button',
+              class: 'button',
+            }, 'Удалить фото', {
+              parent: div,
+            }) as HTMLButtonElement;
+
+            deleteButton.addEventListener('click', (deleteEvent: Event) => {
+              this.imagesAmount--;
+
+              const photoId = parseInt(photoDiv.id);
+
+              formData.delete(fileNameHelperArray[photoId - 1]);
+
+              photoDiv.remove();
+              PHOTOS = PHOTOS.filter((item) => item.id !== photoId);
+              PHOTOS.forEach((item, index) => {
+                item.id = index + 1;
+                const div = photoContainer.children[index] as HTMLDivElement;
+                div.id = `${index + 1}`;
+                div.querySelector('img').id = `${index + 1}`;
+              });
+              fileNameHelperArray = fileNameHelperArray.filter((item, index) => index + 1 !== photoId);
+
+              if (this.imagesAmount === 0) {
+                const noPhotos = new Event('photosdeleted');
+                document.dispatchEvent(noPhotos);
+              }
+
+            });
+
+            imageDescription.addEventListener('blur', () => {
+              const photoId = parseInt(photoDiv.id);
+              PHOTOS[photoId].description = imageDescription.value;
+            });
+
+          }
 
         }
       });
@@ -302,18 +309,19 @@ class AlbumPage extends Base {
         }, 'Создать альбом', {
           parent: infoContainer,
         }) as HTMLButtonElement;
-  
+
         submitButton.addEventListener('click', (e: Event) => {
-  
-          // formData.forEach((imageFile, index) => {
-          //   formData.append(`descriptions[${index}]`, imageDescriptions[index]);
-          //   formData.append(`orders[${index}]`, orders[index]);
-          // });
+
           const responseId = 1;
-          submitButton.setAttribute('href', `/albums/${responseId}`);
-          window.dispatchEvent(e);
-        });
+          // submitButton.setAttribute('href', `/albums/${responseId}`);
          
+         
+          for (let [key, value] of formData.entries()) {
+            console.log('Name: ', key, '\n Value: ', value);
+          }
+
+        });
+
       });
 
     };
@@ -328,13 +336,13 @@ class AlbumPage extends Base {
 
       if (key.key === 'ArrowLeft') {
         newScrollPosition -= avgScroll;  // из за того что на мобилках эта херня иногда дает не 0, а -1 или -2, все ломается
-        
+
         if (Math.abs(newScrollPosition) <= 3) { // хоть где то математика пригодилась
           newScrollPosition = 0; // костылительно но окей
         }
         newScrollPosition = (scrollWidth + newScrollPosition);
         curImageIndex--;
-       
+
       } else if (key.key === 'ArrowRight') {
         newScrollPosition += avgScroll;
         curImageIndex = (curImageIndex + 1) % this.imagesAmount;
