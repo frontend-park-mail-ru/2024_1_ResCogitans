@@ -127,7 +127,7 @@ class AlbumPage extends Base {
     let deleteButton: HTMLButtonElement;
     let curImageIndex = 1;
 
-    const IDsToDelete : number[] = [];
+    const IDsToDelete = new Set();
 
     let formData = new FormData();
 
@@ -184,12 +184,11 @@ class AlbumPage extends Base {
 
         submitButton.addEventListener('click', (e: Event) => {
 
-          const name = albumName.value;
-          const description = albumDescription.value;
-          const requestBody = {
-            name : name, description : description,
-          };
-          console.log(requestBody);
+          // const name = albumName.value;
+          // const description = albumDescription.value;
+          // const requestBody = {
+          //   name : name, description : description,
+          // };
 
           // post('albums/create', requestBody).then((responseData) => {
           //   const id = responseData.data.id;
@@ -202,21 +201,16 @@ class AlbumPage extends Base {
             [img.photo.photo.id] : img.photo.photo.description,
           }));
           const descriptions = JSON.stringify(mappedDescriptions.flat());
-
           formData.append('descriptions', descriptions);
+
           for (let [key, value] of formData.entries()) {
             console.log(key, value);
           }
-
           console.log(IDsToDelete);
 
-          
         });
 
       });
-
-      let fileNameHelperArray : string[] = [];
-      console.log(this.params.type, infoContainer);
 
       if (this.params.type === 'edit') {
         title.textContent = 'Имя альбома';
@@ -239,6 +233,12 @@ class AlbumPage extends Base {
         });
       }
 
+      let changePhotoId = -1;
+
+      imageUploadInput.addEventListener('changephoto', ( e : Event) => {
+        changePhotoId = e.detail.id;
+      });
+
       imageUploadInput.addEventListener('change', (e: Event) => {
         if (imageUploadInput.files && imageUploadInput.files.length > 0) {
           const files = imageUploadInput.files;
@@ -257,12 +257,25 @@ class AlbumPage extends Base {
               this.form.clearError(lowestInput);
             }
 
-            this.imagesAmount += 1;
 
+            if (files.length === 1 && changePhotoId > 0) {
+              const newFile = files[0];
+              const oldPhoto =  PHOTOS_STATE[changePhotoId - 1];
+              if (formData.get(`${changePhotoId}`)) {
+                formData.delete(`${changePhotoId}`);
+              }
+              formData.append(`${changePhotoId}`, newFile, newFile.name);
+              const imgURL = URL.createObjectURL(newFile);
+              oldPhoto.setURL(imgURL);
+              IDsToDelete.add(oldPhoto.oldID); // запрос на сервер с удалением
+              changePhotoId = -1;
+              console.log('here');
+              return;
+            }
+
+            this.imagesAmount += 1;
             formData.append(`${this.imagesAmount}`, files[i], files[i].name);
           
-            fileNameHelperArray.push(`file${this.imagesAmount}`);
-
             const imgURL = URL.createObjectURL(files[i]);
             
             const imageData = {
@@ -293,38 +306,22 @@ class AlbumPage extends Base {
         }
 
         const photoID = e.detail.id;
-        alert(photoID);
 
         const photoToDelete = PHOTOS_STATE[photoID - 1];
         if (photoToDelete.photo.origin === 'response') {
-          IDsToDelete.push(photoToDelete.oldID); // запрос на сервер с удалением
-          
-          alert('photo from server');
+          IDsToDelete.add(photoToDelete.oldID); // запрос на сервер с удалением
         } else {
           formData.delete(photoToDelete.photo.photo.id.toString());
-          alert('photo by user');
         }
 
         PHOTOS_STATE[photoID - 1].photoDiv.remove();
         PHOTOS_STATE = PHOTOS_STATE.filter((item) => 
           item.photo.photo.id !== photoID,
         );
-        
-        for (let item of PHOTOS_STATE) {
-          console.log(item.photo.photo.id);
-        }
 
         PHOTOS_STATE.map((item, index) => {
           item.updateIndex(index);
         });
-
-        // photoContainer.innerHTML = '';
-
-        // console.log(PHOTOS_STATE);
-        // for (let item of PHOTOS_STATE) {
-        //   new AlbumPhoto(item.photo.photo, item.photo.type).create(photoContainer);
-        // }
-       
 
       });
 

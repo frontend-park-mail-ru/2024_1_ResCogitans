@@ -49,6 +49,7 @@ class AlbumPhoto {
     const photoImage = this.base.createElement('img', {
       src: this.photo.photo.url,
       id: this.photo.photo.id.toString(),
+      class : 'scroll-img',
     }, '', {
       parent: photoDiv,
     }) as HTMLImageElement;
@@ -72,27 +73,37 @@ class AlbumPhoto {
       },
       ) as HTMLInputElement;
 
-
-      const setMainInput = this.base.createElement('input', {
-        type: 'checkbox',
-        id: 'setmain-input',
-      }, '', {
-        parent: div,
-      }) as HTMLInputElement;
-
-      const setMainLabel = this.base.createElement('label', {
-        for: 'setmain-input',
-      }, 'Сделать главной', {
-        parent: div,
-
-      }) as HTMLLabelElement;
-
       const deleteButton = this.base.createElement('button', {
         id: 'delete-button',
         class: 'button',
-      }, 'Удалить фото', {
+      }, '', {
         parent: div,
       }) as HTMLButtonElement;
+
+      const deleteIcon = new Image(16, 16);
+      deleteIcon.src = '/static/delete.svg';
+      deleteButton.appendChild(deleteIcon);
+
+      const changePhotoButton = this.base.createElement('button', {
+        id: 'change-button',
+        class: 'button button-primary',
+      }, '', {
+        parent: div,
+      }) as HTMLButtonElement;
+
+      const editIcon = new Image(16, 16);
+      editIcon.src = '/static/edit.svg';
+      changePhotoButton.appendChild(editIcon);
+
+      changePhotoButton.addEventListener('click', (e : Event) => {
+        const imageUploadInput = document.querySelector('input[type="file"]') as HTMLInputElement; 
+        imageUploadInput.click();
+        imageUploadInput.dispatchEvent(new CustomEvent('changephoto', {
+          detail : {
+            id : this.photo.photo.id, 
+          },
+        }));
+      });
 
       deleteButton.addEventListener('click', (deleteEvent: Event) => {
         deleteEvent.stopImmediatePropagation();

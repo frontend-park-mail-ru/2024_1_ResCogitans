@@ -80,7 +80,7 @@ dialog button {
 .photo-data {
     display: flex;
     max-width: 600px;
-    justify-content: space-evenly;
+    justify-content: center;
     align-items: center;
 }
 
@@ -91,7 +91,7 @@ dialog button {
     scroll-snap-stop: always;
     text-align: center;
 
-    & img {
+    & .scroll-img {
         width: 100vw;
         max-height: 100svh;
         object-fit: contain;
