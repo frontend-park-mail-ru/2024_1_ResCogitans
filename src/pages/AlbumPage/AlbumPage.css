@@ -11,6 +11,9 @@
     }
 }
 
+
+
+
 #image-dialog {
     position: relative;
     max-height: 100svh;
@@ -28,6 +31,15 @@
     color: white;
     position: absolute;
     mix-blend-mode: difference;
+}
+
+.image-dialog label {
+    position: absolute;
+    font-size: 16px;
+    color: white;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .fullscreen {
@@ -88,13 +100,6 @@ dialog button {
     & p {
         color: black;
         font-size: 18px;
-    }
-
-    & input {
-        font-size: 16px;
-        border-radius: 20px;
-        border: var(--size) solid var(--primary-color);
-        text-align: center;
     }
 
     & input[type="checkbox"] {
