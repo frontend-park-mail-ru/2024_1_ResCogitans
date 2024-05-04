@@ -10,6 +10,7 @@ import ProfileBlock from './ProfileBlock';
 import { router } from '@router/router';
 import template from '@templates/ProfilePage.hbs';
 import { getUserTrips } from '@api/journey';
+import { getUserAlbums } from '@api/album';
 
 class ProfilePage extends Base {
 
@@ -81,6 +82,7 @@ class ProfilePage extends Base {
       });
 
       let JOURNEY_DATA;
+      let ALBUM_DATA;
       const contentBlock = document.getElementById('content-block') as HTMLDivElement;
       let createButton: HTMLButtonElement;
 
@@ -112,28 +114,40 @@ class ProfilePage extends Base {
       albumsLink.addEventListener('click', () => {
         profileContent.innerHTML = '';
 
-        const length = 0;
+        if (ALBUM_DATA && ALBUM_DATA.length > 0) {
+          ALBUM_DATA.forEach((album) => {
 
-        if (length == 0) {
+            const albumLink = this.createElement('a', {
+              href : `albums/${album.albumID}`, 
+            }, '', {
+              parent : profileContent,
+            } );
+
+            const AlbumDiv = this.createElement('div', {
+              class: 'container',
+            }, '', {
+              parent: albumLink, position: 'into',
+            });
+  
+            this.createElement('label', {
+              class: 'h2',
+            }, `${album.name}`, {
+              parent: AlbumDiv, position: 'into',
+            });
+
+            this.createElement('label', {
+              class: 'h2',
+            }, `${album.description}`, {
+              parent: AlbumDiv, position: 'into',
+            });
+
+          } );
+        } else {
           this.createElement('h3', {}, this.isOwn ? 'Вы пока не создавали альбомы' : 'Пользователь пока не создавал альбомы', {
             parent: profileContent, position: 'into',
           });
         }
-
-        for (let i = 0; i < length; i++) {
-          const AlbumDiv = this.createElement('div', {
-            class: 'container',
-          }, '', {
-            parent: profileContent, position: 'into',
-          });
-
-          this.createElement('label', {
-            class: 'h2',
-          }, `Альбом ${i + 1}`, {
-            parent: AlbumDiv, position: 'into',
-          });
-        }
-
+       
         createButton.textContent = 'Создать альбом';
         albumsLink.classList.add('active');
         journeyLink.classList.remove('active');
@@ -243,10 +257,48 @@ class ProfilePage extends Base {
         if (journeyList.status === 200 && journeyList.data.journeys !== null) {
           JOURNEY_DATA = journeyList.data.journeys;
           profileContent.innerHTML = '';
-          journeyList.data.journeys.forEach((journey) => new JourneyPreview(profileContent, journey).render());
+          JOURNEY_DATA.forEach((journey) => new JourneyPreview(profileContent, journey).render());
           journeyLink.classList.add('active');
         } else {
           this.createElement('h3', {}, this.isOwn ? 'Вы пока не создавали поездки' : 'Пользователь пока не создавал поездки', {
+            parent: profileContent, position: 'into',
+          });
+        }
+      });
+
+      getUserAlbums(this.userID).then((albumList) => {
+        if (albumList.status === 200 && albumList.data.albums !== null) {
+          ALBUM_DATA = albumList.data.albums;
+          profileContent.innerHTML = '';
+          ALBUM_DATA.forEach((album) => {
+
+            const albumLink = this.createElement('a', {
+              href : `albums/${album.albumID}`, 
+            }, '', {
+              parent : profileContent,
+            } );
+
+            const AlbumDiv = this.createElement('div', {
+              class: 'container',
+            }, '', {
+              parent: albumLink, position: 'into',
+            });
+  
+            this.createElement('label', {
+              class: 'h2',
+            }, `${album.name}`, {
+              parent: AlbumDiv, position: 'into',
+            });
+
+            this.createElement('label', {
+              class: 'h2',
+            }, `${album.description}`, {
+              parent: AlbumDiv, position: 'into',
+            });
+
+          } );
+        } else {
+          this.createElement('h3', {}, this.isOwn ? 'Вы пока не создавали альбомы' : 'Пользователь пока не создавал альбомы', {
             parent: profileContent, position: 'into',
           });
         }

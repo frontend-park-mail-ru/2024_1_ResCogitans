@@ -66,3 +66,33 @@ export interface SightResponse {
 export interface Sights {
   sights: Sight[],
 }
+
+
+export interface AlbumParams {
+  id: number,
+  type: string,
+}
+
+export interface PhotoData {
+  id: number,
+  url: string,
+  description: string,
+  filename? : string,
+}
+
+export interface AlbumData {
+  albumID: number,
+  userID: number,
+  name: string,
+  description: string,
+}
+
+export interface AlbumInfo {
+  album : AlbumData,
+  photos : PhotoData[],
+}
+
+export interface AlbumCreated { 
+  id : number,
+  userID : number,
+}

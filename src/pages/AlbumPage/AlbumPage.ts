@@ -6,37 +6,8 @@ import AlbumPhoto from './AlbumPhoto';
 import { post } from '@api/base';
 import { imageUpload } from '@api/user';
 
-
-interface PhotoData {
-  id: number,
-  url: string,
-  description: string,
-  filename? : string,
-}
-
-let REQUEST_PHOTOS: PhotoData[] = [
-  {
-    id: 1,
-    url: '/public/1.jpg',
-    description: 'sample1',
-    filename : '',
-  },
-];
-
-
-for (let i = 2; i < 5; i++) {
-  REQUEST_PHOTOS.push({
-    id: i,
-    url: `/public/${i}.jpg`,
-    description: `Фото${i}`,
-  });
-}
-
-
-interface AlbumParams {
-  id: number,
-  type: string,
-}
+import { PhotoData, AlbumParams } from 'src/types/api';
+import { createAlbum, deletePhoto, getAlbum, uploadAlbumPhotos } from '@api/album';
 
 class AlbumPage extends Base {
 
@@ -127,31 +98,29 @@ class AlbumPage extends Base {
     let deleteButton: HTMLButtonElement;
     let curImageIndex = 1;
 
-    const IDsToDelete = new Set();
+    const IDsToDelete = new Set<number>;
 
     let formData = new FormData();
 
 
     let PHOTOS_STATE : AlbumPhoto[] = [];
 
-    /* get('/albums/${id}).then((albumData : Photo[]) => {
-        albumData
-         for (let img of albumData) {
-            ...
-         }
-      }) */
+    let REQUEST_PHOTOS;
 
-    // origin = 'response' | 'upload'
-
-    if (this.params.type !== 'new') {
-      for (let img of REQUEST_PHOTOS) {
-        const image = new AlbumPhoto(img, this.params.type);
-        image.create(photoContainer);
-        PHOTOS_STATE.push(image);
+    getAlbum(this.params.id).then((albumData) => {
+      REQUEST_PHOTOS = albumData.data.album;
+      if (this.params.type !== 'new') {
+        for (let img of REQUEST_PHOTOS) {
+          const image = new AlbumPhoto(img, this.params.type);
+          image.create(photoContainer);
+          PHOTOS_STATE.push(image);
+        }
+        this.imagesAmount = REQUEST_PHOTOS.length;
       }
-      this.imagesAmount = REQUEST_PHOTOS.length;
-    }
+  
+    });
 
+   
 
     const renderAsView = () => {
 
@@ -184,18 +153,21 @@ class AlbumPage extends Base {
 
         submitButton.addEventListener('click', (e: Event) => {
 
-          // const name = albumName.value;
-          // const description = albumDescription.value;
-          // const requestBody = {
-          //   name : name, description : description,
-          // };
+          const name = albumName.value;
+          const description = albumDescription.value;
+          const requestBody = {
+            name : name, description : description,
+          };
 
-          // post('albums/create', requestBody).then((responseData) => {
-          //   const id = responseData.data.id;
-          //   formData.append('id', id);
-          //   imageUpload(`albums/${id}`, formData);
-          //   submitButton.setAttribute('href', `/albums/${id}`);
-          // });
+          createAlbum(this.userData.userID, requestBody).then((responseData) => {
+            const id = responseData.data.album.id;
+            formData.append('id', id.toString());
+            IDsToDelete.forEach((idToDelete) => {
+              deletePhoto(id, idToDelete);
+            });
+            uploadAlbumPhotos(id, formData);
+            submitButton.setAttribute('href', `/albums/view/${id}`);
+          });
          
           const mappedDescriptions = PHOTOS_STATE.map(img => ({
             [img.photo.photo.id] : img.photo.photo.description,
@@ -206,7 +178,6 @@ class AlbumPage extends Base {
           for (let [key, value] of formData.entries()) {
             console.log(key, value);
           }
-          console.log(IDsToDelete);
 
         });
 

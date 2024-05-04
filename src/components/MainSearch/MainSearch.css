@@ -2,7 +2,7 @@ h1 {
     text-align: center;
     font-size: min(5.5vw, 40px);
     line-height: 42px;
-    letter-spacing: 14px;
+    letter-spacing: -1px;
     margin-top: 50px;
 }
 

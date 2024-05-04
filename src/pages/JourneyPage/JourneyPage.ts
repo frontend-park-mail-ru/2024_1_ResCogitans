@@ -159,7 +159,7 @@ class JourneyPage extends Base {
         document.getElementById('button-delete-journey')?.remove();
         let form = document.querySelector('form') as HTMLFormElement;
 
-        form.addEventListener('submit', (e: Event) => {
+        submitButton.addEventListener('click', (e: Event) => {
           e.preventDefault();
 
           const errorDisplay = new AuthorizationForm(this.parent, '');
