@@ -3,17 +3,19 @@ import template from '@templates/AlbumPage.hbs';
 import Header from '@components/Header/Header';
 import AuthorizationForm from '@components/Form/AuthorizationForm';
 import AlbumPhoto from './AlbumPhoto';
-import { post } from '@api/base';
-import { imageUpload } from '@api/user';
 
-import { PhotoData, AlbumParams } from 'src/types/api';
-import { createAlbum, deletePhoto, getAlbum, uploadAlbumPhotos } from '@api/album';
+import { PhotoData, AlbumParams, AlbumInfo } from 'src/types/api';
+import { createAlbum, deleteAlbum, deletePhoto, getAlbum, uploadAlbumPhotos } from '@api/album';
 
 class AlbumPage extends Base {
 
   form: AuthorizationForm;
 
   params: AlbumParams;
+
+  albumData : AlbumInfo;
+
+  isOwn : boolean;
 
   imagesAmount = 0;
 
@@ -24,6 +26,8 @@ class AlbumPage extends Base {
     this.params = {
       id: params[1], type: params[0],
     };
+
+   
 
   }
 
@@ -108,14 +112,20 @@ class AlbumPage extends Base {
     let REQUEST_PHOTOS;
 
     getAlbum(this.params.id).then((albumData) => {
-      REQUEST_PHOTOS = albumData.data.album;
+      this.isOwn = (this.userData !== null && this.userData.userID === this.albumData.album.userID);
+      if (this.params.type !== 'view' && !this.isOwn) {
+        this.params.type = 'view';
+      }
+
+      this.albumData = albumData.data.album;
+      REQUEST_PHOTOS = this.albumData;
       if (this.params.type !== 'new') {
         for (let img of REQUEST_PHOTOS) {
           const image = new AlbumPhoto(img, this.params.type);
           image.create(photoContainer);
           PHOTOS_STATE.push(image);
         }
-        this.imagesAmount = REQUEST_PHOTOS.length;
+        this.imagesAmount = REQUEST_PHOTOS.photos.length;
       }
   
     });
@@ -128,13 +138,16 @@ class AlbumPage extends Base {
       infoContainerDescription.textContent = 'Описание альбома';
       infoContainer.querySelector('div').remove();
     
-      const editButton = this.createElement('button', {
-        class : 'button-primary', 
-      }, 'Редактировать альбом', {
-        parent : infoContainer, 
-      });
 
-      editButton.setAttribute('href', '/albums/edit');
+      if (this.isOwn) {
+        const editButton = this.createElement('button', {
+          class : 'button-primary', 
+        }, 'Редактировать альбом', {
+          parent : infoContainer, 
+        });
+        editButton.setAttribute('href', `/albums/edit'/${this.albumData.album.albumID}`);
+      }
+    
       return;
     };
 
@@ -189,7 +202,30 @@ class AlbumPage extends Base {
         if (this.imagesAmount > 0) {
           const imageAdded = new Event('imageadded');
           document.dispatchEvent(imageAdded);
-        } 
+        }
+        const deleteAlbumButton = this.createElement('button', {
+          class : 'button-danger', 
+        }, 'Удалить альбом', {
+          parent : infoContainer, 
+        }) as HTMLButtonElement;
+        let clickCount = 0;
+  
+        deleteAlbumButton.addEventListener('click', () => {
+          clickCount++;
+          if (clickCount == 1) {
+            deleteAlbumButton.textContent = 'Удалить альбом?';
+          } else if (clickCount > 1) {
+            deleteAlbum(this.userData.userID, this.params.id).then((response) => {
+              if (response.status !== 200) {
+                this.form.renderError(lowestInput, response.data.error);
+              } else {
+                deleteAlbumButton.setAttribute('href', '/');
+                deleteAlbumButton.click();
+              }
+            });
+          }
+        });
+   
       } else {
         albumName = this.createElement('input', {
           placeholder : 'Введите название', 
@@ -296,6 +332,7 @@ class AlbumPage extends Base {
 
       });
 
+    
     };
 
     document.addEventListener('keydown', (key) => {
