@@ -336,7 +336,6 @@ class AlbumPage extends Base {
           }
 
           const photoID = e.detail.id;
-          console.log(photoID, 'caught');
 
           const photoToDelete = PHOTOS_STATE[photoID - 1];
           if (photoToDelete.origin === 'response') {

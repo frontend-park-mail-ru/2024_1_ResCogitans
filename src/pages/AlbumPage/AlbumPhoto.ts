@@ -30,7 +30,6 @@ class AlbumPhoto {
 
 
   constructor(photo: PhotoData, type: string) {
-    console.log(photo);
     this.base = new Base(undefined, '');
     this.photo = {
       photo: photo,
@@ -98,7 +97,6 @@ class AlbumPhoto {
             id : this.photo.photo.photoID, 
           },
         }));
-        console.log(this.photo.photo.photoID);
       });
 
       deleteButton.addEventListener('click', (deleteEvent: Event) => {
