@@ -34,7 +34,8 @@ class ProfilePage extends Base {
 
     getUserProfile(this.userID).then((profileData) => {
 
-      this.isOwn = (this.userData === null) ? false : (this.userID === profileData.data.id);
+      this.isOwn = (this.userData === null) ? false : (this.userData.userID === profileData.data.id);
+      console.log(this.userID, profileData.data.id);
       this.preRender();
 
       if (profileData.data.id === 0) {
@@ -104,10 +105,13 @@ class ProfilePage extends Base {
           JOURNEY_DATA.forEach((journey) => new JourneyPreview(profileContent, journey).render());
         }
 
-        createButton.textContent = 'Создать новую поездку';
+        
         albumsLink.classList.remove('active');
         journeyLink.classList.add('active');
-        createButton.setAttribute('href', '/journey/new');
+        if (createButton) {
+          createButton.textContent = 'Создать новую поездку';
+          createButton.setAttribute('href', '/journey/new');
+        }
       });
 
 
@@ -147,11 +151,14 @@ class ProfilePage extends Base {
             parent: profileContent, position: 'into',
           });
         }
-       
-        createButton.textContent = 'Создать альбом';
+
         albumsLink.classList.add('active');
         journeyLink.classList.remove('active');
-        createButton.setAttribute('href', '/albums/new');
+
+        if (createButton) {
+          createButton.textContent = 'Создать альбом';
+          createButton.setAttribute('href', '/albums/new');
+        }
       });
 
       // endblock
