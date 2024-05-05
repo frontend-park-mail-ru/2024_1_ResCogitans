@@ -11,6 +11,8 @@ import { router } from '@router/router';
 import template from '@templates/ProfilePage.hbs';
 import { getUserTrips } from '@api/journey';
 import { getUserAlbums } from '@api/album';
+import AlbumPreview from './AlbumPreview';
+import { AlbumData } from '@types/api';
 
 class ProfilePage extends Base {
 
@@ -119,31 +121,9 @@ class ProfilePage extends Base {
         profileContent.innerHTML = '';
 
         if (ALBUM_DATA && ALBUM_DATA.length > 0) {
-          ALBUM_DATA.forEach((album) => {
+          ALBUM_DATA.forEach((album : AlbumData) => {
 
-            const albumLink = this.createElement('a', {
-              href : `albums/${album.albumID}`, 
-            }, '', {
-              parent : profileContent,
-            } );
-
-            const AlbumDiv = this.createElement('div', {
-              class: 'container',
-            }, '', {
-              parent: albumLink, position: 'into',
-            });
-  
-            this.createElement('label', {
-              class: 'h2',
-            }, `${album.name}`, {
-              parent: AlbumDiv, position: 'into',
-            });
-
-            this.createElement('label', {
-              class: 'h2',
-            }, `${album.description}`, {
-              parent: AlbumDiv, position: 'into',
-            });
+            new AlbumPreview(profileContent, album).render();
 
           } );
         } else {
@@ -277,31 +257,9 @@ class ProfilePage extends Base {
         if (albumList.status === 200 && albumList.data.albums !== null) {
           ALBUM_DATA = albumList.data.albums;
           profileContent.innerHTML = '';
-          ALBUM_DATA.forEach((album) => {
+          ALBUM_DATA.forEach((album : AlbumData) => {
 
-            const albumLink = this.createElement('a', {
-              href : `/albums/view/${album.albumID}`, 
-            }, '', {
-              parent : profileContent,
-            } );
-
-            const AlbumDiv = this.createElement('div', {
-              class: 'container',
-            }, '', {
-              parent: albumLink, position: 'into',
-            });
-  
-            this.createElement('label', {
-              class: 'h2',
-            }, `${album.name}`, {
-              parent: AlbumDiv, position: 'into',
-            });
-
-            this.createElement('label', {
-              class: 'h2',
-            }, `${album.description}`, {
-              parent: AlbumDiv, position: 'into',
-            });
+            new AlbumPreview(profileContent, album).render();
 
           } );
         } else {

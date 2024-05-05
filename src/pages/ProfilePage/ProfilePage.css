@@ -57,9 +57,17 @@
   margin-left: 20px;
 }
 
-.journey-preview p {
+.journey-preview p, .album-preview p {
   width: 100%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.journey-preview img {
+  object-fit: contain;
+  max-height: 100%;
+  padding: 5px;
+  min-width: 64px;
+  min-height: auto;
 }
