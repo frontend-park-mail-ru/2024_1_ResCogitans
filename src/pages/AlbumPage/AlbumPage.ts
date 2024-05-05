@@ -94,12 +94,11 @@ class AlbumPage extends Base {
     const photoContainer = document.getElementById('photo-container') as HTMLDivElement;
     const infoContainer = document.querySelector('.container') as HTMLDivElement;
     const title = infoContainer.querySelector('h1') as HTMLHeadingElement;
-    const imageDialog = document.querySelector('dialog') as HTMLDialogElement;
+  
     const infoContainerDescription = infoContainer.querySelector('h2') as HTMLHeadingElement;
     let albumName: HTMLInputElement;
     let albumDescription: HTMLTextAreaElement;
 
-    this.swipeHandler(imageDialog);
 
     let curImageIndex = 0;
 
@@ -148,20 +147,32 @@ class AlbumPage extends Base {
         title.textContent = this.albumData.albumInfo.name;
         infoContainerDescription.textContent = this.albumData.albumInfo.description;
       }
+
+      const imageDialog = document.querySelector('dialog') as HTMLDialogElement;
+      this.swipeHandler(imageDialog);
      
       const renderAsView = () => {
         infoContainer.querySelector('div').remove();
-
+    
         if (this.isOwn === true) {
           const editButton = this.createElement('button', {
             class: 'button-primary',
-            href: `/albums/edit/${this.params.id}`,
           }, 'Редактировать альбом', {
             parent: infoContainer,
           });
+          editButton.addEventListener('click', () => {
+            document.dispatchEvent(new CustomEvent('redirect', {
+              detail : {
+                path : `/albums/edit/${this.albumData.albumInfo.albumID}`,
+              },
+            }));
+          });
         }
-        return;
+    
+        return; 
       };
+    
+        
 
       const renderAsEdit = () => {
 
@@ -208,12 +219,17 @@ class AlbumPage extends Base {
                 }
               });
             } else if (this.params.type === 'edit') {
+              console.log(IDsToDelete);
               IDsToDelete.forEach((idToDelete) => {
                 deletePhoto(this.params.id, idToDelete);
               });
               uploadAlbumPhotos(this.params.id, formData).then((response) => {
                 if (response.status === 200) {
-                  submitButton.setAttribute('href', `albums/view/${this.params.id}`);
+                  document.dispatchEvent(new CustomEvent('redirect', {
+                    detail : {
+                      path : `albums/view/${this.params.id}`,
+                    },
+                  }));
                 } else {
                   this.form.renderError(lowestInput, 'Что-то пошло не так');
                 }
@@ -308,6 +324,7 @@ class AlbumPage extends Base {
                 const imgURL = URL.createObjectURL(newFile);
                 oldPhoto.setURL(imgURL);
                 IDsToDelete.add(oldPhoto.oldID);
+                console.log(oldPhoto.oldID);
                 changePhotoId = -1;
                 return;
               }
@@ -346,7 +363,9 @@ class AlbumPage extends Base {
           const photoID = e.detail.id;
 
           const photoToDelete = PHOTOS_STATE[photoID - 1];
-          if (photoToDelete.origin === 'response') {
+          console.log(photoToDelete);
+          if (photoToDelete.photo.origin === 'response') {
+            IDsToDelete.add(photoToDelete.oldID);
             IDsToDelete.add(photoToDelete.oldID); // запрос на сервер с удалением
           } else {
             formData.delete(photoToDelete.photo.photo.photoID.toString());
