@@ -2,8 +2,8 @@ import Base from '@components/Base/Base';
 
 
 interface PhotoData {
-  id: number,
-  url: string,
+  photoID: number,
+  path: string,
   description: string,
   filename?: string,
 }
@@ -35,20 +35,21 @@ class AlbumPhoto {
       type: type,
       origin: 'response',
     };
-    this.oldID = photo.id;
+    this.oldID = photo.photoID;
+    console.log(this.photo);
   }
 
   create(parent: HTMLDivElement) {
     const photoDiv = this.base.createElement('div', {
-      id: `${this.photo.photo.id}`,
+      id: `${this.photo.photo.photoID}`,
       class: 'scroll-image',
     }, '', {
       parent: parent,
     }) as HTMLDivElement;
 
     const photoImage = this.base.createElement('img', {
-      src: this.photo.photo.url,
-      id: this.photo.photo.id.toString(),
+      src: this.photo.photo.path,
+      id: this.photo.photo.photoID.toString(),
       class : 'scroll-img',
     }, '', {
       parent: photoDiv,
@@ -100,7 +101,7 @@ class AlbumPhoto {
         imageUploadInput.click();
         imageUploadInput.dispatchEvent(new CustomEvent('changephoto', {
           detail : {
-            id : this.photo.photo.id, 
+            id : this.photo.photo.photoID, 
           },
         }));
       });
@@ -109,7 +110,7 @@ class AlbumPhoto {
         deleteEvent.stopImmediatePropagation();
         document.dispatchEvent(new CustomEvent('photosdeleted', {
           detail: {
-            id: this.photo.photo.id,
+            id: this.photo.photo.photoID,
           },
         }));
       });
@@ -130,7 +131,7 @@ class AlbumPhoto {
     photoImage.addEventListener('click', (e: Event) => {
       document.dispatchEvent(new CustomEvent('modalopen', {
         detail: {
-          id: this.photo.photo.id,
+          id: this.photo.photo.photoID,
         },
       }));
 
@@ -141,13 +142,13 @@ class AlbumPhoto {
   }
 
   setURL(newUrl: string) {
-    this.photo.photo.url = newUrl;
+    this.photo.photo.path = newUrl;
     this.image.src = newUrl;
   }
 
   updateIndex(index: number) {
     this.photoDiv.id = `${index + 1}`;
-    this.photo.photo.id = index + 1;
+    this.photo.photo.photoID = index + 1;
     this.image.id = `${index + 1}`;
   }
 }

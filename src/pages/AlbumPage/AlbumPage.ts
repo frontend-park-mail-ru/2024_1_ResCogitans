@@ -174,7 +174,7 @@ class AlbumPage extends Base {
          
           formData.append('id', this.userData.userID.toString());
           const mappedDescriptions = PHOTOS_STATE.map(img => ({
-            [img.photo.photo.id]: img.photo.photo.description,
+            [img.photo.photo.photoID]: img.photo.photo.description,
           }));
           const descriptions = JSON.stringify(mappedDescriptions.flat());
           formData.append('descriptions', descriptions);
@@ -217,7 +217,6 @@ class AlbumPage extends Base {
       });
 
       if (this.params.type === 'edit') {
-        console.log(this.params.type);
         title.textContent = 'Имя альбома';
         infoContainerDescription.textContent = 'Измените фото или загрузите новые';
         if (this.imagesAmount > 0) {
@@ -294,9 +293,8 @@ class AlbumPage extends Base {
               formData.append(`${changePhotoId}`, newFile, newFile.name);
               const imgURL = URL.createObjectURL(newFile);
               oldPhoto.setURL(imgURL);
-              IDsToDelete.add(oldPhoto.oldID); // запрос на сервер с удалением
+              IDsToDelete.add(oldPhoto.oldID);
               changePhotoId = -1;
-              console.log('here');
               return;
             }
 
@@ -306,7 +304,7 @@ class AlbumPage extends Base {
             const imgURL = URL.createObjectURL(files[i]);
 
             const imageData = {
-              id: this.imagesAmount, url: imgURL, description: '', type: 'edit', origin: 'upload', filename: files[i].name,
+              photoID: this.imagesAmount, path: imgURL, description: '', type: 'edit', origin: 'upload', filename: files[i].name,
             };
             const image = new AlbumPhoto(imageData, 'edit');
             image.create(photoContainer);
@@ -338,12 +336,12 @@ class AlbumPage extends Base {
         if (photoToDelete.photo.origin === 'response') {
           IDsToDelete.add(photoToDelete.oldID); // запрос на сервер с удалением
         } else {
-          formData.delete(photoToDelete.photo.photo.id.toString());
+          formData.delete(photoToDelete.photo.photo.photoID.toString());
         }
 
         PHOTOS_STATE[photoID - 1].photoDiv.remove();
         PHOTOS_STATE = PHOTOS_STATE.filter((item) =>
-          item.photo.photo.id !== photoID,
+          item.photo.photo.photoID !== photoID,
         );
 
         PHOTOS_STATE.map((item, index) => {
