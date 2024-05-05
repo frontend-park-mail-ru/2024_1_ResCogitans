@@ -31,21 +31,19 @@ class Placelist extends Base {
   }
 
   filterByCategory(category: number) {
-    if (category === 0) {
-      getSights().then((sightResponse) => {
-        const placelist = document.getElementById('list-places') as HTMLDivElement;
-        placelist.innerHTML = '';
-        sightResponse.data.sights.forEach((data) => new Place(placelist, data).render());
-      });
+    let queryParams: { [key: string]: any } = {};
+    
+    if (category !== 0) {
+      queryParams.category_id = category;
     } else {
-      filterSights({
-        'category_id': category,
-      }).then((sightResponse) => {
-        const placelist = document.getElementById('list-places') as HTMLDivElement;
-        placelist.innerHTML = '';
-        sightResponse.data.sights.forEach((data) => new Place(placelist, data).render());
-      }); 
+      queryParams.category_id = '';
     }
+  
+    filterSights(queryParams).then((sightResponse) => {
+      const placelist = document.getElementById('list-places') as HTMLDivElement;
+      placelist.innerHTML = '';
+      sightResponse.data.sights.forEach((data) => new Place(placelist, data).render());
+    });
   }
 
   filterByName(name: string) {
