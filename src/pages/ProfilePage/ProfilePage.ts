@@ -304,10 +304,6 @@ class ProfilePage extends Base {
             });
 
           } );
-        } else {
-          this.createElement('h3', {}, this.isOwn ? 'Вы пока не создавали альбомы' : 'Пользователь пока не создавал альбомы', {
-            parent: profileContent, position: 'into',
-          });
         }
       });
 
