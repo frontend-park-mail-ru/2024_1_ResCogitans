@@ -7,8 +7,7 @@ export async function getUserAlbumsByUserID(userId: number) {
 }
 
 export async function getAlbumByID(albumID : number) {
-  if (albumID === undefined) {
-    
+  if (Number.isNaN(albumID)) {
     return Promise.resolve({
       response : {}, 
     });

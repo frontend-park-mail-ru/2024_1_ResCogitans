@@ -52,6 +52,10 @@ class Router {
       if (href) this.go(href);
     });
 
+    document.addEventListener('redirect', (e) => {
+      this.go(e.detail.path); // будет рефактор для этой более простой истории
+    });
+
   }
 
   route(path: string, PageConstructor: new (content: HTMLElement, param?: string) => Page) {

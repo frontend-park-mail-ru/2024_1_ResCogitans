@@ -198,13 +198,15 @@ class AlbumPage extends Base {
                   this.form.renderError(lowestInput, 'Что-то пошло не так');
                 } else {
                   uploadAlbumPhotos(responseData.data.albumID, formData).then((response) => {
-                    if (response.success === true) {
-                    //redirect to view
-                    }
+                    document.dispatchEvent(new CustomEvent('redirect',  {
+                      detail : {
+                        path : `/albums/view/${responseData.data.albumID}`, 
+                      },
+                    }),
+                    );  
                   });
                 }
               });
-
             } else if (this.params.type === 'edit') {
               IDsToDelete.forEach((idToDelete) => {
                 deletePhoto(this.params.id, idToDelete);
