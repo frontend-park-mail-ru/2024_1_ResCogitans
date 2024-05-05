@@ -169,7 +169,7 @@ class AlbumPage extends Base {
           };
 
           createAlbum(this.userData.userID, requestBody).then((responseData) => {
-            const id = responseData.data.album.id;
+            const id = responseData.data.albumID;
             formData.append('id', id.toString());
             IDsToDelete.forEach((idToDelete) => {
               deletePhoto(id, idToDelete);
