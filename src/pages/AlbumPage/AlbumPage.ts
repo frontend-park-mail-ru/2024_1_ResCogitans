@@ -4,7 +4,7 @@ import Header from '@components/Header/Header';
 import AuthorizationForm from '@components/Form/AuthorizationForm';
 import AlbumPhoto from './AlbumPhoto';
 
-import { PhotoData, AlbumParams, AlbumInfo } from 'src/types/api';
+import { PhotoData, AlbumParams, AlbumInfo, AlbumData } from 'src/types/api';
 import { createAlbum, deleteAlbum, deletePhoto, getAlbum, uploadAlbumPhotos } from '@api/album';
 
 class AlbumPage extends Base {
@@ -169,7 +169,8 @@ class AlbumPage extends Base {
           };
 
           createAlbum(this.userData.userID, requestBody).then((responseData) => {
-            const id = responseData.data.album.albumID;
+            const albumData = responseData.data as AlbumData;
+            const id = albumData.albumID;
             formData.append('id', id.toString());
             IDsToDelete.forEach((idToDelete) => {
               deletePhoto(id, idToDelete);
@@ -364,8 +365,8 @@ class AlbumPage extends Base {
     });
 
     const closeButton = this.createElement('button', {
-      class: 'top-right',
-    }, '⨉', {
+      class: 'icon top-right delete-icon',
+    }, '', {
       parent: imageDialog,
     });
 

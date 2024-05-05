@@ -11,7 +11,7 @@ export async function getAlbum(albumID : number) {
 }
 
 export async function createAlbum(userID : number, requestBody : { name : string, description : string }) {
-  return await post(`profile/${userID}/album/create`, requestBody) as WithResponse<{ album: AlbumCreated }>;
+  return await post(`profile/${userID}/album/create`, requestBody) as WithResponse<AlbumCreated>;
 }
 
 export async function deleteAlbum(userID : number, albumID : number) {
