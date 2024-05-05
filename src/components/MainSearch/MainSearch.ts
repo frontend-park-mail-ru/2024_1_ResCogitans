@@ -3,6 +3,7 @@ import Button from '@components/Button/Button';
 import Input from '@components/Input/Input';
 import Base from '@components/Base/Base';
 import template from '@templates/MainSearch.hbs';
+import { getCategories } from '@api/sight';
 
 
 /**
@@ -11,9 +12,15 @@ import template from '@templates/MainSearch.hbs';
 */
 class MainSearch extends Base {
 
-  constructor(parent: HTMLElement) {
+  constructor(parent: HTMLElement, categoryChangeCallback: (category: number) => void, searchChangeCallback: (name: string) => void) {
     super(parent, template);
+    this.categoryChangeCallback = categoryChangeCallback;
+    this.searchChangeCallback = searchChangeCallback;
   }
+
+  categoryChangeCallback: (category: number) => void;
+
+  searchChangeCallback: (name: string) => void;
 
   /**
   * Рендерит основное поле поиска в DOM, включая ссылки и поле ввода.
@@ -21,18 +28,23 @@ class MainSearch extends Base {
   render() {
     const searchBlock = document.getElementById('main-search') as HTMLElement;
     this.preRender(searchBlock);
-
+   
     const linkArea = document.getElementById('underlined-links') as HTMLElement;
-    new Link(linkArea,  {
-      className: 'underlined-link', src: 'static/restaurant.svg', label: 'Рестораны', 
-    }).render();
-    new Link(linkArea, {
-      className: 'underlined-link', src: 'static/hotel.svg', label: 'Отели', 
-    }).render();
-    new Link(linkArea, {
-      className: 'underlined-link', src: 'static/attraction.svg', label: 'Развлечения', 
-    }).render();
-
+    getCategories().then((categoryResponse) => {
+      const categories = categoryResponse.data.categories.concat([{
+        name: 'Все места', id: 0,
+      }]);
+      categories.forEach(category => {
+        const link = new Link(linkArea, {
+          className: 'underlined-link',
+          label: category.name,
+          id: `category-${category.id}`,
+        });
+        link.render();
+        document.querySelector(`#category-${category.id}`)?.addEventListener('click', () => this.categoryChangeCallback(category.id));
+      });
+    });
+    
     const searchbarArea = document.getElementById('form-search') as HTMLElement;
     new Input(searchbarArea, {
       id: 'searchbar',
@@ -42,8 +54,21 @@ class MainSearch extends Base {
     }).render();
     const searchbarDiv = document.getElementById('searchbar') as HTMLElement;
     new Button(searchbarDiv, {
-      type: 'submit', label: 'Поиск', 
+      label: 'Поиск', id: 'main-search-button',
     }).render();
+
+    const inputElement = searchbarDiv.querySelector('input');
+    inputElement?.addEventListener('keypress', (event) => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        this.searchChangeCallback(inputElement.value);
+      }
+    });
+    
+    document.querySelector('#main-search-button')?.addEventListener('click', (event) => {
+      event.preventDefault();
+      this.searchChangeCallback(inputElement.value);
+    });
   }
 }
 

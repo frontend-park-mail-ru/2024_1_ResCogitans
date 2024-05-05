@@ -31,7 +31,7 @@ class Link extends Base {
     id, className, label, url, src, 
   } : 
   { id? : string, 
-    className? : string, 
+    className? : string,
     label? : string, 
     url? : string, 
     src? : string })  {
