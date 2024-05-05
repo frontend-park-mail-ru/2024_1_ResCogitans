@@ -1,9 +1,9 @@
 import Place from './Place/Place';
 import Base from '@components/Base/Base';
-import { Sights } from 'src/types/api';
+import { Sights, Sight } from 'src/types/api';
 import template from '@templates/Placelist.hbs';
 import { WithResponse } from 'src/types/api';
-import { getSights } from '@api/sight';
+import { getSights, filterSights } from '@api/sight';
 
 
 /**
@@ -13,22 +13,15 @@ import { getSights } from '@api/sight';
 * @class
 */
 class Placelist extends Base {
-
   constructor(parent: HTMLElement) {
     super(parent, template);
   }
 
-  renderPlaces(sights: Sights) {
-    const placelist = document.getElementById('list-places') as HTMLDivElement;
-    sights.forEach((data) => new Place(placelist, data).render());
-  }
-    
   /**
   * Рендерит список мест в DOM и запрашивает данные мест.
   */
   render() {
     this.preRender();
-    
     (async () => {
       const response = await getSights() as WithResponse<Sights>;
 
@@ -37,6 +30,31 @@ class Placelist extends Base {
     })();
   }
 
+  filterByCategory(category: number) {
+    let queryParams: { [key: string]: unknown } = {};
+    
+    if (category !== 0) {
+      queryParams.category_id = category;
+    } else {
+      queryParams.category_id = '';
+    }
+  
+    filterSights(queryParams).then((sightResponse) => {
+      const placelist = document.getElementById('list-places') as HTMLDivElement;
+      placelist.innerHTML = '';
+      sightResponse.data.sights.forEach((data) => new Place(placelist, data).render());
+    });
+  }
+
+  filterByName(name: string) {
+    filterSights({
+      'name': name,
+    }).then((sightResponse) => {
+      const placelist = document.getElementById('list-places') as HTMLDivElement;
+      placelist.innerHTML = '';
+      sightResponse.data.sights.forEach((data) => new Place(placelist, data).render());
+    });
+  }
 }
 
 export default Placelist;
