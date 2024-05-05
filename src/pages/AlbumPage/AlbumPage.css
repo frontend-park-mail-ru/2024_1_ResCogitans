@@ -110,3 +110,23 @@ dialog button {
 
     }
 }
+
+@keyframes spin {
+    from {
+       background-position: 50% 50%;
+    }
+    to {
+       background-position: 50% 50%;
+    }
+}
+
+.hidden {
+    opacity: 0;
+}
+
+.loading {
+    background-image: url('/static/loading.svg');
+    background-size: 20% 20%;
+    animation: spin linear infinite;
+    animation-duration: 500ms;
+}

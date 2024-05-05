@@ -6,6 +6,7 @@ interface PhotoData {
   path: string,
   description: string,
   filename?: string,
+  oldID : number,
 }
 
 interface Photo {
@@ -29,13 +30,14 @@ class AlbumPhoto {
 
 
   constructor(photo: PhotoData, type: string) {
+    console.log(photo);
     this.base = new Base(undefined, '');
     this.photo = {
       photo: photo,
       type: type,
       origin: 'response',
     };
-    this.oldID = photo.photoID;
+    this.oldID = photo.oldID;
   }
 
   create(parent: HTMLDivElement) {
@@ -75,25 +77,18 @@ class AlbumPhoto {
 
       const deleteButton = this.base.createElement('button', {
         id: 'delete-button',
-        class: 'button',
+        class: 'button icon delete',
       }, '', {
         parent: div,
       }) as HTMLButtonElement;
-
-      const deleteIcon = new Image(16, 16);
-      deleteIcon.src = '/static/delete.svg';
-      deleteButton.appendChild(deleteIcon);
 
       const changePhotoButton = this.base.createElement('button', {
         id: 'change-button',
-        class: 'button button-primary',
+        class: 'button button-primary icon edit',
       }, '', {
         parent: div,
       }) as HTMLButtonElement;
 
-      const editIcon = new Image(16, 16);
-      editIcon.src = '/static/edit.svg';
-      changePhotoButton.appendChild(editIcon);
 
       changePhotoButton.addEventListener('click', (e : Event) => {
         const imageUploadInput = document.querySelector('input[type="file"]') as HTMLInputElement; 
@@ -103,10 +98,10 @@ class AlbumPhoto {
             id : this.photo.photo.photoID, 
           },
         }));
+        console.log(this.photo.photo.photoID);
       });
 
       deleteButton.addEventListener('click', (deleteEvent: Event) => {
-        deleteEvent.stopImmediatePropagation();
         document.dispatchEvent(new CustomEvent('photosdeleted', {
           detail: {
             id: this.photo.photo.photoID,

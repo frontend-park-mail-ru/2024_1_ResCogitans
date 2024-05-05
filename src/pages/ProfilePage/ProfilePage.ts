@@ -10,7 +10,7 @@ import ProfileBlock from './ProfileBlock';
 import { router } from '@router/router';
 import template from '@templates/ProfilePage.hbs';
 import { getUserTrips } from '@api/journey';
-import { getUserAlbums } from '@api/album';
+import { getUserAlbumsByUserID } from '@api/album';
 import AlbumPreview from './AlbumPreview';
 import { AlbumData } from '@types/api';
 
@@ -25,6 +25,12 @@ class ProfilePage extends Base {
   constructor(parent: HTMLElement, params : unknown) {
     super(parent, template);
     this.userID = parseInt(params[0]);
+  }
+
+  emptyContent(entityName : string, parent : HTMLDivElement) {
+    this.createElement('h3', {}, this.isOwn ? `Вы пока не создавали ${entityName}` : `Пользователь пока не создавал ${entityName}`, {
+      parent: parent, position: 'into',
+    });
   }
 
   render() {
@@ -126,9 +132,7 @@ class ProfilePage extends Base {
 
           } );
         } else {
-          this.createElement('h3', {}, this.isOwn ? 'Вы пока не создавали альбомы' : 'Пользователь пока не создавал альбомы', {
-            parent: profileContent, position: 'into',
-          });
+          this.emptyContent('альбомы', profileContent);
         }
 
         albumsLink.classList.add('active');
@@ -246,13 +250,11 @@ class ProfilePage extends Base {
           JOURNEY_DATA.forEach((journey) => new JourneyPreview(profileContent, journey).render());
           journeyLink.classList.add('active');
         } else {
-          this.createElement('h3', {}, this.isOwn ? 'Вы пока не создавали поездки' : 'Пользователь пока не создавал поездки', {
-            parent: profileContent, position: 'into',
-          });
+          this.emptyContent('поездки', profileContent);
         }
       });
 
-      getUserAlbums(this.userID).then((albumList) => {
+      getUserAlbumsByUserID(this.userID).then((albumList) => {
         if (albumList.status === 200 && albumList.data.albums !== null) {
           ALBUM_DATA = albumList.data.albums;
         }

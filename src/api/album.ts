@@ -2,11 +2,11 @@ import { get, post } from '@api/base';
 import { WithResponse, AlbumData, AlbumInfo, AlbumCreated } from 'src/types/api';
 import { imageUpload } from './user';
 
-export async function getUserAlbums(userId: number) {
+export async function getUserAlbumsByUserID(userId: number) {
   return await get(`profile/${userId}/albums`) as WithResponse<{ albums: AlbumData[] }>;
 }
 
-export async function getAlbum(albumID : number) {
+export async function getAlbumByID(albumID : number) {
   return await get(`album/${albumID}`) as WithResponse<AlbumInfo>;
 }
 
@@ -21,11 +21,11 @@ export async function deleteAlbum(userID : number, albumID : number) {
 }
 
 export async function deletePhoto(albumID : number, photoID : number) {
-  return await post(`album/${albumID}/album/delete`, {
+  return await post(`album/${albumID}/delete`, {
     photoID : photoID, 
   }) as WithResponse<{ album: AlbumCreated }>;
 }
 
 export async function uploadAlbumPhotos(albumID : number, formData : FormData) {
-  return await imageUpload(`album/${albumID}/upload`, formData) as WithResponse<{ album : AlbumCreated }>;
+  return await imageUpload(`album/${albumID}/upload`, formData) as WithResponse<{ unknown }>;
 }

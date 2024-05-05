@@ -17,6 +17,7 @@ export interface UserAuthResponseData {
 export interface WithResponse<T> {
   status: number,
   data: T,
+  success : boolean,
 }
 
 export interface ReviewContent {
@@ -74,8 +75,8 @@ export interface AlbumParams {
 }
 
 export interface PhotoData {
-  id: number,
-  url: string,
+  photoID: number,
+  path: string,
   description: string,
   filename? : string,
 }

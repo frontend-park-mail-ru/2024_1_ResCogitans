@@ -88,6 +88,7 @@ class SignupForm extends AuthorizationForm {
             if (responseID !== undefined && responseUsername !== undefined) {
               addUserToLocalStorage(responseUsername, responseID);
             }
+            document.body.classList.remove('auth-background');
             router.go(urls.base);
           }
           if (response.status === 400 || response.status === 500) {

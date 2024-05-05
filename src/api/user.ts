@@ -33,10 +33,11 @@ export async function imageUpload(endpoint : string, body? : FormData) {
     credentials: 'include',
     body: body,
   });
-  const responseData = await response.json();
+
+  const responseData = await response.json().catch(() => null);
  
   return {
-    data: responseData, status: response.status, 
+    data: responseData, status: response.status, success : response.ok,
   };
 }
 

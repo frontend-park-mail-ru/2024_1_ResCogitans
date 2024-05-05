@@ -83,6 +83,7 @@ class LoginForm extends AuthorizationForm {
             const responseID = responseData.user.id;
             const responseUsername = responseData.user.username;
             addUserToLocalStorage(responseUsername, responseID);
+            document.body.classList.remove('auth-background');
             router.goBack();
           } else if (response.status === 400 || response.status === 500) {
             this.renderError(lowestInputDiv, loginErrors[response.status]);
