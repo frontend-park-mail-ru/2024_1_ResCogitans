@@ -74,7 +74,7 @@ class ProfilePage extends Base {
 
       const linkBlock = document.querySelector('#underlined-links') as HTMLDivElement;
       const journeyLink = this.createElement('label', {
-        class: 'underlined-link',
+        class: 'underlined-link active',
       }, 'Поездки', {
         parent: linkBlock, position: 'into',
       });
@@ -86,6 +86,7 @@ class ProfilePage extends Base {
 
       let JOURNEY_DATA;
       let ALBUM_DATA;
+
       const contentBlock = document.getElementById('content-block') as HTMLDivElement;
       let createButton: HTMLButtonElement;
 
@@ -122,7 +123,6 @@ class ProfilePage extends Base {
 
         if (ALBUM_DATA && ALBUM_DATA.length > 0) {
           ALBUM_DATA.forEach((album : AlbumData) => {
-
             new AlbumPreview(profileContent, album).render();
 
           } );
@@ -256,16 +256,6 @@ class ProfilePage extends Base {
       getUserAlbums(this.userID).then((albumList) => {
         if (albumList.status === 200 && albumList.data.albums !== null) {
           ALBUM_DATA = albumList.data.albums;
-          profileContent.innerHTML = '';
-          ALBUM_DATA.forEach((album : AlbumData) => {
-
-            new AlbumPreview(profileContent, album).render();
-
-          } );
-        } else {
-          this.createElement('h3', {}, this.isOwn ? 'Вы пока не создавали альбомы' : 'Пользователь пока не создавал альбомы', {
-            parent: profileContent, position: 'into',
-          });
         }
       });
 

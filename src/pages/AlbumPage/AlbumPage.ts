@@ -191,7 +191,7 @@ class AlbumPage extends Base {
               if (responseData.status !== 200) {
                 this.form.renderError(lowestInput, responseData.data.error);
               } else {
-                uploadAlbumPhotos(this.params.id, formData);
+                uploadAlbumPhotos(responseData.data.albumID, formData);
               }
             });
 
