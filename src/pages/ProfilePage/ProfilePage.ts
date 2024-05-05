@@ -37,7 +37,6 @@ class ProfilePage extends Base {
     getUserProfile(this.userID).then((profileData) => {
 
       this.isOwn = (this.userData === null) ? false : (this.userData.userID === profileData.data.id);
-      console.log(this.userID, profileData.data.id);
       this.preRender();
 
       if (profileData.data.id === 0) {

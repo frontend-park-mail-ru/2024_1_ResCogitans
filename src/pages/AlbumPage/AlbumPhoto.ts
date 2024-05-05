@@ -36,7 +36,6 @@ class AlbumPhoto {
       origin: 'response',
     };
     this.oldID = photo.photoID;
-    console.log(this.photo);
   }
 
   create(parent: HTMLDivElement) {

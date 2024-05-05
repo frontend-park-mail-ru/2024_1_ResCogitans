@@ -72,11 +72,11 @@ class AlbumPage extends Base {
     modalDescription.textContent = `${img.photo.photo.description}`;
 
     const modalImage = imageDialog.querySelector('img') as HTMLImageElement;
-    modalImage.src = img.photo.photo.url;
+    modalImage.src = img.photo.photo.path;
 
     const photoOutOf = imageDialog.querySelector('p') as HTMLParagraphElement;
-    photoOutOf.textContent = `Фото ${img.photo.photo.id} из ${this.imagesAmount}`;
-    return img.photo.photo.id;
+    photoOutOf.textContent = `Фото ${img.photo.photo.photoID} из ${this.imagesAmount}`;
+    return img.photo.photo.photoID;
   }
 
   render() {
@@ -209,10 +209,6 @@ class AlbumPage extends Base {
             });
           } 
 
-          for (let [key, value] of formData.entries()) {
-            console.log(key, value);
-          }
-
         });
       });
 
@@ -322,6 +318,16 @@ class AlbumPage extends Base {
         }
       });
 
+      switch (this.params.type) {
+        case 'new':
+        case 'edit':
+          renderAsEdit();
+          break;
+        case 'view':
+          renderAsView();
+          break;
+      }
+
       document.addEventListener('photosdeleted', (e: Event) => {
         this.imagesAmount--;
 
@@ -400,15 +406,7 @@ class AlbumPage extends Base {
       this.updateModal(PHOTOS_STATE[e.detail.id - 1]);
     });
 
-    switch (this.params.type) {
-      case 'new':
-      case 'edit':
-        renderAsEdit();
-        break;
-      case 'view':
-        renderAsView();
-        break;
-    }
+    
 
   }
 }
