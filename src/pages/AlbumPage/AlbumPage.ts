@@ -195,7 +195,7 @@ class AlbumPage extends Base {
 
               createAlbum(this.userData.userID, requestBody).then((responseData) => {
                 if (responseData.status !== 200) {
-                  this.form.renderError(lowestInput, responseData.data.error);
+                  this.form.renderError(lowestInput, 'Что-то пошло не так');
                 } else {
                   uploadAlbumPhotos(responseData.data.albumID, formData).then((response) => {
                     if (response.success === true) {
@@ -213,7 +213,7 @@ class AlbumPage extends Base {
                 if (response.status === 200) {
                   submitButton.setAttribute('href', `albums/view/${this.params.id}`);
                 } else {
-                  this.form.renderError(lowestInput, response.data.error);
+                  this.form.renderError(lowestInput, 'Что-то пошло не так');
                 }
               });
             }
@@ -234,21 +234,24 @@ class AlbumPage extends Base {
           }, 'Удалить альбом', {
             parent: infoContainer,
           }) as HTMLButtonElement;
+
           let clickCount = 0;
 
           deleteAlbumButton.addEventListener('click', () => {
             clickCount++;
             if (clickCount == 1) {
-              deleteAlbumButton.textContent = 'Вы действительно хотите удалить альбом?';
-            } else if (clickCount > 1) {
+              deleteAlbumButton.textContent = 'Точно удалить альбом?';
+            } else if (clickCount == 2) {
               deleteAlbum(this.userData.userID, this.params.id).then((response) => {
                 if (response.status !== 200) {
-                  this.form.renderError(lowestInput, response.data.error);
+                  this.form.renderError(lowestInput, 'Что-то пошло не так');
                 } else {
                   deleteAlbumButton.setAttribute('href', '/');
                   deleteAlbumButton.click();
                 }
               });
+            } else {
+              return;
             }
           });
 
