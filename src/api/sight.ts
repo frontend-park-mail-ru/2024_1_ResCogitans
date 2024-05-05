@@ -13,18 +13,18 @@ export async function getCategories() {
   return await get('categories') as WithResponse<{ categories: Category[] }>;
 }
 
-export async function filterSights(hash: { [key: string]: any }) {
+export async function filterSights(hash: { [key: string]: unknown }) {
   let queryString = '';
 
   for (const key in hash) {
     if (hash.hasOwnProperty(key)) {
       const value = hash[key];
-      queryString += `${encodeURIComponent(key)}=${encodeURIComponent(value)}&`;
+      queryString += `${encodeURIComponent(key)}=${encodeURIComponent(value as string)}&`;
     }
   }
 
   queryString = queryString.slice(0, -1);
-  const url = `sight/quiz?${queryString}`;
+  const url = `sights/search?${queryString}`;
 
   return get(url);
 }

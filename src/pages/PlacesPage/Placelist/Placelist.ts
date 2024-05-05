@@ -31,7 +31,7 @@ class Placelist extends Base {
   }
 
   filterByCategory(category: number) {
-    let queryParams: { [key: string]: any } = {};
+    let queryParams: { [key: string]: unknown } = {};
     
     if (category !== 0) {
       queryParams.category_id = category;
