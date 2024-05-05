@@ -68,6 +68,10 @@ export interface Sights {
   sights: Sight[],
 }
 
+export interface Category {
+  id: number,
+  name: string,
+}
 
 export interface AlbumParams {
   id: number,
