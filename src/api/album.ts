@@ -7,6 +7,12 @@ export async function getUserAlbumsByUserID(userId: number) {
 }
 
 export async function getAlbumByID(albumID : number) {
+  if (albumID === undefined) {
+    
+    return Promise.resolve({
+      response : {}, 
+    });
+  }
   return await get(`album/${albumID}`) as WithResponse<AlbumInfo>;
 }
 

@@ -114,39 +114,41 @@ class AlbumPage extends Base {
       mainContainer.classList.remove('hidden');
       document.body.classList.remove('loading');
 
-      if (!albumData || albumData.status !== 200) {
+      if (!albumData || albumData.status !== 200 && this.params.type !== 'new') {
         return;
       }
 
-      this.albumData = albumData.data;
+      if (this.params.type !== 'new') {
+        this.albumData = albumData.data;
 
-      this.isOwn = (this.userData !== null && this.userData.userID === this.albumData.albumInfo.userID);
-
-      if (!this.isOwn) this.params.type = 'view';
-
-
-      let REQUEST_PHOTOS = this.albumData.albumPhotos;
-      this.imagesAmount = 0;
-
-      if (this.isOwn === false) {
-        this.params.type = 'view';
-      }
-
-      if (REQUEST_PHOTOS) {
-        for (let img of REQUEST_PHOTOS) {
-          this.imagesAmount++;
-          const imageData = {
-            photoID: this.imagesAmount, oldID : img.photoID, path: img.path, description: img.description, origin: 'response',
-          };
-          const image = new AlbumPhoto(imageData, this.params.type);
-          image.create(photoContainer);
-          PHOTOS_STATE.push(image);
+        this.isOwn = (this.userData !== null && this.userData.userID === this.albumData.albumInfo.userID);
+  
+        if (!this.isOwn) this.params.type = 'view';
+  
+  
+        let REQUEST_PHOTOS = this.albumData.albumPhotos;
+        this.imagesAmount = 0;
+  
+        if (this.isOwn === false) {
+          this.params.type = 'view';
         }
+  
+        if (REQUEST_PHOTOS) {
+          for (let img of REQUEST_PHOTOS) {
+            this.imagesAmount++;
+            const imageData = {
+              photoID: this.imagesAmount, oldID : img.photoID, path: img.path, description: img.description, origin: 'response',
+            };
+            const image = new AlbumPhoto(imageData, this.params.type);
+            image.create(photoContainer);
+            PHOTOS_STATE.push(image);
+          }
+        }
+
+        title.textContent = this.albumData.albumInfo.name;
+        infoContainerDescription.textContent = this.albumData.albumInfo.description;
       }
-
-      title.textContent = this.albumData.albumInfo.name;
-      infoContainerDescription.textContent = this.albumData.albumInfo.description;
-
+     
       const renderAsView = () => {
         infoContainer.querySelector('div').remove();
 
@@ -237,13 +239,14 @@ class AlbumPage extends Base {
           deleteAlbumButton.addEventListener('click', () => {
             clickCount++;
             if (clickCount == 1) {
-              deleteAlbumButton.textContent = 'Удалить альбом?';
+              deleteAlbumButton.textContent = 'Вы действительно хотите удалить альбом?';
             } else if (clickCount > 1) {
               deleteAlbum(this.userData.userID, this.params.id).then((response) => {
                 if (response.status !== 200) {
                   this.form.renderError(lowestInput, response.data.error);
                 } else {
                   deleteAlbumButton.setAttribute('href', '/');
+                  deleteAlbumButton.click();
                 }
               });
             }
