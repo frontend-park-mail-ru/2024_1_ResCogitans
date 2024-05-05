@@ -10,6 +10,7 @@ import Button from '@components/Button/Button';
 import AuthorizationForm from '@components/Form/AuthorizationForm';
 import { ROUTES } from '@router/ROUTES';
 import template from '@templates/SightPage.hbs';
+import Map from '@components/Map/Map';
 
 
 class SightPage extends Base {
@@ -73,6 +74,27 @@ class SightPage extends Base {
 
     const rating = document.querySelector('.rating span') as HTMLSpanElement;
     rating.textContent = this.sight.rating.toString(10);
+
+    const adress = document.getElementById('sight-adress') as HTMLParagraphElement;
+
+    const showMapButton = this.createElement('button', {
+      class : 'button button-primary', id : 'button-showmap', 
+    }, 'Показать на карте', {
+      parent : adress, position : 'after', 
+    });
+
+    const content = document.getElementById('content') as HTMLDivElement;
+    const map = new Map(content);
+    const mapDialog = map.render() as HTMLDialogElement;
+    map.showMap(this.sight.latitude, this.sight.longitude);
+
+    map.getAdress(this.sight.latitude, this.sight.longitude).then((addressString) => {
+      adress.textContent = addressString;
+    });
+
+    showMapButton.addEventListener('click', () => {
+      mapDialog.showModal();
+    });
 
   }
 

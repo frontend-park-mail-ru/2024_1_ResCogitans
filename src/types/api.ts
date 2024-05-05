@@ -51,7 +51,12 @@ export interface Sight {
   rating: number,
   name: string,
   description: string,
+  cityID : string,
+  countryID : string,
   city: string,
+  country : string,
+  latitude : number,
+  longitude : number,
   url: string,
 }
 
