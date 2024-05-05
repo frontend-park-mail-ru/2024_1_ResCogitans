@@ -280,7 +280,7 @@ class ProfilePage extends Base {
           ALBUM_DATA.forEach((album) => {
 
             const albumLink = this.createElement('a', {
-              href : `albums/${album.albumID}`, 
+              href : `/albums/view/${album.albumID}`, 
             }, '', {
               parent : profileContent,
             } );
