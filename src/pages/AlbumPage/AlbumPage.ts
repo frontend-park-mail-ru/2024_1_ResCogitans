@@ -111,18 +111,23 @@ class AlbumPage extends Base {
     if (this.params.type !== 'new') {
       getAlbum(this.params.id).then((albumData) => {
 
-        this.isOwn = (this.userData !== null && this.userData.userID === this.albumData.album.userID);
+        if (!albumData || albumData.status !== 200) {
+          return;
+        }
+
+        this.isOwn = (this.userData !== null && this.userData.userID === albumData.data.albumInfo.userID);
         if (this.params.type !== 'view' && !this.isOwn) {
           this.params.type = 'view';
         }
-        this.albumData = albumData.data.album;
-        REQUEST_PHOTOS = this.albumData;
+        this.albumData = albumData.data;
+        REQUEST_PHOTOS = this.albumData.albumPhotos;
+
         for (let img of REQUEST_PHOTOS) {
           const image = new AlbumPhoto(img, this.params.type);
           image.create(photoContainer);
           PHOTOS_STATE.push(image);
         }
-        this.imagesAmount = REQUEST_PHOTOS.photos.length;
+        this.imagesAmount = REQUEST_PHOTOS.length;
       });
     }
 

@@ -88,8 +88,8 @@ export interface AlbumData {
 }
 
 export interface AlbumInfo {
-  album : AlbumData,
-  photos : PhotoData[],
+  albumInfo : AlbumData,
+  albumPhotos : PhotoData[],
 }
 
 export interface AlbumCreated { 

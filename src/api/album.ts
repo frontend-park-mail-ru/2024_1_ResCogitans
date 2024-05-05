@@ -7,7 +7,7 @@ export async function getUserAlbums(userId: number) {
 }
 
 export async function getAlbum(albumID : number) {
-  return await get(`album/${albumID}`) as WithResponse<{ album: AlbumInfo }>;
+  return await get(`album/${albumID}`) as WithResponse<AlbumInfo>;
 }
 
 export async function createAlbum(userID : number, requestBody : { name : string, description : string }) {
