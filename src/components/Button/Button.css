@@ -90,11 +90,17 @@ button > a {
 
 
  .icon {
-    width: 24px;
-    height: 24px;
+    width: 32px;
+    height: 32px;
+    background-position: center;
+    background-repeat: no-repeat;
  }
 
- .delete-icon {
+ .edit-icon {
+    background-image: url('/static/edit.svg');
+ }
+
+ .close-icon {
     background-image: url('/static/close.svg');
  }
 
@@ -104,6 +110,10 @@ button > a {
 
  .minus-icon {
     background-image: url('/static/minus.svg');
+ }
+
+ .delete-icon {
+    background-image: url('/static/delete.svg');
  }
  
  .top-right {
