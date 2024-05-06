@@ -30,15 +30,19 @@ class MainSearch extends Base {
     this.preRender(searchBlock);
    
     const linkArea = document.getElementById('underlined-links') as HTMLElement;
+    const icons : { [key : number] : string } = {
+      0 : 'static/restaurant.svg', 1 : 'static/hotel.svg', 2 : 'static/attraction.svg', 3 : 'static/globe.svg',
+    };
     getCategories().then((categoryResponse) => {
       const categories = categoryResponse.data.categories.concat([{
         name: 'Все места', id: 0,
       }]);
-      categories.forEach(category => {
+      categories.forEach((category, index) => {
         const link = new Link(linkArea, {
           className: 'underlined-link',
           label: category.name,
           id: `category-${category.id}`,
+          src: icons[index],
         });
         link.render();
         document.querySelector(`#category-${category.id}`)?.addEventListener('click', () => this.categoryChangeCallback(category.id));
