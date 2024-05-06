@@ -76,14 +76,14 @@ class AlbumPhoto {
 
       const deleteButton = this.base.createElement('button', {
         id: 'delete-button',
-        class: 'button icon delete',
+        class: 'button icon delete-icon',
       }, '', {
         parent: div,
       }) as HTMLButtonElement;
 
       const changePhotoButton = this.base.createElement('button', {
         id: 'change-button',
-        class: 'button button-primary icon edit',
+        class: 'button button-primary icon edit-icon',
       }, '', {
         parent: div,
       }) as HTMLButtonElement;

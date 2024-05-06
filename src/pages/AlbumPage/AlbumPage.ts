@@ -416,7 +416,7 @@ class AlbumPage extends Base {
       });
 
       const closeButton = this.createElement('button', {
-        class: 'icon top-right delete-icon',
+        class: 'icon top-right close-icon',
       }, '', {
         parent: imageDialog,
       });
