@@ -88,16 +88,34 @@ button > a {
     font-weight: 800;
  }
 
+
+ .icon {
+    width: 24px;
+    height: 24px;
+ }
+
+ .delete-icon {
+    background-image: url('/static/close.svg');
+ }
+
+ .plus-icon {
+    background-image: url('/static/plus.svg');
+ }
+
+ .minus-icon {
+    background-image: url('/static/minus.svg');
+ }
+ 
  .top-right {
     position: absolute;
-    top: 10px;
+    top: 0px;
     right: 10px;
     border-radius: 50%;
  }
 
  .top-left {
     position: absolute;
-    top: 10px;
+    top: 0px;
     left: 10px;
     border-radius: 50%;
     color: white;

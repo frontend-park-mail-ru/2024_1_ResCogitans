@@ -13,10 +13,22 @@
     padding: 10px;
 }
 
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+ 
+    & img {
+        width: 100%;
+        height: auto; 
+        max-width: 100%;
+    }
+}
+
 .sight-image {
     width: 100%;
     border-radius: 20px;
-    height: auto;
+    max-height: 700px;
+    object-fit: contain;
 }
 
 .sight-block {
@@ -50,4 +62,9 @@ menu {
     gap: 40px;
     grid-template-columns: 1fr 1fr;
     padding-left: 0;
+}
+
+#map-dialog {
+   max-width: 50vw;
+   max-height: 90vh;
 }

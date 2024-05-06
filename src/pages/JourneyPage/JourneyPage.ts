@@ -56,8 +56,8 @@ class JourneyPage extends Base {
 
     const currentCard = document.querySelector(`#card-${id}`) as HTMLDivElement;
     const deleteButton = this.createElement('button', {
-      class: 'button button-primary top-right', 
-    }, '⨉', {
+      class: 'button button-primary top-right delete-icon', 
+    }, '', {
       parent : currentCard, 
     });
 
