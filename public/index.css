@@ -11,6 +11,7 @@
 @import '../src/pages/NotFoundPage/NotFoundPage.css';
 @import '../src/pages/SightPage/SightPage.css';
 @import '../src/pages/JourneyPage/JourneyPage.css';
+@import '../src/pages/AlbumPage/AlbumPage.css';
 
 
 
@@ -31,7 +32,6 @@ html, body {
     font-family: 'Roboto';
     max-width: 1260px;
     margin: auto;
-    padding: 0 10px;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;

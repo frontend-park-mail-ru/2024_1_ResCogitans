@@ -1,5 +1,7 @@
 const express = require('express');
 const path = require('path');
+const http = require('http');
+const fs = require('fs');
 
 const app = express();
 
@@ -13,6 +15,7 @@ app.all('*', (req, res) => {
 });
 
 const PORT = 3000;
-app.listen(PORT, () => {
- console.log('Server started');
+
+http.createServer(app).listen(PORT, () => {
+ console.log(`Server started on port ` + PORT);
 });

@@ -1,10 +1,11 @@
-button {
+button, .button-link {
     text-align: center;
     font-weight: 600;
     border-radius: 20px;
     padding: 10px 10px;
     border-style: none;
     transition: all 0.25s ease-in-out;
+    margin: 5px;
 }
 
 .button-primary {
@@ -87,9 +88,46 @@ button > a {
     font-weight: 800;
  }
 
+
+ .icon {
+    width: 48px;
+    height: 48px;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 50%;
+ }
+
+ .edit-icon {
+    background-image: url('/static/edit.svg');
+ }
+
+ .close-icon {
+    background-image: url('/static/close.svg');
+ }
+
+ .plus-icon {
+    background-image: url('/static/plus.svg');
+ }
+
+ .minus-icon {
+    background-image: url('/static/minus.svg');
+ }
+
+ .delete-icon {
+    background-image: url('/static/delete.svg');
+ }
+ 
  .top-right {
     position: absolute;
-    top: 10px;
+    top: 0px;
     right: 10px;
     border-radius: 50%;
+ }
+
+ .top-left {
+    position: absolute;
+    top: 0px;
+    left: 10px;
+    border-radius: 50%;
+    color: white;
  }

@@ -15,9 +15,9 @@
          </div>
          <div class="input">
             <label for="journey-description">Описание</label>
-               <textarea id="journey-description" class="form-input" type="text" cols="64" required>
-                  {{this.journey.description}}</textarea>
-               <label class="err-label"></label>
+            <textarea id="journey-description" class="form-input" type="text" cols="64"
+               required>{{this.journey.description}}</textarea>
+            <label class="err-label"></label>
          </div>
          <button id="button-submit" class="button-primary" type="submit">Изменить</button>
       </form>
@@ -34,20 +34,20 @@
 <div class="container container-places">
    <h2>Список мест</h2>
    <select class="custom-select" multiple="multiple" id="sight-select" required></select>
-   </div>
+</div>
 {{/if}}
 
 
-      <div class="container main" id="list-places">
+<div class="container main" id="list-places">
 
-      </div>
+</div>
 
-      <dialog class="delete-dialog">
-         <label>Вы действительно хотите удалить поездку?</label>
-         <form method="dialog">
-            <menu>
-               <button class="button-danger" id="button-delete" type="submit">Да</button>
-               <button class="cancel" type="reset">Отмена</button>
-            </menu>
-         </form>
-      </dialog>
+<dialog class="delete-dialog">
+   <label>Вы действительно хотите удалить поездку?</label>
+   <form method="dialog">
+      <menu>
+         <button class="button-danger" id="button-delete" type="submit">Да</button>
+         <button class="cancel" type="reset">Отмена</button>
+      </menu>
+   </form>
+</dialog>

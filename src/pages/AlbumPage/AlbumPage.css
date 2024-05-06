@@ -1,0 +1,132 @@
+.img-preview {
+    max-width: minmax(300px, 1fr);
+    height: auto;
+    object-fit: cover;
+    aspect-ratio: 1 / 1;
+
+    & img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+}
+
+
+
+
+#image-dialog {
+    position: relative;
+    max-height: 100svh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-dialog-image {
+    max-height: 75vh;
+    max-width: min(600px, 60vw);
+}
+
+.image-dialog p {
+    color: white;
+    position: absolute;
+    mix-blend-mode: difference;
+}
+
+.image-dialog label {
+    position: absolute;
+    font-size: 16px;
+    color: white;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.fullscreen {
+    background-color: black;
+    width: 100vw;
+    height: 105vh;
+    object-fit: contain;
+    border-radius: 0;
+    border: 3px solid;
+
+    & button:focus {
+        outline: none;
+    }
+}
+
+dialog button {
+    margin-top: 10px;
+}
+
+
+.photo-main {
+    border: 5px solid var(--primary-color);
+}
+
+.scroll-container {
+    background-color: white;
+    padding: 0;
+    display: flex;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    overflow-x: auto;
+    align-items: center;
+
+    scrollbar-color: var(--primary-color);
+    scrollbar-darkshadow-color: black;
+}
+
+.photo-data {
+    display: flex;
+    max-width: 600px;
+    justify-content: center;
+    align-items: center;
+}
+
+.scroll-image {
+    flex: 0 0 100vw;
+    object-fit: contain;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+    text-align: center;
+
+    & .scroll-img {
+        width: 100vw;
+        max-height: 100svh;
+        object-fit: contain;
+    }
+
+    & p {
+        color: black;
+        font-size: 18px;
+    }
+
+    & input[type="checkbox"] {
+        border-radius: 50%;
+        border: 2px solid var(--primary-color);
+        accent-color: var(--primary-color);
+        background-color: none;
+
+    }
+}
+
+@keyframes spin {
+    from {
+       background-position: 50% 50%;
+    }
+    to {
+       background-position: 50% 50%;
+    }
+}
+
+.hidden {
+    opacity: 0;
+}
+
+.loading {
+    background-image: url('/static/loading.svg');
+    background-size: 20% 20%;
+    animation: spin linear infinite;
+    animation-duration: 500ms;
+}

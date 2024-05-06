@@ -1,10 +1,9 @@
 .container {
-    max-width: 800px;
     margin: 20px auto;
     background-color: #fff;
-    border-radius: 10px;
+    border-radius: 1vw;
     padding: 2vw;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.1);
 }
 
 .sight-container {
@@ -14,10 +13,22 @@
     padding: 10px;
 }
 
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+ 
+    & img {
+        width: 100%;
+        height: auto; 
+        max-width: 100%;
+    }
+}
+
 .sight-image {
     width: 100%;
     border-radius: 20px;
-    height: auto;
+    max-height: 700px;
+    object-fit: contain;
 }
 
 .sight-block {
@@ -34,26 +45,15 @@
     margin-bottom: 5px;
 }
 
-textarea {
-    margin: 10px;
-    font-size: 16px;
-}
-
 #rate {
     width: 40px;
 }
 
 .review-buttons {
     display: flex;
-}
-
-.review-buttons button {
-    margin: 20px;
-}
-
-dialog {
-    border: 3px solid var(--primary-color);
-    border-radius: 20px;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-end;
 }
 
 menu {
@@ -62,4 +62,8 @@ menu {
     gap: 40px;
     grid-template-columns: 1fr 1fr;
     padding-left: 0;
+}
+
+#map-dialog {
+   width: min(600px, 90vw);
 }

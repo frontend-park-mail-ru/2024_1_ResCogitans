@@ -1,4 +1,5 @@
 import Base from '@components/Base/Base';
+import template from '@templates/Button.hbs';
 
 /**
 * Класс Button. Все кнопки являются экземплярами класса Button.
@@ -30,14 +31,17 @@ import Base from '@components/Base/Base';
   * @param {string} [options.url=''] - URL, на который будет осуществлен редирект после нажатия.
   * @param {string} [options.type=''] - Тип кнопки (например, 'submit').
   */
-  constructor(parent : HTMLElement, { id, label, className, img, url, type } : 
+  constructor(parent : HTMLElement, {
+    id, label, className, img, url, type, 
+  } : 
   { id? : string,
     label? : string,
     className? : string,
     img? : string,
     url? : string,
     type? : string }) {
-    super(parent);
+
+    super(parent, template);
     this.id = id;
     this.label = label;
     this.className = className;
@@ -45,6 +49,7 @@ import Base from '@components/Base/Base';
     this.img = img;
     this.type = type;
   }
+
 }
 
 export default Button;

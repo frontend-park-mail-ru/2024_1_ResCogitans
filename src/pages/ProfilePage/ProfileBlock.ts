@@ -1,26 +1,29 @@
 import Base from '@components/Base/Base';
-import { UserProfile } from 'src/types/api';
+import template from '@templates/ProfileBlock.hbs';
+
 
 class ProfileBlock extends Base {
 
-  profileData : UserProfile; 
+  profileData : unknown; 
 
   isOwn : boolean;
 
-  constructor(parent : HTMLElement, profileData : UserProfile) {
-    super(parent);
-    this.profileData = profileData;
-    this.isOwn = (this.userData.userID === profileData.id);
+  constructor(parent : HTMLElement, profileData : unknown) {
+    super(parent, template);
 
-    if (!profileData.avatar) {
+    this.profileData = profileData;
+    
+    this.isOwn = (this.userData === null) ? false : (this.profileData.userID === this.userData.userID); 
+    
+    if (profileData.avatar === '') {
       this.profileData.avatar = '/static/placeholder.jpg';
     } else {
       this.profileData.avatar = profileData.avatar.replace(/.*\/public\//, '/public/');
     }
   }
 
-  async render() {
-    await this.preRender();
+  render() {
+    this.preRender();
 
     const profileEditForm = document.querySelector('dialog') as HTMLDialogElement;
     

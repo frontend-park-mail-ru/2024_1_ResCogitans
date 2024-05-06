@@ -1,4 +1,5 @@
 import Base from '@components/Base/Base';
+import template from '@templates/Link.hbs';
 
 /**
 * Класс Link. Представляет ссылку, которая может быть отрендерена в HTML.
@@ -26,13 +27,15 @@ class Link extends Base {
   * @param {string} options.url - URL, на который будет осуществлен редирект после нажатия.
   * @param {string} [options.src=''] - URL изображения для ссылки.
   */
-  constructor(parent : HTMLElement, { id, className, label, url, src } : 
+  constructor(parent : HTMLElement, {
+    id, className, label, url, src, 
+  } : 
   { id? : string, 
-    className? : string, 
+    className? : string,
     label? : string, 
     url? : string, 
     src? : string })  {
-    super(parent);
+    super(parent, template);
     this.label = label;
     this.url = url;
     this.className = className;

@@ -17,6 +17,7 @@ export interface UserAuthResponseData {
 export interface WithResponse<T> {
   status: number,
   data: T,
+  success : boolean,
 }
 
 export interface ReviewContent {
@@ -51,7 +52,12 @@ export interface Sight {
   rating: number,
   name: string,
   description: string,
+  cityID : string,
+  countryID : string,
   city: string,
+  country : string,
+  latitude : number,
+  longitude : number,
   url: string,
 }
 
@@ -65,4 +71,38 @@ export interface SightResponse {
 
 export interface Sights {
   sights: Sight[],
+}
+
+export interface Category {
+  id: number,
+  name: string,
+}
+
+export interface AlbumParams {
+  id: number,
+  type: string,
+}
+
+export interface PhotoData {
+  photoID: number,
+  path: string,
+  description: string,
+  filename? : string,
+}
+
+export interface AlbumData {
+  albumID: number,
+  userID: number,
+  name: string,
+  description: string,
+}
+
+export interface AlbumInfo {
+  albumInfo : AlbumData,
+  albumPhotos : PhotoData[],
+}
+
+export interface AlbumCreated { 
+  id : number,
+  userID : number,
 }

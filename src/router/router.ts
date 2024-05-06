@@ -6,6 +6,7 @@ import NotFoundPage from '@pages/NotFoundPage/NotFoundPage';
 import ProfilePage from '@pages/ProfilePage/ProfilePage';
 import SightPage from '@pages/SightPage/SightPage';
 import JourneyPage from '@pages/JourneyPage/JourneyPage';
+import AlbumPage from '@pages/AlbumPage/AlbumPage';
 
 const routesList = {
   [urls.base]: PlacesPage,
@@ -15,41 +16,73 @@ const routesList = {
   [urls.profile]: ProfilePage,
   [urls.sight]: SightPage,
   [urls.journey]: JourneyPage,
+  [urls.albums]: AlbumPage,
 };
 
 interface Page {
   render: () => void;
 }
- 
-type Routes = Record<string, new (content: HTMLElement, ...args : any[]) => Page>;
+
+type Routes = Record<string, new (content: HTMLElement, ...args: any[]) => Page>;
 
 class Router {
   routes: Routes;
- 
+
+  params : {};
+
   constructor(routes: Routes) {
     this.routes = routes;
     window.addEventListener('popstate', () => this.changeLocation());
+
+    document.addEventListener('click', (e) => {
+      let href: string | null;
+      const target = e.target as HTMLElement;
+      if (target.tagName === 'A' || target.tagName === 'BUTTON') {
+        e.preventDefault();
+        href = target.getAttribute('href');
+      } else if (target.tagName === 'BUTTON' || target.tagName === 'IMG') {
+        const parentAnchorElement = target.closest('a');
+        if (parentAnchorElement !== null && parentAnchorElement !== undefined) {
+          e.preventDefault();
+          href = target.closest('a').getAttribute('href');
+        }
+      } else {
+        return;
+      }
+      if (href) this.go(href);
+    });
+
+    document.addEventListener('redirect', (e) => {
+      this.go(e.detail.path); // будет рефактор для этой более простой истории
+    });
+
   }
- 
+
   route(path: string, PageConstructor: new (content: HTMLElement, param?: string) => Page) {
     this.routes[path] = PageConstructor;
     return this;
   }
- 
+
   go(path: string, params?: string) {
     if (!path.startsWith('/')) {
       path = '/' + path;
     }
     if (window.location.pathname !== path) {
-      window.history.pushState({ params }, '', path);
+      window.history.pushState({
+        params,
+      }, '', path);
     }
     this.changeLocation();
   }
- 
+
   goBack() {
-    window.history.back();
+    if (document.referrer) {
+      this.go(new URL(document.referrer).pathname);
+    } else {
+      window.history.back();
+    }
   }
- 
+
   clearContent() {
     let content = document.getElementById('content') as HTMLDivElement;
     if (!content) {
@@ -61,23 +94,16 @@ class Router {
     content.innerHTML = '';
     return content;
   }
- 
+
   changeLocation() {
     let path = window.location.pathname;
     const PageConstructorFromRoutes = this.routes[path.split('/')[1]];
     const content = this.clearContent();
-    const params = path.split('/').slice(2);
-    let isAuthorized : boolean;
-
-    const userData = localStorage.getItem('user');
-    if (userData !== null) {
-      isAuthorized = false;
-    } else {
-      isAuthorized = true;
-    }
+    const paramArray = path.split('/').slice(2);
+    this.params = paramArray;
 
     if (PageConstructorFromRoutes) {
-      const page = new PageConstructorFromRoutes(content, params, isAuthorized);
+      const page = new PageConstructorFromRoutes(content, this.params);
       page.render();
     } else {
       const PageConstructorNotFound = this.routes['404'];
@@ -87,7 +113,9 @@ class Router {
     }
   }
 }
- 
+
 
 const router = new Router(routesList);
-export { router };
+export {
+  router,
+};

@@ -1,6 +1,7 @@
 import Base from '@components/Base/Base';
 import Stars from '@components/Stars/Stars';
 import { ReviewContent } from 'src/types/api';
+import template from '@templates/Review.hbs';
 
 class Review extends Base {
 
@@ -11,7 +12,7 @@ class Review extends Base {
   isOwn : boolean;
     
   constructor(parent : HTMLElement, placeID : number, reviewContent : ReviewContent, isOwn : boolean) {
-    super(parent);
+    super(parent, template);
     this.placeID = placeID;
     this.reviewContent = reviewContent;
     this.isOwn = isOwn;
@@ -24,10 +25,11 @@ class Review extends Base {
   }
   
 
-  async render() {
-    await this.preRender();
+  render() {
+    this.preRender();
+    
     const ratingDiv = document.querySelector(`#review-${this.reviewContent.id} .rating`) as HTMLDivElement;
-    await new Stars(ratingDiv, this.reviewContent.rating).render();
+    new Stars(ratingDiv, this.reviewContent.rating).render();
        
 
     const editDialog = document.querySelector('.edit-dialog') as HTMLDialogElement;
@@ -36,9 +38,6 @@ class Review extends Base {
     editReviewButton?.addEventListener('click', () => {
       const editTextArea = document.querySelector('#editTextArea') as HTMLTextAreaElement;
       editTextArea.value = this.reviewContent.feedback;
-
-      const editStarsContainer = document.querySelector('.edit-dialog #edit-stars-container') as HTMLElement;
-      new Stars(editStarsContainer, this.reviewContent.rating, true).render();
   
       document.querySelector(`#review-${this.reviewContent.id}`)?.classList.add('staged-delete');
       editDialog.showModal();

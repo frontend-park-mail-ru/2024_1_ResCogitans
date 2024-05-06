@@ -2,25 +2,25 @@
 
 </div>
 <div class="container">
-   <h1 class="no-margin">{{this.sight.name}}</h1>
+   <h1 class="no-margin"></h1>
    <div class="sight-container">
-      <div>
-         <img src="/{{this.sight.url}}" class="sight-image">
-         <h2 class="sight-location">{{this.sight.city}}, {{this.sight.country}}</h2>
+      <div class="container">
+         <img class="sight-image" src="">
       </div>
       <div class="sight-info">
          <div class="sight-block">
             <h3 class="no-margin">Подробнее</h3>
-            <p class="sight-description">{{this.sight.description}}</p>
+            <p class="sight-description"></p>
          </div>
          <div class="sight-block">
-            <h3 class="no-margin">Местоположение и контактные данные</h3>
-            <p>Ул. Пушкина, д.2 к.5</p>
+            <h2 class="sight-location"></h2>
+            <h3 class="no-margin">Адрес</h3>
+            <p id="sight-adress"></p>
          </div>
          <div class="sight-block">
             <h3 class="no-margin">Рейтинг</h3>
             <div class="rating">
-               <div><span>{{this.sight.rating}}</span></div>
+               <div><span></span></div>
             </div>
          </div>
       </div>
@@ -64,7 +64,7 @@
          </div>
          <label class="err-label"></label>
          <menu>
-            <button class="button-danger" type="submit">Изменить</button>
+            <button class="button-primary" type="submit">Изменить</button>
             <button class="cancel" type="reset">Отмена</button>
          </menu>
       </form>

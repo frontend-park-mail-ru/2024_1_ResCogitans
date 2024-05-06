@@ -3,7 +3,7 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const lightningcss = require('lightningcss');
 const browserslist = require('browserslist');
 const Dotenv = require('dotenv-webpack');
-const ESLintPlugin = require('eslint-webpack-plugin'); // Add this line
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 module.exports = {
  mode: 'development',
@@ -35,6 +35,7 @@ module.exports = {
       '@types': path.resolve(__dirname, 'src/types'),
       '@static': path.resolve(__dirname, 'static/'),
       '@api': path.resolve(__dirname, 'src/api'),
+      '@templates': path.resolve(__dirname, 'src/templates'),
     },
  },
  optimization: {

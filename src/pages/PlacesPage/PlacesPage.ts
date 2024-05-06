@@ -2,6 +2,8 @@ import Header from '@components/Header/Header';
 import MainSearch from '@components/MainSearch/MainSearch';
 import Placelist from './Placelist/Placelist';
 import Base from '@components/Base/Base';
+import template from '@templates/PlacesPage.hbs';
+
 
 /**
 * Класс PlacesPage представляет страницу мест, которая может быть отрендерена в HTML.
@@ -11,18 +13,25 @@ class PlacesPage extends Base {
   /**
   * Рендерит страницу мест в DOM, включая шапку сайта, основное поле поиска и список мест.
   */
-  async render() {
+  constructor(parent: HTMLElement) {
+    super(parent, template); 
+  }
+  
+  render() {
+    this.preRender();
     document.body.style.backgroundImage = '';
-    await this.preRender();
  
     const header = document.getElementById('header') as HTMLElement;
     const mainsearch = document.getElementById('main-search') as HTMLElement;
     const places = document.getElementById('places') as HTMLElement;
     document.body.classList.remove('auth-background');
 
-    await new Header(header).render();
-    await new MainSearch(mainsearch).render();
-    await new Placelist(places).render();
+    new Header(header).render();
+  
+    const placelist = new Placelist(places);
+    const mainSearchInstance = new MainSearch(mainsearch, placelist.filterByCategory, placelist.filterByName);
+    placelist.render();
+    mainSearchInstance.render();
   }
 }
 

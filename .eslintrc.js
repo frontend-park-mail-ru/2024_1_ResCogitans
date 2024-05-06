@@ -24,8 +24,17 @@ module.exports = {
   },
   rules: {
     'class-methods-use-this': 'off',
+    '@typescript-eslint/no-loop-func' : 'off',
+    '@typescript-eslint/no-shadow' : 'off',
     'import/extensions': 'off',
     'import/no-extraneous-dependencies': 'off',
     "eol-last": ["error", "always"],
+    "@typescript-eslint/no-unused-vars": "off",
+    'object-curly-newline': ['error', {
+      ObjectExpression: { multiline: true, minProperties: 1 },
+      ObjectPattern: { multiline: true, minProperties: 1 },
+      ImportDeclaration: 'never',
+      ExportDeclaration: { multiline: true, minProperties: 1 }
+    }],
    },   
 };
