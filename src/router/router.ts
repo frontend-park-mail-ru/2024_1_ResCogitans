@@ -6,6 +6,7 @@ import NotFoundPage from '@pages/NotFoundPage/NotFoundPage';
 import ProfilePage from '@pages/ProfilePage/ProfilePage';
 import SightPage from '@pages/SightPage/SightPage';
 import JourneyPage from '@pages/JourneyPage/JourneyPage';
+import AlbumPage from '@pages/AlbumPage/AlbumPage';
 
 const routesList = {
   [urls.base]: PlacesPage,
@@ -15,6 +16,7 @@ const routesList = {
   [urls.profile]: ProfilePage,
   [urls.sight]: SightPage,
   [urls.journey]: JourneyPage,
+  [urls.albums]: AlbumPage,
 };
 
 interface Page {
@@ -26,26 +28,32 @@ type Routes = Record<string, new (content: HTMLElement, ...args: any[]) => Page>
 class Router {
   routes: Routes;
 
+  params : {};
+
   constructor(routes: Routes) {
     this.routes = routes;
     window.addEventListener('popstate', () => this.changeLocation());
 
-
     document.addEventListener('click', (e) => {
-      let href: string;
-      if (e.target.tagName === 'A') {
+      let href: string | null;
+      const target = e.target as HTMLElement;
+      if (target.tagName === 'A' || target.tagName === 'BUTTON') {
         e.preventDefault();
-        href = e.target.getAttribute('href');
-      } else if (e.target.tagName === 'BUTTON' || e.target.tagName === 'IMG') {
-        const parentAnchorElement = e.target.closest('a');
+        href = target.getAttribute('href');
+      } else if (target.tagName === 'BUTTON' || target.tagName === 'IMG') {
+        const parentAnchorElement = target.closest('a');
         if (parentAnchorElement !== null && parentAnchorElement !== undefined) {
           e.preventDefault();
-          href = e.target.closest('a').getAttribute('href');
+          href = target.closest('a').getAttribute('href');
         }
       } else {
         return;
       }
       if (href) this.go(href);
+    });
+
+    document.addEventListener('redirect', (e) => {
+      this.go(e.detail.path); // будет рефактор для этой более простой истории
     });
 
   }
@@ -91,10 +99,11 @@ class Router {
     let path = window.location.pathname;
     const PageConstructorFromRoutes = this.routes[path.split('/')[1]];
     const content = this.clearContent();
-    const params = path.split('/').slice(2);
+    const paramArray = path.split('/').slice(2);
+    this.params = paramArray;
 
     if (PageConstructorFromRoutes) {
-      const page = new PageConstructorFromRoutes(content, params);
+      const page = new PageConstructorFromRoutes(content, this.params);
       page.render();
     } else {
       const PageConstructorNotFound = this.routes['404'];

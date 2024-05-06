@@ -4,6 +4,7 @@
 
 a {
     text-decoration: none;
+    color: black;
 }
 
 .underlined-link a:link, a:visited {
@@ -15,7 +16,7 @@ a {
     margin-right: 15px;
 }
 
-.underlined-link:hover {
+.underlined-link:hover, .active {
     border-bottom: 3px solid var(--main-text-color);
     opacity: 80%;
     padding-bottom: 0px;
@@ -39,4 +40,9 @@ a {
 .user-link { 
     color:  black;
     font-weight: 800;
+}
+
+.secondary {
+    font-weight: 100;
+    color: #131313;
 }

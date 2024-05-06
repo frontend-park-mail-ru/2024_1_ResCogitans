@@ -33,8 +33,8 @@ class Stars {
   }
 
   setRating(rating: number) {
-    this.parent.innerHTML = '';
     if (!this.isEditable) return;
+    this.parent.innerHTML = '';
     this.rating = rating;
     this.render();
   }

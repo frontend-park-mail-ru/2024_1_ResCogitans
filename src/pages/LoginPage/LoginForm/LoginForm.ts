@@ -59,14 +59,14 @@ class LoginForm extends AuthorizationForm {
     },
     );
 
-    loginForm.addEventListener('click', () => {
+    loginForm.addEventListener('input', () => {
       const elementsWithError = document.querySelectorAll('.has-error');
       elementsWithError.forEach(element => {
         element.classList.remove('has-error');
       });
     }); 
 
-    loginForm.addEventListener('submit', (e : Event) => {
+    submitButton.addEventListener('click', (e : Event) => {
       e.preventDefault();
       const requestBody = {
         username: emailInput.value,
@@ -83,6 +83,7 @@ class LoginForm extends AuthorizationForm {
             const responseID = responseData.user.id;
             const responseUsername = responseData.user.username;
             addUserToLocalStorage(responseUsername, responseID);
+            document.body.classList.remove('auth-background');
             router.goBack();
           } else if (response.status === 400 || response.status === 500) {
             this.renderError(lowestInputDiv, loginErrors[response.status]);

@@ -19,7 +19,7 @@ class JourneyPage extends Base {
 
   IDs: number[];
 
-  tripID?: string;
+  tripID: number;
 
   journey: Journey;
 
@@ -29,39 +29,42 @@ class JourneyPage extends Base {
 
   type?: string;
 
-  constructor(parent, pathParams) {
+  constructor(parent : HTMLElement, params : any) {
     super(parent, template);
+
     this.IDs = [];
     this.isOwn = false;
 
-    const journeyType = pathParams[1];
 
-
-    if (pathParams.length > 2) {
-      router.go('404');
-    }
-
-    this.isEdit = journeyType === 'edit' || pathParams[0] === 'new';
-    this.type = this.isEdit ? journeyType : 'view';
-    this.tripID = pathParams[0];
-
-
-    if (!this.type) {
+    if (params[0] === 'new') {
       this.type = 'new';
+    } else {
+      if (params[1] === 'edit') {
+        this.type = 'edit';
+      } else {
+        this.type = 'view';
+      }
+      this.tripID = params[0];
     }
+
+    this.isEdit = (this.type === 'edit' || this.type === 'new');
+
+
   }
 
   renderDeletePlaceButton(id: string) {
-    const deleteButton = document.createElement('button');
-    deleteButton.classList.add('button', 'button-primary', 'top-right');
-    deleteButton.textContent = 'X';
+
+    const currentCard = document.querySelector(`#card-${id}`) as HTMLDivElement;
+    const deleteButton = this.createElement('button', {
+      class: 'button button-primary top-right delete-icon', 
+    }, '', {
+      parent : currentCard, 
+    });
 
     deleteButton.addEventListener('click', () => {
       this.removeCard(id);
     });
-
-    const currentCard = document.querySelector(`#card-${id}`) as HTMLDivElement;
-    currentCard.appendChild(deleteButton);
+  
   }
 
   removeCard(id: string) {
@@ -156,7 +159,7 @@ class JourneyPage extends Base {
         document.getElementById('button-delete-journey')?.remove();
         let form = document.querySelector('form') as HTMLFormElement;
 
-        form.addEventListener('submit', (e: Event) => {
+        submitButton.addEventListener('click', (e: Event) => {
           e.preventDefault();
 
           const errorDisplay = new AuthorizationForm(this.parent, '');
@@ -200,6 +203,13 @@ class JourneyPage extends Base {
         getTrip(this.tripID).then((journeyResponse) => {
           this.isOwn = (this.userData !== null && this.userData.userID === journeyResponse.data.journey.userID);
           this.journey = journeyResponse.data.journey;
+
+          if (this.type === 'edit') {
+            if (!this.userData || this.userData.userID !== this.journey.userID) {
+              router.goBack();
+              return;
+            }
+          }
 
           this.preRender();
 

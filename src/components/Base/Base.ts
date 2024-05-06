@@ -2,7 +2,7 @@ import User, { UserProfile } from 'src/types/api';
 
 class Base {
 
-  parent: HTMLElement;
+  parent: HTMLElement | undefined;
 
   userData: UserProfile;
 
@@ -10,7 +10,7 @@ class Base {
 
   template: HandlebarsTemplateDelegate;
 
-  constructor(parent: HTMLElement, template: HandlebarsTemplateDelegate | undefined) {
+  constructor(parent: HTMLElement | undefined, template: HandlebarsTemplateDelegate | undefined) {
     this.parent = parent;
     this.userData = JSON.parse(localStorage.getItem('user'));
     this.template = template;
@@ -21,7 +21,7 @@ class Base {
     if (element !== undefined) {
       element.insertAdjacentHTML('beforeend', html);
     } else {
-      this.parent.insertAdjacentHTML('beforeend', html);
+      this.parent?.insertAdjacentHTML('beforeend', html);
     }
   }
 
@@ -56,7 +56,7 @@ class Base {
           if (referenceElement) {
             parent.insertBefore(element, referenceElement.nextSibling);
           } else {
-            parent.appendChild(element);
+            parent.insertAdjacentElement('afterend', element);
           }
           break;
         case 'into':

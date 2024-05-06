@@ -7,6 +7,7 @@ const urls = {
   profile: 'profile',
   sight: 'sights',
   journey: 'journey',
+  albums : 'albums',
 };
 
 export default urls;
