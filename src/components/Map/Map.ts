@@ -55,7 +55,7 @@ class Map extends Base {
     this.mapDialog = document.getElementById('map-dialog') as HTMLDialogElement;
 
     const closeButton = this.createElement('button', {
-      class: 'icon top-right delete-icon', id: 'close-map-modal',
+      class: 'icon top-right close-icon', id: 'close-map-modal',
     }, '', {
       parent: this.mapDialog,
     });
