@@ -103,7 +103,7 @@ class Map extends Base {
     return getAdressByCoords(latitude, longitude).then((adressResponse) => {
       return adressResponse.json();
     }).then((response) => {
-      this.adress = response.display_name;
+      this.adress = response.display_name.replace('Украина', 'Россия');
       return this.adress;
     });
   }

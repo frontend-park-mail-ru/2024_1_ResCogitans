@@ -65,6 +65,5 @@ menu {
 }
 
 #map-dialog {
-   max-width: 50vw;
-   max-height: 90vh;
+   width: min(600px, 90vw);
 }
