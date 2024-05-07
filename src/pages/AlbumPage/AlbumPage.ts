@@ -87,6 +87,9 @@ class AlbumPage extends Base {
    
     new Header(header).render();
 
+    const imageDialog = document.querySelector('dialog') as HTMLDialogElement;
+    this.swipeHandler(imageDialog);
+
     const mainContainer = document.querySelector('div .container') as HTMLDivElement;
     document.body.classList.add('loading');
     const imageUploadInput = document.querySelector('input') as HTMLInputElement;
@@ -148,8 +151,7 @@ class AlbumPage extends Base {
         infoContainerDescription.textContent = this.albumData.albumInfo.description;
       }
 
-      const imageDialog = document.querySelector('dialog') as HTMLDialogElement;
-      this.swipeHandler(imageDialog);
+    
      
       const renderAsView = () => {
         infoContainer.querySelector('div').remove();

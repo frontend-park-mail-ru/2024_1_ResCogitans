@@ -73,9 +73,6 @@ class SignupForm extends AuthorizationForm {
         password: password?.value,
       };
 
-
-     
-      
       if (password.value !== repeatPassword.value) {
         this.renderError(lowestInput, 'Пароли не совпадают');
         this.enableSubmitButton();
