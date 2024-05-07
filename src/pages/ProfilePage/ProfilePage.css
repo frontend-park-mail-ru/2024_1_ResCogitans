@@ -47,12 +47,6 @@
   }
 }
 
-.review-textarea {
-  width: 100%;
-  height: 300px;
-  resize: none;
-}
-
 .review-content {
   margin-left: 20px;
 }

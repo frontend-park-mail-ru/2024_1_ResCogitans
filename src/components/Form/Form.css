@@ -41,7 +41,5 @@ textarea {
     font-size: 14px;
     border-radius: 20px;
     border: 2px solid var(--primary-color);
-    margin: 5px;
-    padding: 5px;
     height: 36px;
 }
