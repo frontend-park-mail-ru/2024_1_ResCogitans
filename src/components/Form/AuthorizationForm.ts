@@ -17,6 +17,8 @@ class AuthorizationForm extends Base {
   enableSubmitButton = (() => {
     const submitButton : HTMLButtonElement | null = document.getElementById('button-submit') as HTMLButtonElement;
     const errorMessages : NodeListOf<HTMLElement> = document.querySelectorAll('.has-error');
+
+    console.log(errorMessages);
     const forms : NodeListOf<HTMLInputElement> = document.querySelectorAll('input');
     let areEmptyForms : boolean = false;
     forms.forEach((form) => {
@@ -27,6 +29,7 @@ class AuthorizationForm extends Base {
     });
     const hasErrors : boolean = (errorMessages.length > 0);
     submitButton.disabled = (hasErrors || areEmptyForms) ;
+    return !(hasErrors || areEmptyForms);
   });
 
   clearError(parent : HTMLElement) {
@@ -35,6 +38,7 @@ class AuthorizationForm extends Base {
       errorMessage.innerHTML = '';
       errorMessage.classList.remove('has-error');
     }
+    return;
   }
 
   enablePasswordVisibilityButtons() {

@@ -50,21 +50,18 @@ class LoginForm extends AuthorizationForm {
     loginForm.addEventListener('input', (e: Event) => {
       const input = e.target as HTMLInputElement; 
       const parent = input.parentElement as HTMLElement;
-      validate( input.value, input.type )
-        .catch((error) => { this.renderError(parent, error.message); })
-        .then(() => {
-          this.enableSubmitButton();
-        });
-      this.clearError(parent);
+      const error = validate( input.value, input.type );
+      if (error.length > 0) {
+        this.renderError(parent, error);
+      } else {
+        this.clearError(parent);
+      }
     },
     );
 
     loginForm.addEventListener('input', () => {
-      const elementsWithError = document.querySelectorAll('.has-error');
-      elementsWithError.forEach(element => {
-        element.classList.remove('has-error');
-      });
-    }); 
+      this.enableSubmitButton();
+    });
 
     submitButton.addEventListener('click', (e : Event) => {
       e.preventDefault();
@@ -77,7 +74,7 @@ class LoginForm extends AuthorizationForm {
           const responseData = response.data as UserAuthResponseData;
           if (response.status === 200) {
             if (responseData.user.id === 0) {
-              this.renderError(lowestInputDiv, loginErrors[400]);
+              this.renderError(lowestInputDiv, loginErrors[500]);
               return;
             }
             const responseID = responseData.user.id;

@@ -93,8 +93,7 @@ class AlbumPage extends Base {
     const inputDiv = document.querySelector('.input') as HTMLDivElement;
     const photoContainer = document.getElementById('photo-container') as HTMLDivElement;
     const infoContainer = document.querySelector('.container') as HTMLDivElement;
-    const title = infoContainer.querySelector('h1') as HTML
-HeadingElement;
+    const title = infoContainer.querySelector('h1') as HTMLHeadingElement;
   
     const infoContainerDescription = infoContainer.querySelector('h2') as HTMLHeadingElement;
     let albumName: HTMLInputElement;

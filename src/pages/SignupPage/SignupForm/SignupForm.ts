@@ -40,26 +40,30 @@ class SignupForm extends AuthorizationForm {
     const email = document.getElementById('email') as HTMLInputElement;
     const password = document.getElementById('password') as HTMLInputElement;
     const repeatPassword = document.getElementById('password-repeat') as HTMLInputElement;
+    const lowestInput = repeatPassword.parentElement as HTMLDivElement;
  
  
     registrationForm.addEventListener('input', (e: Event) => {
       const input = e.target as HTMLInputElement; 
       const parent = input.parentElement as HTMLElement;
-      validate( input.value, input.type )
-        .catch((error) => { this.renderError(parent, error.message); })
-        .then(() => {
-          this.enableSubmitButton();
-        });
-      this.clearError(parent);
+      const error = validate( input.value, input.type );
+      console.log(error);
+      if (error.length > 0) {
+        this.renderError(parent, error);
+      } else {
+        this.clearError(parent);
+      }
     },
     );
 
-    registrationForm.addEventListener('click', () => {
-      const elementsWithError = document.querySelectorAll('.has-error');
-      elementsWithError.forEach(element => {
-        element.classList.remove('has-error');
-      });
-    }); 
+    registrationForm.addEventListener('input', () => {
+      if (password.value !== repeatPassword.value) {
+        this.renderError(lowestInput, 'Пароли не совпадают');
+      } else {
+        this.clearError(lowestInput);
+      }
+      this.enableSubmitButton();
+    });
 
     submitButton.addEventListener('click', (e : Event) => {
       e.preventDefault();
@@ -70,10 +74,11 @@ class SignupForm extends AuthorizationForm {
       };
 
 
-      const lowestInput = repeatPassword.parentElement as HTMLDivElement;
+     
       
       if (password.value !== repeatPassword.value) {
         this.renderError(lowestInput, 'Пароли не совпадают');
+        this.enableSubmitButton();
         return;
       } else {
         this.clearError(lowestInput);
