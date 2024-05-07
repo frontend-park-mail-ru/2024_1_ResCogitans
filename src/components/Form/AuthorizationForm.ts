@@ -4,6 +4,7 @@ class AuthorizationForm extends Base {
 
   renderError(parent : HTMLElement, message : string) {
     const errorMessage = parent.querySelector('.err-label') as HTMLElement;
+    const errorMessage = parent.querySelector('.err-label') as HTMLElement;
     if (message !== undefined && message !== null) {
       errorMessage.innerHTML = message;
       errorMessage.classList.add('has-error');
@@ -57,6 +58,8 @@ class AuthorizationForm extends Base {
       inputElement.type = 'text';
       icon?.classList.replace('password-invisible', 'password-visible');
     } else {
+      inputElement.type = 'password';
+      icon?.classList.replace('password-visible', 'password-invisible');
       inputElement.type = 'password';
       icon?.classList.replace('password-visible', 'password-invisible');
       inputElement.type = 'password';

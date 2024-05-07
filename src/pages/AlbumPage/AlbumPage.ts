@@ -219,6 +219,7 @@ class AlbumPage extends Base {
                 }
               });
             } else if (this.params.type === 'edit') {
+              console.log(IDsToDelete);
               IDsToDelete.forEach((idToDelete) => {
                 deletePhoto(this.params.id, idToDelete);
               });
@@ -323,6 +324,7 @@ class AlbumPage extends Base {
                 const imgURL = URL.createObjectURL(newFile);
                 oldPhoto.setURL(imgURL);
                 IDsToDelete.add(oldPhoto.oldID);
+                console.log(oldPhoto.oldID);
                 changePhotoId = -1;
                 return;
               }
@@ -361,6 +363,7 @@ class AlbumPage extends Base {
           const photoID = e.detail.id;
 
           const photoToDelete = PHOTOS_STATE[photoID - 1];
+          console.log(photoToDelete);
           if (photoToDelete.photo.origin === 'response') {
             IDsToDelete.add(photoToDelete.oldID);
             IDsToDelete.add(photoToDelete.oldID); // запрос на сервер с удалением
@@ -423,7 +426,7 @@ class AlbumPage extends Base {
       });
 
       document.addEventListener('modalopen', (e: Event) => {
-        imageDialog.show();
+        imageDialog.showModal();
         this.updateModal(PHOTOS_STATE[e.detail.id - 1]);
       });
 

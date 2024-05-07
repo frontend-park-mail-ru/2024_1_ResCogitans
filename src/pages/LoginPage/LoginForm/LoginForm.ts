@@ -10,6 +10,8 @@ import { loginErrors } from '../../../types/errors';
 import { UserAuthResponseData } from '@types/api';
 import template from '@templates/LoginForm.hbs';
 
+import template from '@templates/LoginForm.hbs';
+
 /**
 * Класс LoginForm представляет форму входа, которая может быть отрендерена в HTML.
 * @class
@@ -24,10 +26,20 @@ class LoginForm extends AuthorizationForm {
   render() {
     this.preRender();
     
+
+  constructor(parent: HTMLElement) {
+    super(parent, template);
+  }
+
+  render() {
+    this.preRender();
+    
     const logoGroup = document.getElementById('logo-group') as HTMLDivElement;
+    new Logo(logoGroup).render();
     new Logo(logoGroup).render();
     const loginForm = document.getElementById('login-form') as HTMLDivElement;
 
+    new Button(loginForm, {
     new Button(loginForm, {
       id: 'button-submit', label: 'Войти', type: 'submit',
     }).render();
@@ -41,6 +53,7 @@ class LoginForm extends AuthorizationForm {
     submitButton.disabled = true;
 
     
+    new Button(loginForm, {
     new Button(loginForm, {
       id: 'signup-button', label: 'Регистрация',
     }).render();
@@ -64,6 +77,7 @@ class LoginForm extends AuthorizationForm {
     });
 
     submitButton.addEventListener('click', (e : Event) => {
+    submitButton.addEventListener('click', (e : Event) => {
       e.preventDefault();
       const requestBody = {
         username: emailInput.value,
@@ -80,6 +94,7 @@ class LoginForm extends AuthorizationForm {
             const responseID = responseData.user.id;
             const responseUsername = responseData.user.username;
             addUserToLocalStorage(responseUsername, responseID);
+            document.body.classList.remove('auth-background');
             document.body.classList.remove('auth-background');
             router.goBack();
           } else if (response.status === 400 || response.status === 500) {

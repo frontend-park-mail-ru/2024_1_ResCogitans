@@ -43,6 +43,7 @@ class SignupForm extends AuthorizationForm {
     const lowestInput = repeatPassword.parentElement as HTMLDivElement;
  
  
+ 
     registrationForm.addEventListener('input', (e: Event) => {
       const input = e.target as HTMLInputElement; 
       const parent = input.parentElement as HTMLElement;
