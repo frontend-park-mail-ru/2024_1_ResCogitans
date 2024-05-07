@@ -36,7 +36,7 @@ dialog:focus {
 
 textarea {
     display: block;
-    width: 90vw;
+    width: 100%;
     resize: vertical;
     font-size: 14px;
     border-radius: 20px;
