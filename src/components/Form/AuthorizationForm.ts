@@ -18,7 +18,6 @@ class AuthorizationForm extends Base {
     const submitButton : HTMLButtonElement | null = document.getElementById('button-submit') as HTMLButtonElement;
     const errorMessages : NodeListOf<HTMLElement> = document.querySelectorAll('.has-error');
 
-    console.log(errorMessages);
     const forms : NodeListOf<HTMLInputElement> = document.querySelectorAll('input');
     let areEmptyForms : boolean = false;
     forms.forEach((form) => {
