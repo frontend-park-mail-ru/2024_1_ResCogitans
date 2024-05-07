@@ -36,10 +36,12 @@ dialog:focus {
 
 textarea {
     display: block;
+    min-height: 300px;
     width: 100%;
     resize: vertical;
     font-size: 14px;
     border-radius: 20px;
     border: 2px solid var(--primary-color);
+    padding: 5px;
     height: 36px;
 }
