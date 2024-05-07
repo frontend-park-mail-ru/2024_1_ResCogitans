@@ -47,7 +47,6 @@ class SignupForm extends AuthorizationForm {
       const input = e.target as HTMLInputElement; 
       const parent = input.parentElement as HTMLElement;
       const error = validate( input.value, input.type );
-      console.log(error);
       if (error.length > 0) {
         this.renderError(parent, error);
       } else {
