@@ -93,7 +93,8 @@ class AlbumPage extends Base {
     const inputDiv = document.querySelector('.input') as HTMLDivElement;
     const photoContainer = document.getElementById('photo-container') as HTMLDivElement;
     const infoContainer = document.querySelector('.container') as HTMLDivElement;
-    const title = infoContainer.querySelector('h1') as HTMLHeadingElement;
+    const title = infoContainer.querySelector('h1') as HTML
+HeadingElement;
   
     const infoContainerDescription = infoContainer.querySelector('h2') as HTMLHeadingElement;
     let albumName: HTMLInputElement;
@@ -426,7 +427,7 @@ class AlbumPage extends Base {
       });
 
       document.addEventListener('modalopen', (e: Event) => {
-        imageDialog.showModal();
+        imageDialog.show();
         this.updateModal(PHOTOS_STATE[e.detail.id - 1]);
       });
 
