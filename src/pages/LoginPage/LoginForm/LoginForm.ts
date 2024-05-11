@@ -46,7 +46,9 @@ class LoginForm extends AuthorizationForm {
    
     const lowestInputDiv = passwordInput.parentElement as HTMLDivElement;
 
-    loginForm.addEventListener('blur', (e: Event) => {
+    const inputs = loginForm.querySelectorAll('input');
+
+    inputs.forEach((input) => input.addEventListener('blur', (e: Event) => {
       const input = e.target as HTMLInputElement; 
       const parent = input.parentElement as HTMLElement;
       const error = validate( input.value, input.type );
@@ -56,7 +58,7 @@ class LoginForm extends AuthorizationForm {
         this.clearError(parent);
       }
     },
-    );
+    ));
 
     submitButton.addEventListener('click', (e : Event) => {
       e.preventDefault();

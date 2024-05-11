@@ -41,9 +41,9 @@ class SignupForm extends AuthorizationForm {
     const repeatPassword = document.getElementById('password-repeat') as HTMLInputElement;
     const lowestInput = repeatPassword.parentElement as HTMLDivElement;
  
+    const inputs = registrationForm.querySelectorAll('input');
  
- 
-    registrationForm.addEventListener('blur', (e: Event) => {
+    inputs.forEach((input) => input.addEventListener('blur', (e: Event) => {
       const input = e.target as HTMLInputElement; 
       const parent = input.parentElement as HTMLElement;
       const error = validate( input.value, input.type );
@@ -53,18 +53,17 @@ class SignupForm extends AuthorizationForm {
         this.clearError(parent);
       }
     },
-    );
+    ));
 
-    registrationForm.addEventListener('blur', () => {
+
+    submitButton.addEventListener('click', (e : Event) => {
+      e.preventDefault();
+
       if (password.value !== repeatPassword.value) {
         this.renderError(lowestInput, 'Пароли не совпадают');
       } else {
         this.clearError(lowestInput);
       }
-    });
-
-    submitButton.addEventListener('click', (e : Event) => {
-      e.preventDefault();
 
       if (this.errorsInForm()) return;
 
