@@ -34,26 +34,14 @@ class Router {
     this.routes = routes;
     window.addEventListener('popstate', () => this.changeLocation());
 
-    document.addEventListener('click', (e) => {
-      let href: string | null;
-      const target = e.target as HTMLElement;
-      if (target.tagName === 'A' || target.tagName === 'BUTTON') {
-        e.preventDefault();
-        href = target.getAttribute('href');
-      } else if (target.tagName === 'BUTTON' || target.tagName === 'IMG') {
-        const parentAnchorElement = target.closest('a');
-        if (parentAnchorElement !== null && parentAnchorElement !== undefined) {
-          e.preventDefault();
-          href = target.closest('a').getAttribute('href');
-        }
-      } else {
-        return;
-      }
-      if (href) this.go(href);
-    });
-
     document.addEventListener('redirect', (e) => {
-      this.go(e.detail.path); // будет рефактор для этой более простой истории
+      console.log(e.detail.path);
+      if (e.detail.path === 'back') {
+        this.goBack();
+      } else {
+        this.go(e.detail.path);
+      }
+      return;
     });
 
   }

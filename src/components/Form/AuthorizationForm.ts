@@ -14,7 +14,7 @@ class AuthorizationForm extends Base {
 
   password = document.getElementById('password') as HTMLInputElement;
   
-  enableSubmitButton = (() => {
+  errorsInForm = (() => {
     const submitButton : HTMLButtonElement | null = document.getElementById('button-submit') as HTMLButtonElement;
     const errorMessages : NodeListOf<HTMLElement> = document.querySelectorAll('.has-error');
 
@@ -27,8 +27,7 @@ class AuthorizationForm extends Base {
       }
     });
     const hasErrors : boolean = (errorMessages.length > 0);
-    submitButton.disabled = (hasErrors || areEmptyForms) ;
-    return !(hasErrors || areEmptyForms);
+    return (hasErrors || areEmptyForms);
   });
 
   clearError(parent : HTMLElement) {

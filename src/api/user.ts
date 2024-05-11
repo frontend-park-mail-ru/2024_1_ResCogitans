@@ -2,15 +2,20 @@ import { WithResponse, UserAuthRequest, UserAuthResponseData, UserProfile } from
 import { ENV_CONFIG } from '../../envConfig';
 import { get, post } from '@api/base';
 
-export async function authorize(endpoint : string, body? : UserAuthRequest): Promise<WithResponse<UserAuthResponseData>> {
+export async function authorize(endpoint : string, form? : HTMLFormElement): Promise<WithResponse<UserAuthResponseData>> {
+  const formData = new FormData(form);
+  const formBody = new URLSearchParams(Object.fromEntries(formData.entries())).toString();
+
   const response = await fetch(`${ENV_CONFIG.API_URL}/api/${endpoint}`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json', 
+      'Content-Type': 'application/x-www-form-urlencoded', 
     },
     credentials: 'include',
-    body: JSON.stringify(body),
+    body: formBody,
   });
+
+
   const responseData = await response.json();
   const userAuthResponse: WithResponse<UserAuthResponseData> = {
     status: response.status,

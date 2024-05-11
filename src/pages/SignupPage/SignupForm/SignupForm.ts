@@ -2,11 +2,9 @@ import AuthorizationForm from '@components/Form/AuthorizationForm';
 import Button from '@components/Button/Button';
 import Logo from '@components/Logo/Logo';
 import { authorize } from '@api/user';
-import { router } from '@router/router';
 import { addUserToLocalStorage } from '@utils/localstorage';
 import { validate } from '@utils/validation';
 import { signupErrors } from '../../../types/errors';
-import urls from '@router/urls';
 import template from '@templates/SignupForm.hbs';
 
 /**
@@ -30,12 +28,11 @@ class SignupForm extends AuthorizationForm {
 
     this.enablePasswordVisibilityButtons();
 
-    const registrationForm = document.getElementById('registration-form') as HTMLDivElement;
+    const registrationForm = document.getElementById('registration-form') as HTMLFormElement;
     new Button(registrationForm, {
       id: 'button-submit', label: 'Зарегистрироваться', type: 'submit', 
     }).render();
     const submitButton = document.getElementById('button-submit') as HTMLButtonElement;
-    submitButton.disabled = true;
 
     const email = document.getElementById('email') as HTMLInputElement;
     const password = document.getElementById('password') as HTMLInputElement;
@@ -57,7 +54,7 @@ class SignupForm extends AuthorizationForm {
     ));
 
 
-    submitButton.addEventListener('click', (e : Event) => {
+    registrationForm.addEventListener('submit', (e : Event) => {
       e.preventDefault();
 
       if (password.value !== repeatPassword.value) {
@@ -68,20 +65,15 @@ class SignupForm extends AuthorizationForm {
 
       if (this.errorsInForm()) return;
 
-      const requestBody = {
-        username: email?.value,
-        password: password?.value,
-      };
-
       if (password.value !== repeatPassword.value) {
         this.renderError(lowestInput, 'Пароли не совпадают');
-        this.enableSubmitButton();
+        this.errorsInForm();
         return;
       } else {
         this.clearError(lowestInput);
       }
 
-      authorize('signup', requestBody)
+      authorize('signup', registrationForm)
         .then((response) => {
           const responseData = response.data;
           if (response.status === 200) {
@@ -91,7 +83,11 @@ class SignupForm extends AuthorizationForm {
               addUserToLocalStorage(responseUsername, responseID);
             }
             document.body.classList.remove('auth-background');
-            router.go(urls.base);
+            document.dispatchEvent(new CustomEvent('redirect', {
+              detail : {
+                path : '/',
+              },
+            }));
           }
           if (response.status === 400 || response.status === 500) {
             this.renderError(lowestInput, signupErrors[responseData.error]);

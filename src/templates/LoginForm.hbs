@@ -6,12 +6,12 @@
     <form id="login-form" method="post">
         <div class="input">
             <label for="email">Электронная почта</label>
-            <input id="email" type="email" class="form-input" required>
+            <input id="email" type="email" class="form-input" name="username" required>
             <label class="err-label"></label>
         </div>
         <div class="input input-button">
             <label for="password">Пароль</label>
-            <input id="password" type="password" class="form-input" required maxlength="32">
+            <input id="password" type="password" class="form-input" name="password" required maxlength="32">
             <button id="password-visible"><img src="static/visible.svg"></button>
             <label class="err-label"></label>
         </div>

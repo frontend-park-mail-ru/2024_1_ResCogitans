@@ -7,7 +7,6 @@ import { editProfile, getUserProfile, imageUpload, resetPassword } from '@api/us
 import { profileErrors, signupErrors } from '../../types/errors';
 import { ROUTES } from '@router/ROUTES';
 import ProfileBlock from './ProfileBlock';
-import { router } from '@router/router';
 import template from '@templates/ProfilePage.hbs';
 import { getUserTrips } from '@api/journey';
 import { getUserAlbumsByUserID } from '@api/album';
@@ -36,19 +35,26 @@ class ProfilePage extends Base {
   render() {
 
     if (!this.userID) {
-      router.go('404');
+      document.dispatchEvent(new CustomEvent('redirect', {
+        detail : {
+          path : '404',
+        },
+      }));
       return;
     }
-
     getUserProfile(this.userID).then((profileData) => {
+
+      if (profileData.status !== 200) {
+        document.dispatchEvent(new CustomEvent('redirect', {
+          detail : {
+            path : '404',
+          },
+        }));
+        return;
+      }
 
       this.isOwn = (this.userData === null) ? false : (this.userData.userID === profileData.data.id);
       this.preRender();
-
-      if (profileData.data.id === 0) {
-        router.go('404');
-        return;
-      }
 
       const authForm = new AuthorizationForm(this.parent, '');
 
@@ -97,11 +103,20 @@ class ProfilePage extends Base {
 
       if (this.isOwn) {
         createButton = this.createElement('button', {
-          class: 'button-primary button-link', id: 'create-button', href: '/journey/new',
+          class: 'button-primary button-link', id: 'create-button',
         }, 'Создать поездку', {
           parent: contentBlock, position: 'after',
         }) as HTMLButtonElement;
+        createButton.addEventListener('click', () => {
+          document.dispatchEvent(new CustomEvent('redirect', {
+            detail : {
+              path : 'journey/new',
+            },
+          }));
+        });
       }
+
+      
 
       journeyLink.addEventListener('click', () => {
         profileContent.innerHTML = '';

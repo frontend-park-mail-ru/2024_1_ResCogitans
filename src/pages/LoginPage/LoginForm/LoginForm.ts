@@ -1,7 +1,5 @@
 import Button from '@components/Button/Button';
-import urls from '@router/urls';
 import Logo from '@components/Logo/Logo';
-import  { router } from '@router/router';
 import { addUserToLocalStorage } from '@utils/localstorage';
 import { authorize } from '@api/user';
 import { validate } from '@utils/validation';
@@ -26,7 +24,7 @@ class LoginForm extends AuthorizationForm {
     
     const logoGroup = document.getElementById('logo-group') as HTMLDivElement;
     new Logo(logoGroup).render();
-    const loginForm = document.getElementById('login-form') as HTMLDivElement;
+    const loginForm = document.getElementById('login-form') as HTMLFormElement;
 
     new Button(loginForm, {
       id: 'button-submit', label: 'Войти', type: 'submit',
@@ -38,8 +36,7 @@ class LoginForm extends AuthorizationForm {
     this.enablePasswordVisibilityButtons();
 
     const submitButton = document.getElementById('button-submit') as HTMLButtonElement;
-    submitButton.disabled = true;
-
+    submitButton.setAttribute('form', 'login-form');
     
     new Button(loginForm, {
       id: 'signup-button', label: 'Регистрация',
@@ -60,26 +57,21 @@ class LoginForm extends AuthorizationForm {
       }
     },
     ));
-
-    submitButton.addEventListener('click', (e : Event) => {
+    loginForm.addEventListener('submit', (e : Event) => {
       e.preventDefault();
-      const requestBody = {
-        username: emailInput.value,
-        password: passwordInput.value,
-      };
-      authorize('login', requestBody)
+      authorize('login', loginForm)
         .then((response) => {
           const responseData = response.data as UserAuthResponseData;
           if (response.status === 200) {
-            if (responseData.user.id === 0) {
-              this.renderError(lowestInputDiv, loginErrors[500]);
-              return;
-            }
             const responseID = responseData.user.id;
             const responseUsername = responseData.user.username;
             addUserToLocalStorage(responseUsername, responseID);
             document.body.classList.remove('auth-background');
-            router.goBack();
+            document.dispatchEvent(new CustomEvent('redirect', {
+              detail : {
+                path : 'back',
+              },
+            }));
           } else if (response.status === 400 || response.status === 500) {
             this.renderError(lowestInputDiv, loginErrors[response.status]);
           }
@@ -88,7 +80,11 @@ class LoginForm extends AuthorizationForm {
 
     const registerButton = document.getElementById('signup-button') as HTMLButtonElement;
     registerButton.addEventListener('click', () => {
-      router.go(urls.signup);
+      document.dispatchEvent(new CustomEvent('redirect', {
+        detail : {
+          path : 'signup',
+        },
+      }));
     });
   }
 }

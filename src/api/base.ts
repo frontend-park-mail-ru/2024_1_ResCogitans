@@ -19,11 +19,27 @@ export async function get( endpoint : string, body? : unknown) : Promise<unknown
 }
 
 
+function getCSRFFromCookie() {
+  const cookies = document.cookie.split(';');
+
+  for (let i = 0; i < cookies.length; i++) {
+    const cookie = cookies[i].trim();
+    const [key, value] = cookie.split('=');
+
+    if (key === 'CSRFToken') {
+      return value;
+    }
+  }
+
+  return '';
+}
+
 export async function post(endpoint : string, body? : unknown): Promise<unknown> {
   const response = await fetch(`${ENV_CONFIG.API_URL}/api/${endpoint}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json', 
+      'X-CSRF-Token': getCSRFFromCookie(),
     },
     credentials: 'include',
     body: JSON.stringify(body),
@@ -39,5 +55,6 @@ export async function post(endpoint : string, body? : unknown): Promise<unknown>
 export default {
   get, post, 
 };
+
 
 
