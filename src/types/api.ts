@@ -6,6 +6,7 @@ export interface UserAuthRequest {
 export interface User {
   username: string,
   id: number,
+  token: string,
 }
 
 export interface UserAuthResponseData {

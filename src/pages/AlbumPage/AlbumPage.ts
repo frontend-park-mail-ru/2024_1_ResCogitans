@@ -116,8 +116,12 @@ class AlbumPage extends Base {
       mainContainer.classList.remove('hidden');
       document.body.classList.remove('loading');
 
-      if (!albumData || albumData.status !== 200 && this.params.type !== 'new') {
-        return;
+      if (!albumData || albumData.status !== 200 && this.params.type !== 'new' || !this.userData) {
+        document.dispatchEvent(new CustomEvent('redirect', {
+          detail : {
+            path : '/',
+          },
+        }));
       }
 
       if (this.params.type !== 'new') {

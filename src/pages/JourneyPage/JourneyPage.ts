@@ -5,9 +5,7 @@ import Place from '@pages/PlacesPage/Placelist/Place/Place';
 import { post } from '@api/base';
 import { getTrip } from '@api/journey';
 import { getSights } from '@api/sight';
-import { router } from '@router/router';
 import urls from '@router/urls';
-import { ROUTES } from '@router/ROUTES';
 import template from '@templates/JourneyPage.hbs';
 
 
@@ -131,14 +129,18 @@ class JourneyPage extends Base {
       this.type = 'new';
     }
 
-    document.body.classList.remove('auth-background');
     let journeyInfoDiv, title, header;
 
     switch (this.type) {
       case 'new':
 
-        if (this.userData.userID === undefined) {
-          router.go('login');
+        if (!this.userData) {
+          document.dispatchEvent(new CustomEvent('redirect', {
+            detail : {
+              path : '/',
+            },
+          }));
+          return;
         }
 
         this.preRender();

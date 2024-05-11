@@ -38,7 +38,6 @@ class LoginForm extends AuthorizationForm {
     this.enablePasswordVisibilityButtons();
 
     const submitButton = document.getElementById('button-submit') as HTMLButtonElement;
-    submitButton.disabled = true;
 
     
     new Button(loginForm, {
@@ -47,7 +46,7 @@ class LoginForm extends AuthorizationForm {
    
     const lowestInputDiv = passwordInput.parentElement as HTMLDivElement;
 
-    loginForm.addEventListener('input', (e: Event) => {
+    loginForm.addEventListener('blur', (e: Event) => {
       const input = e.target as HTMLInputElement; 
       const parent = input.parentElement as HTMLElement;
       const error = validate( input.value, input.type );
@@ -59,12 +58,9 @@ class LoginForm extends AuthorizationForm {
     },
     );
 
-    loginForm.addEventListener('input', () => {
-      this.enableSubmitButton();
-    });
-
     submitButton.addEventListener('click', (e : Event) => {
       e.preventDefault();
+      if (this.errorsInForm()) return;
       const requestBody = {
         username: emailInput.value,
         password: passwordInput.value,

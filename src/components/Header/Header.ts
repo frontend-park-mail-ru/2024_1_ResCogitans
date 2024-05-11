@@ -56,7 +56,10 @@ class Header extends Base {
 
       logoutButton.addEventListener('click', () => {
         localStorage.clear();
-        authorize('logout');
+        authorize('logout').then(() => {
+          const meta = document.querySelector('meta') as HTMLMetaElement;
+          meta?.remove();
+        });
         router.go(urls.base);
       });
     } else {

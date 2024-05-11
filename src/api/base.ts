@@ -20,6 +20,7 @@ export async function get( endpoint : string, body? : unknown) : Promise<unknown
 
 
 export async function post(endpoint : string, body? : unknown): Promise<unknown> {
+  
   const response = await fetch(`${ENV_CONFIG.API_URL}/api/${endpoint}`, {
     method: 'POST',
     headers: {
@@ -30,6 +31,9 @@ export async function post(endpoint : string, body? : unknown): Promise<unknown>
   });
 
   const responseData = await response.json();
+  if (response.status === 401) {
+    document.dispatchEvent(new CustomEvent('unauthorized'));
+  }
   return {
     data: responseData, status: response.status, 
   };
