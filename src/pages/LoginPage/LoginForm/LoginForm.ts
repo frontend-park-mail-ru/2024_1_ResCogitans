@@ -38,6 +38,7 @@ class LoginForm extends AuthorizationForm {
     this.enablePasswordVisibilityButtons();
 
     const submitButton = document.getElementById('button-submit') as HTMLButtonElement;
+    submitButton.disabled = true;
 
     
     new Button(loginForm, {
@@ -62,7 +63,6 @@ class LoginForm extends AuthorizationForm {
 
     submitButton.addEventListener('click', (e : Event) => {
       e.preventDefault();
-      if (this.errorsInForm()) return;
       const requestBody = {
         username: emailInput.value,
         password: passwordInput.value,

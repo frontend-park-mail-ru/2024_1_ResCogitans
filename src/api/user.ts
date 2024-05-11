@@ -18,7 +18,6 @@ export async function authorize(endpoint : string, body? : UserAuthRequest): Pro
       user: {
         id: responseData.id,
         username: responseData.username,
-        token: responseData.csrfToken,
       },
       code: responseData.code,
       error: responseData.error,

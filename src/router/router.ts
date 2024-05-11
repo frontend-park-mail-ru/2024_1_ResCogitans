@@ -53,11 +53,7 @@ class Router {
     });
 
     document.addEventListener('redirect', (e) => {
-      this.go(e.detail.path);
-    });
-
-    document.addEventListener('unauthorized', () => {
-      this.go(urls.login);
+      this.go(e.detail.path); // будет рефактор для этой более простой истории
     });
 
   }

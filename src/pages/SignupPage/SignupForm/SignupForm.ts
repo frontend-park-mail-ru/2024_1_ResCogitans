@@ -35,6 +35,7 @@ class SignupForm extends AuthorizationForm {
       id: 'button-submit', label: 'Зарегистрироваться', type: 'submit', 
     }).render();
     const submitButton = document.getElementById('button-submit') as HTMLButtonElement;
+    submitButton.disabled = true;
 
     const email = document.getElementById('email') as HTMLInputElement;
     const password = document.getElementById('password') as HTMLInputElement;
@@ -74,6 +75,7 @@ class SignupForm extends AuthorizationForm {
 
       if (password.value !== repeatPassword.value) {
         this.renderError(lowestInput, 'Пароли не совпадают');
+        this.enableSubmitButton();
         return;
       } else {
         this.clearError(lowestInput);
